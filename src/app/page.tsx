@@ -1,101 +1,96 @@
-import Image from "next/image";
+"use client";
+import RandomWord from "@/hooks/randomWord";
+import { useCallback, useMemo, useState } from "react";
+import Timer from "./component/timer";
 
 export default function Home() {
-  return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+  const res = RandomWord(20, 20);
+  console.log(res[0]);
+  const [success, setSucceess] = useState<boolean>(null);
+  const [score, setScore] = useState<number>(0);
+  const [inputValue, setInputValue] = useState("");
+  const [timeLeft, setTimeLeft] = useState<number>(0); // State to receive data from child
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
+  const handleTimeUpdate = (time: number) => {
+    setTimeLeft(time); // Update state with data from child
+  };
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    setInputValue(event.target.value);
+    // const splitWord = res[0].split("");
+  };
+
+  useMemo(() => {
+    Array.isArray(res) &&
+      inputValue != "" &&
+      res.map((char, index) => {
+        if (char == inputValue && index == score) {
+          setSucceess(true);
+          console.log("char", char == inputValue, "index ", index);
+          setScore(score + 1);
+          setInputValue("");
+          return 0;
+        } else if (index == score) {
+          setSucceess(false);
+          console.log("char", char, "index ", index);
+          return;
+        }
+      });
+  }, [inputValue]);
+
+  const renderWord = useCallback(() => {
+    // const splitWord = ;
+
+    return Array.isArray(res) ? (
+      res.map((word: string, index: number) => {
+        return (
+          <li
+            id={String(index)}
+            key={index}
+            className={`text-xl ${
+              success ? "text-green-500" : "text-red-500"
+            } ${success == null && "!text-white"} font-light`}
           >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+            {word}
+          </li>
+        );
+      })
+    ) : (
+      <p className="text-white">loading...</p>
+    );
+  }, [success, res]);
+
+  return (
+    <main className="flex bg-zinc-900 items-center justify-center h-screen">
+      <form className="flex flex-col mx-auto gap-8 w-2/3 items-center">
+        <ul className="flex items-center w-full flex-wrap gap-3">
+          {renderWord()}
+        </ul>
+        <div className="flex items-start justify-evenly w-full">
+          <input
+            type="text"
+            disabled={timeLeft == 0}
+            value={inputValue}
+            className="w-1/4 outline-none bg-zinc-700 text-white rounded-xl h-20 px-6"
+            onChange={handleChange}
+          />
+          <section className="flex flex-col items-center gap-4">
+            <p className="text-white">Score : {score}</p>
+            <button
+              className="text-white bg-zinc-700 rounded-2xl px-6 py-2 "
+              onClick={() => setScore(0)}
+            >
+              Resert Score
+            </button>
+          </section>
+          {Array.isArray(res) ? (
+            <Timer onTimeUpdate={handleTimeUpdate} startTime={20} />
+          ) : (
+            <p className="text-white">loading...</p>
+          )}
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+      </form>
+    </main>
   );
 }
