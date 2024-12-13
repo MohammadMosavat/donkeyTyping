@@ -52,14 +52,17 @@ export default function Home() {
 
   useEffect(() => {
     console.log(activeChar, resSplit && resSplit[activeWord]);
-     resSplit &&
+    resSplit &&
       resSplit[activeWord]?.map((char: string, index: number) => {
         console.log(
           "last value : ",
           inputValue.split("")[inputValue.split("").length - 1]
         );
         if (index == inputValue.length - 1) {
-          if (char == inputValue.split("")[inputValue.split("").length - 1]) {
+          if (
+            success &&
+            char == inputValue.split("")[inputValue.split("").length - 1]
+          ) {
             setSucceess(true);
             setActiveChar(inputValue.length);
             if (inputValue == res[activeWord]) {
@@ -119,7 +122,7 @@ export default function Home() {
                       inputValue.length == charIndex &&
                       activeWord == index &&
                       "underline-offset-4 underline !opacity-100"
-                    } font-light`}
+                    } transition-all duration-200 ease-in-out font-light`}
                   >
                     {char}
                   </li>
@@ -154,7 +157,7 @@ export default function Home() {
               className="text-white bg-zinc-700 rounded-2xl px-6 py-2 "
               onClick={() => setScore(0)}
             >
-              Resert Score 
+              Resert Score
             </button>
           </section>
           {Array.isArray(res) ? (
