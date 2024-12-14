@@ -4,11 +4,13 @@ import React, { useState, useEffect } from "react";
 
 interface TimerType {
   startTime: number;
+  handleTimeUpdate: (time: number) => void;
 }
-export default function Timer({ startTime }: TimerType) {
+export default function Timer({ startTime, handleTimeUpdate }: TimerType) {
   const [time, setTime] = useState(startTime); // Initial countdown value (20 seconds)
 
   useEffect(() => {
+    handleTimeUpdate(time);
     // Exit early if the timer has already reached 0
     if (time <= 0) return;
 
@@ -23,7 +25,7 @@ export default function Timer({ startTime }: TimerType) {
 
   return (
     <div className="flex text-white items-center gap-2">
-      <h2>{time??0}</h2>
+      <h2>{time ?? 0}</h2>
       <h1>Second</h1>
     </div>
   );

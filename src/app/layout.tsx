@@ -27,6 +27,7 @@ export default function RootLayout({
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+        <img className="fixed -z-30 w-full h-screen" src="/images/bg2.jpg" alt="" />
         {children}
       </body>
     </html>

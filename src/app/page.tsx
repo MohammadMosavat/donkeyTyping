@@ -11,6 +11,7 @@ import {
 import StatusTyping from "./component/statusTyping";
 import { fetchWord } from "@/hooks/randomWord";
 import Timer from "./component/statusTyping";
+import NotificationAlert from "./component/toast";
 
 export default function Home() {
   const [success, setSucceess] = useState<boolean | null>(null);
@@ -116,7 +117,7 @@ export default function Home() {
                       "!text-red-600"} text-white opacity-50 ${inputValue?.length ==
                       charIndex &&
                       activeWord == index &&
-                      "underline-offset-4 underline !opacity-100"} transition-all duration-200 ease-in-out font-light`}
+                      "underline-offset-8 underline !opacity-100"} transition-all duration-200 ease-in-out font-light`}
                   >
                     {char}
                   </li>
@@ -139,10 +140,13 @@ export default function Home() {
   }, [score]);
 
   const timerCounter = useMemo(() => {
-    return (Array.isArray(res) && inputValue) ? (
-      <Timer startTime={20} />
+    return Array.isArray(res) &&
+      success != null &&
+      activeWord >= 0 &&
+      timeLeft <= 20 ? (
+      <Timer startTime={20} handleTimeUpdate={handleTimeUpdate} />
     ) : (
-      <p className="text-white">loading...</p>
+      <p className="text-white">Timer is waiting for typing</p>
     );
   }, [res, inputValue]);
 
@@ -150,17 +154,30 @@ export default function Home() {
     const fetchedWords = await fetchWord(20, 10);
     setRes(fetchedWords);
     setInputValue("");
-    setScore(0);
+    setSucceess(null);
+    // setTimeLeft(0);
     setActiveWord(0);
     setActiveChar(0);
   };
 
   useEffect(() => {
-    console.log("this is times left ", timeLeft);
+    timeLeft == 0 && setInputValue("");
+  }, [timeLeft]);
+
+  const notification = useMemo(() => {
+    return (
+      <NotificationAlert
+        className={`${timeLeft == 0 ? "!top-4" : "!-top-36"}`}
+        status={"info"}
+        alertTitle={"Time is over"}
+        theme={"light"}
+      />
+    );
   }, [timeLeft]);
 
   return (
-    <main className="flex bg-zinc-900 items-center justify-center h-screen">
+    <main className="flex  items-center justify-center h-screen">
+      {notification}
       <form className="flex flex-col mx-auto gap-8 w-2/3 items-center">
         <ul className="flex items-center w-full gap-4 flex-wrap">
           {renderWord()}
@@ -177,17 +194,17 @@ export default function Home() {
           <section className="w-1/2 flex gap-4 items-center mx-auto">
             <img
               onClick={handleRefresh}
-              className="cursor-pointer hover:shadow-md hover:drop-shadow-lg"
+              className={`cursor-pointer hover:shadow-md hover:drop-shadow-lg`}
               src="/svgs/refresh.svg"
               alt=""
             />
             <input
               ref={inputRef}
               type="text"
-              disabled={timeLeft == -1}
+              disabled={timeLeft == 0}
               onChange={handleChange}
               value={inputValue ?? ""}
-              className="w-full p-4 rounded-xl text-white bg-zinc-700 transition duration-300 focus:outline-none focus:bg-zinc-500 "
+              className="w-full p-4 rounded-xl text-white bg-glass transition duration-300 focus:outline-none focus:bg-glass "
               placeholder="Type here..."
             />
           </section>
