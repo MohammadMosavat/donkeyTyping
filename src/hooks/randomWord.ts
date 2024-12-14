@@ -1,27 +1,24 @@
-"use client";
-import { useState, useEffect } from "react";
+import axiosInstance from "../api/axiosInstance";
 
-export default function RandomWord(length: number, number: number) {
-  const [word, setWord] = useState("");
+export const fetchWord = async (
+  number: number,
+  length: number
+): Promise<string[]> => {
+  try {
+    // Call the API with query parameters
+    const response = await axiosInstance.get("/word", {
+      params: {
+        number, // ?number=5
+      },
+    });
 
-  useEffect(() => {
-    const fetchWord = async () => {
-      try {
-        const response = await fetch(
-          `https://random-word-api.herokuapp.com/word?number=${number}`
-        );
-        const data = await response.json();
-        const filteredWords = data.filter(
-          (word: string) => word.length <= length
-        );
-        setWord(filteredWords); // The API returns an array of data
-      } catch (error) {
-        console.error("Error fetching the word:", error);
-      }
-    };
+    // Process and filter the response data
+    const data: string[] = response.data; // API returns an array of words
+    const filteredWords = data.filter((word) => word.length <= length);
 
-    fetchWord();
-  }, []);
-
-  return word;
-}
+    return filteredWords;
+  } catch (error) {
+    console.error("Error fetching the word:", error);
+    return []; // Return empty array on error
+  }
+};

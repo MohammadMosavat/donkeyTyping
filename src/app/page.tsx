@@ -1,5 +1,5 @@
 "use client";
-import RandomWord from "@/hooks/randomWord";
+// import RandomWord from "@/hooks/randomWord";
 import {
   useCallback,
   useEffect,
@@ -8,22 +8,31 @@ import {
   useRef,
   useState,
 } from "react";
-import Timer from "./component/timer";
+import StatusTyping from "./component/statusTyping";
+import { fetchWord } from "@/hooks/randomWord";
+import Timer from "./component/statusTyping";
 
 export default function Home() {
-  const res = RandomWord(20, 10);
-  const [success, setSucceess] = useState<boolean>(null);
+  const [success, setSucceess] = useState<boolean | null>(null);
   const [score, setScore] = useState<number>(0);
-  const [inputValue, setInputValue] = useState("");
-  const [timeLeft, setTimeLeft] = useState<number>(0); // State to receive data from child
+  const [inputValue, setInputValue] = useState<string | null>(null);
+  const [timeLeft, setTimeLeft] = useState<number>(1);
   const [activeWord, setActiveWord] = useState<number>(0);
   const [activeChar, setActiveChar] = useState<number>(0);
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const [res, setRes] = useState<string[]>([]);
 
   useLayoutEffect(() => {
+    const getRes = async () => {
+      const fetchedWords = await fetchWord(20, 10);
+      setRes(fetchedWords);
+    };
+
+    getRes();
     if (inputRef.current) {
       inputRef.current.focus();
     }
+    console.log(res);
   }, []);
 
   const resSplit =
@@ -34,20 +43,13 @@ export default function Home() {
 
   // console.log(res[0]);
   const handleTimeUpdate = (time: number) => {
+    console.log(time);
     setTimeLeft(time); // Update state with data from child
   };
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     event.preventDefault();
-    const lastWordOfInput =
-      event.target.value.split("")[event.target.value.split("").length - 1];
-    // console.log(
-    //   "last input value :",
-    //   lastWordOfInput,
-    //   event.target.value.length - 1
-    // );
     setInputValue(event.target.value);
-    // const splitWord = res[0].split("");
   };
 
   useEffect(() => {
@@ -56,15 +58,12 @@ export default function Home() {
       resSplit[activeWord]?.map((char: string, index: number) => {
         console.log(
           "last value : ",
-          inputValue.split("")[inputValue.split("").length - 1]
+          inputValue?.split("")[inputValue.split("").length - 1]
         );
-        if (index == inputValue.length - 1) {
-          if (
-            success &&
-            char == inputValue.split("")[inputValue.split("").length - 1]
-          ) {
+        if (inputValue && index == inputValue?.length - 1) {
+          if (char == inputValue?.split("")[inputValue?.split("").length - 1]) {
             setSucceess(true);
-            setActiveChar(inputValue.length);
+            setActiveChar(inputValue?.length);
             if (inputValue == res[activeWord]) {
               setInputValue("");
               setScore(score + 1);
@@ -73,8 +72,8 @@ export default function Home() {
             // setActiveChar(3);
           } else {
             setSucceess(false);
-            setActiveChar(inputValue.length);
-            if (inputValue.length == res[activeWord].length) {
+            setActiveChar(inputValue?.length);
+            if (inputValue?.length == res[activeWord].length) {
               setActiveWord(activeWord + 1);
               setInputValue("");
             }
@@ -84,7 +83,7 @@ export default function Home() {
         } else {
         }
       });
-  }, [inputValue.length, activeChar, success]);
+  }, [inputValue?.length, activeChar, success]);
 
   useEffect(() => {
     inputValue == "" && setSucceess(false);
@@ -94,7 +93,7 @@ export default function Home() {
     // const splitWord = ;
     console.log("this is active char ", activeChar);
     return Array.isArray(resSplit) ? (
-      resSplit.map((word: string, index: number) => {
+      resSplit.map((word: string[], index: number) => {
         return (
           <p
             key={index}
@@ -107,22 +106,17 @@ export default function Home() {
                   <li
                     id={String(charIndex)}
                     key={charIndex}
-                    className={`text-xl $ ${
-                      success &&
+                    className={`select-none text-xl $ ${success &&
                       activeWord == index &&
                       activeChar > charIndex &&
-                      "!text-green-500"
-                    } ${
-                      !success &&
+                      "!text-green-500"} ${!success &&
                       inputValue != "" &&
                       activeWord == index &&
                       activeChar > charIndex &&
-                      "!text-red-500"
-                    } text-white opacity-50 ${
-                      inputValue.length == charIndex &&
+                      "!text-red-600"} text-white opacity-50 ${inputValue?.length ==
+                      charIndex &&
                       activeWord == index &&
-                      "underline-offset-4 underline !opacity-100"
-                    } transition-all duration-200 ease-in-out font-light`}
+                      "underline-offset-4 underline !opacity-100"} transition-all duration-200 ease-in-out font-light`}
                   >
                     {char}
                   </li>
@@ -136,35 +130,71 @@ export default function Home() {
     );
   }, [success, activeChar, inputValue, res]);
 
+  const scoreCounter = useMemo(() => {
+    return (
+      <section className="flex  items-center gap-4">
+        <p className="text-white">Score : {score}</p>
+      </section>
+    );
+  }, [score]);
+
+  const timerCounter = useMemo(() => {
+    return (Array.isArray(res) && inputValue) ? (
+      <Timer startTime={20} />
+    ) : (
+      <p className="text-white">loading...</p>
+    );
+  }, [res, inputValue]);
+
+  const handleRefresh = async () => {
+    const fetchedWords = await fetchWord(20, 10);
+    setRes(fetchedWords);
+    setInputValue("");
+    setScore(0);
+    setActiveWord(0);
+    setActiveChar(0);
+  };
+
+  useEffect(() => {
+    console.log("this is times left ", timeLeft);
+  }, [timeLeft]);
+
   return (
     <main className="flex bg-zinc-900 items-center justify-center h-screen">
       <form className="flex flex-col mx-auto gap-8 w-2/3 items-center">
         <ul className="flex items-center w-full gap-4 flex-wrap">
           {renderWord()}
         </ul>
-        <div className="flex items-start justify-evenly w-full">
-          <input
+        <div className="flex flex-col gap-10 items-start justify-between w-full">
+          {/* <input
             ref={inputRef}
             type="text"
             disabled={!!timeLeft}
             value={inputValue}
             className="w-1/4 outline-none bg-zinc-700 text-white rounded-xl h-20 px-6"
             onChange={handleChange}
-          />
-          <section className="flex flex-col items-center gap-4">
-            <p className="text-white">Score : {score}</p>
-            <button
-              className="text-white bg-zinc-700 rounded-2xl px-6 py-2 "
-              onClick={() => setScore(0)}
-            >
-              Resert Score
-            </button>
+          /> */}
+          <section className="w-1/2 flex gap-4 items-center mx-auto">
+            <img
+              onClick={handleRefresh}
+              className="cursor-pointer hover:shadow-md hover:drop-shadow-lg"
+              src="/svgs/refresh.svg"
+              alt=""
+            />
+            <input
+              ref={inputRef}
+              type="text"
+              disabled={timeLeft == -1}
+              onChange={handleChange}
+              value={inputValue ?? ""}
+              className="w-full p-4 rounded-xl text-white bg-zinc-700 transition duration-300 focus:outline-none focus:bg-zinc-500 "
+              placeholder="Type here..."
+            />
           </section>
-          {Array.isArray(res) ? (
-            <Timer onTimeUpdate={handleTimeUpdate} startTime={20} />
-          ) : (
-            <p className="text-white">loading...</p>
-          )}
+          <div className="flex flex-col gap-2">
+            {scoreCounter}
+            {timerCounter}
+          </div>
         </div>
       </form>
     </main>
