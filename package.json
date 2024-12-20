@@ -13,9 +13,11 @@
     "next": "^15.1.0",
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
+    "react-hot-toast": "^2.4.1",
     "svgr": "^1.10.0"
   },
   "devDependencies": {
+    "@faker-js/faker": "^9.3.0",
     "@svgr/webpack": "^8.1.0",
     "@types/node": "^20",
     "@types/react": "^19",

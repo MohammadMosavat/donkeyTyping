@@ -8,10 +8,9 @@ import {
   useRef,
   useState,
 } from "react";
-import StatusTyping from "./component/statusTyping";
-import { fetchWord } from "@/hooks/randomWord";
 import Timer from "./component/statusTyping";
-import NotificationAlert from "./component/toast";
+import toast from "react-hot-toast";
+import { getWord } from "@/hooks/randomWord";
 
 export default function Home() {
   const [success, setSucceess] = useState<boolean | null>(null);
@@ -24,16 +23,12 @@ export default function Home() {
   const [res, setRes] = useState<string[]>([]);
 
   useLayoutEffect(() => {
-    const getRes = async () => {
-      const fetchedWords = await fetchWord(20, 10);
-      setRes(fetchedWords);
-    };
+    const randomWord = getWord(80);
+    setRes(randomWord);
 
-    getRes();
     if (inputRef.current) {
       inputRef.current.focus();
     }
-    console.log(res);
   }, []);
 
   const resSplit =
@@ -42,9 +37,7 @@ export default function Home() {
       return char.split("");
     });
 
-  // console.log(res[0]);
   const handleTimeUpdate = (time: number) => {
-    console.log(time);
     setTimeLeft(time); // Update state with data from child
   };
 
@@ -53,46 +46,62 @@ export default function Home() {
     setInputValue(event.target.value);
   };
 
+  const WordsPerMinute = useMemo(() => {
+    if (timeLeft == 0) {
+      const word = res
+        .slice(0, activeWord)
+        .join()
+        .replace(/,/g, "");
+      // const lastWord = word[activeChar];
+      console.log(word.length, word);
+      const WPM: number = word.length / (5 * (120 / 60)); // 2 minute
+      return <p className="text-white">Word per minute : {WPM}</p>;
+    }
+  }, [timeLeft]);
+
   useEffect(() => {
-    console.log(activeChar, resSplit && resSplit[activeWord]);
     resSplit &&
       resSplit[activeWord]?.map((char: string, index: number) => {
-        console.log(
-          "last value : ",
-          inputValue?.split("")[inputValue.split("").length - 1]
-        );
         if (inputValue && index == inputValue?.length - 1) {
-          if (char == inputValue?.split("")[inputValue?.split("").length - 1]) {
+          console.log(
+            inputValue == res[activeWord].slice(0, inputValue.length)
+          );
+          if (
+            char == inputValue?.split("")[inputValue?.split("").length - 1] &&
+            inputValue == res[activeWord].slice(0, inputValue.length)
+          ) {
             setSucceess(true);
             setActiveChar(inputValue?.length);
-            if (inputValue == res[activeWord]) {
+            if (inputValue?.length == res[activeWord].length) {
               setInputValue("");
+              setSucceess(false);
               setScore(score + 1);
               setActiveWord(activeWord + 1);
+              if (res.length == activeWord + 1) {
+                handleRefresh();
+              }
             }
-            // setActiveChar(3);
           } else {
             setSucceess(false);
             setActiveChar(inputValue?.length);
             if (inputValue?.length == res[activeWord].length) {
               setActiveWord(activeWord + 1);
+              setSucceess(false);
               setInputValue("");
+              if (res.length == activeWord + 1) {
+                handleRefresh();
+              }
             }
           }
-
-          // setActiveChar(activeChar + 1);
-        } else {
         }
       });
-  }, [inputValue?.length, activeChar, success]);
+  }, [inputValue?.length, activeChar, success, res]);
 
   useEffect(() => {
     inputValue == "" && setSucceess(false);
-  }, [inputValue]);
+  }, [inputValue, res]);
 
   const renderWord = useCallback(() => {
-    // const splitWord = ;
-    console.log("this is active char ", activeChar);
     return Array.isArray(resSplit) ? (
       resSplit.map((word: string[], index: number) => {
         return (
@@ -143,41 +152,33 @@ export default function Home() {
     return Array.isArray(res) &&
       success != null &&
       activeWord >= 0 &&
-      timeLeft <= 20 ? (
-      <Timer startTime={20} handleTimeUpdate={handleTimeUpdate} />
+      timeLeft <= 120 ? (
+      <Timer startTime={120} handleTimeUpdate={handleTimeUpdate} />
     ) : (
       <p className="text-white">Timer is waiting for typing</p>
     );
   }, [res, inputValue]);
 
-  const handleRefresh = async () => {
-    const fetchedWords = await fetchWord(20, 10);
+  const handleRefresh = () => {
+    const fetchedWords = getWord(80);
     setRes(fetchedWords);
     setInputValue("");
     setSucceess(null);
+    setScore(0);
     // setTimeLeft(0);
     setActiveWord(0);
     setActiveChar(0);
   };
 
   useEffect(() => {
-    timeLeft == 0 && setInputValue("");
-  }, [timeLeft]);
-
-  const notification = useMemo(() => {
-    return (
-      <NotificationAlert
-        className={`${timeLeft == 0 ? "!top-4" : "!-top-36"}`}
-        status={"info"}
-        alertTitle={"Time is over"}
-        theme={"light"}
-      />
-    );
+    if (timeLeft == 0) {
+      setInputValue("");
+      toast("Time is over");
+    }
   }, [timeLeft]);
 
   return (
     <main className="flex  items-center justify-center h-screen">
-      {notification}
       <form className="flex flex-col mx-auto gap-8 w-2/3 items-center">
         <ul className="flex items-center w-full gap-4 flex-wrap">
           {renderWord()}
@@ -201,7 +202,6 @@ export default function Home() {
             <input
               ref={inputRef}
               type="text"
-              disabled={timeLeft == 0}
               onChange={handleChange}
               value={inputValue ?? ""}
               className="w-full p-4 rounded-xl text-white bg-glass transition duration-300 focus:outline-none focus:bg-glass "
@@ -211,6 +211,7 @@ export default function Home() {
           <div className="flex flex-col gap-2">
             {scoreCounter}
             {timerCounter}
+            <p className="text-white">{WordsPerMinute}</p>
           </div>
         </div>
       </form>
