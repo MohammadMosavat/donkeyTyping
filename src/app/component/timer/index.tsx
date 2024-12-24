@@ -24,7 +24,7 @@ export default function Timer({ startTime, handleTimeUpdate }: TimerType) {
   }, [time]); // Dependency ensures this runs when `time` changes
 
   return (
-    <div className="flex text-white items-center gap-2">
+    <div className="flex text-[#cdcabb] items-center gap-2">
       <h2>{time ?? 0}</h2>
       <h1>Second</h1>
     </div>

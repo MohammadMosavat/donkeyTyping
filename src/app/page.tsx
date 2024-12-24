@@ -8,9 +8,10 @@ import {
   useRef,
   useState,
 } from "react";
-import Timer from "./component/statusTyping";
+import Timer from "./component/timer";
 import toast from "react-hot-toast";
 import { getWord } from "@/hooks/randomWord";
+import Loading from "./component/loading";
 
 export default function Home() {
   const [success, setSucceess] = useState<boolean | null>(null);
@@ -55,7 +56,7 @@ export default function Home() {
       // const lastWord = word[activeChar];
       console.log(word.length, word);
       const WPM: number = word.length / (5 * (120 / 60)); // 2 minute
-      return <p className="text-white">Word per minute : {WPM}</p>;
+      return <p className="text-[#cdcabb]">Word per minute : {WPM}</p>;
     }
   }, [timeLeft]);
 
@@ -102,7 +103,8 @@ export default function Home() {
   }, [inputValue, res]);
 
   const renderWord = useCallback(() => {
-    return Array.isArray(resSplit) ? (
+    return (
+      Array.isArray(resSplit) &&
       resSplit.map((word: string[], index: number) => {
         return (
           <p
@@ -119,11 +121,11 @@ export default function Home() {
                     className={`select-none text-xl $ ${success &&
                       activeWord == index &&
                       activeChar > charIndex &&
-                      "!text-green-500"} ${!success &&
+                      "!text-green-500 !opacity-100"} ${!success &&
                       inputValue != "" &&
                       activeWord == index &&
                       activeChar > charIndex &&
-                      "!text-red-600"} text-white opacity-50 ${inputValue?.length ==
+                      "!text-[#ca4200] !opacity-100"} text-white opacity-30 ${inputValue?.length ==
                       charIndex &&
                       activeWord == index &&
                       "underline-offset-8 underline !opacity-100"} transition-all duration-200 ease-in-out font-light`}
@@ -135,15 +137,13 @@ export default function Home() {
           </p>
         );
       })
-    ) : (
-      <p className="text-white">loading...</p>
     );
   }, [success, activeChar, inputValue, res]);
 
   const scoreCounter = useMemo(() => {
     return (
       <section className="flex  items-center gap-4">
-        <p className="text-white">Score : {score}</p>
+        <p className="text-[#cdcabb]">Score : {score}</p>
       </section>
     );
   }, [score]);
@@ -155,7 +155,7 @@ export default function Home() {
       timeLeft <= 120 ? (
       <Timer startTime={120} handleTimeUpdate={handleTimeUpdate} />
     ) : (
-      <p className="text-white">Timer is waiting for typing</p>
+      <p className="text-[#cdcabb]">Timer is waiting for typing</p>
     );
   }, [res, inputValue]);
 
@@ -179,12 +179,13 @@ export default function Home() {
 
   return (
     <main className="flex  items-center justify-center h-screen">
-      <form className="flex flex-col mx-auto gap-8 w-2/3 items-center">
-        <ul className="flex items-center w-full gap-4 flex-wrap">
-          {renderWord()}
-        </ul>
-        <div className="flex flex-col gap-10 items-start justify-between w-full">
-          {/* <input
+      {Array.isArray(resSplit) ? (
+        <form className="flex flex-col mx-auto gap-8 w-2/3 items-center">
+          <ul className="flex items-center w-full gap-4 flex-wrap">
+            {renderWord()}
+          </ul>
+          <div className="flex flex-col gap-10 items-start justify-between w-full">
+            {/* <input
             ref={inputRef}
             type="text"
             disabled={!!timeLeft}
@@ -192,29 +193,32 @@ export default function Home() {
             className="w-1/4 outline-none bg-zinc-700 text-white rounded-xl h-20 px-6"
             onChange={handleChange}
           /> */}
-          <section className="w-1/2 flex gap-4 items-center mx-auto">
-            <img
-              onClick={handleRefresh}
-              className={`cursor-pointer hover:shadow-md hover:drop-shadow-lg`}
-              src="/svgs/refresh.svg"
-              alt=""
-            />
-            <input
-              ref={inputRef}
-              type="text"
-              onChange={handleChange}
-              value={inputValue ?? ""}
-              className="w-full p-4 rounded-xl text-white bg-glass transition duration-300 focus:outline-none focus:bg-glass "
-              placeholder="Type here..."
-            />
-          </section>
-          <div className="flex flex-col gap-2">
-            {scoreCounter}
-            {timerCounter}
-            <p className="text-white">{WordsPerMinute}</p>
+            <section className="w-1/2 flex gap-4 items-center mx-auto">
+              <img
+                onClick={handleRefresh}
+                className={`cursor-pointer hover:shadow-md hover:drop-shadow-lg`}
+                src="/svgs/refresh.svg"
+                alt=""
+              />
+              <input
+                ref={inputRef}
+                type="text"
+                onChange={handleChange}
+                value={inputValue ?? ""}
+                className="w-full p-4 rounded-xl text-white bg-glass transition duration-300 focus:outline-none focus:bg-glass "
+                placeholder="Type here..."
+              />
+            </section>
+            <div className="flex flex-col gap-2">
+              {scoreCounter}
+              {timerCounter}
+              <p className="text-[#cdcabb]">{WordsPerMinute}</p>
+            </div>
           </div>
-        </div>
-      </form>
+        </form>
+      ) : (
+        <Loading />
+      )}
     </main>
   );
 }
