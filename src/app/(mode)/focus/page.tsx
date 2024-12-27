@@ -9,10 +9,10 @@ import {
 } from "react";
 import toast from "react-hot-toast";
 import Loading from "@/app/component/loading";
+import Timer from "@/app/component/timer";
 import { getWord } from "@/hooks/randomWord";
-import Timer from "./component/timer";
 import { motion } from "framer-motion";
-const Home = () => {
+const Focus = () => {
   const [success, setSucceess] = useState<boolean | null>(null);
   const [score, setScore] = useState<number>(0);
   const [inputValue, setInputValue] = useState<string | null>(null);
@@ -23,7 +23,7 @@ const Home = () => {
   const [res, setRes] = useState<string[]>([]);
 
   useLayoutEffect(() => {
-    const randomWord = getWord(40);
+    const randomWord = getWord(8);
     setRes(randomWord);
 
     if (inputRef.current) {
@@ -100,38 +100,45 @@ const Home = () => {
     console.log(resSplit);
     return (
       Array.isArray(resSplit) &&
-      resSplit.map((word: string[], index: number) => {
-        return (
-          <p
-            key={index}
-            id={String(index)}
-            className="flex gap-0.5 items-center"
-          >
-            {Array.isArray(word) &&
-              word.map((char, charIndex) => {
-                return (
-                  <li
-                    id={String(charIndex)}
-                    key={charIndex}
-                    className={`select-none text-xl $ ${success &&
-                      activeWord == index &&
-                      activeChar > charIndex &&
-                      "!text-green-500 !opacity-100"} ${!success &&
-                      inputValue != "" &&
-                      activeWord == index &&
-                      activeChar > charIndex &&
-                      "!text-[#ca4200] !opacity-100"} text-white opacity-30 ${inputValue?.length ==
-                      charIndex &&
-                      activeWord == index &&
-                      "underline-offset-8 underline !opacity-100"} transition-all duration-200 ease-in-out font-light`}
-                  >
-                    {char}
-                  </li>
-                );
-              })}
-          </p>
-        );
-      })
+      resSplit
+        .slice(activeWord, activeWord + 2)
+        .map((word: string[], index: number) => {
+          return (
+            <motion.p
+              initial={{ opacity: 0, y: -100 }}
+              // Animate to opacity 1 and x position 100
+              animate={{ opacity: 1, y: 0 }}
+              // Set the duration of the animation
+              transition={{ duration: 0.5 }}
+              key={index}
+              id={String(index)}
+              className="flex gap-0.5 items-center"
+            >
+              {Array.isArray(word) &&
+                word.map((char, charIndex) => {
+                  return (
+                    <li
+                      id={String(charIndex)}
+                      key={charIndex}
+                      className={`select-none list-none text-xl $ ${success &&
+                        0 == index &&
+                        activeChar > charIndex &&
+                        "!text-green-500 !opacity-100"} ${!success &&
+                        inputValue != "" &&
+                        0 == index &&
+                        activeChar > charIndex &&
+                        "!text-[#ca4200] !opacity-100"} text-white opacity-30 ${inputValue?.length ==
+                        charIndex &&
+                        0 == index &&
+                        "underline-offset-8 underline !opacity-100"} transition-all duration-200 ease-in-out font-light`}
+                    >
+                      {char}
+                    </li>
+                  );
+                })}
+            </motion.p>
+          );
+        })
     );
   }, [success, activeChar, activeWord, inputValue, res]);
 
@@ -157,14 +164,15 @@ const Home = () => {
       success != null &&
       activeWord >= 0 &&
       timeLeft <= 120 ? (
-      <Timer startTime={120} handleTimeUpdate={handleTimeUpdate} />
+      <p></p>
     ) : (
+      // <Timer startTime={120} handleTimeUpdate={handleTimeUpdate} />
       <p className="text-[#cdcabb]">Timer is waiting for typing</p>
     );
   }, [res, inputValue]);
 
   const handleRefresh = () => {
-    const fetchedWords = getWord(40);
+    const fetchedWords = getWord(8);
     setRes(fetchedWords);
     setInputValue("");
     setSucceess(null);
@@ -185,9 +193,17 @@ const Home = () => {
     <main className="flex  items-center justify-center h-screen">
       {Array.isArray(resSplit) ? (
         <form className="flex flex-col mx-auto gap-8 w-2/3 items-center">
-          <ul className="flex items-center justify-center w-full gap-4 flex-wrap">
+          <motion.ul
+            className="flex items-center justify-center w-full gap-4 flex-wrap"
+            // Start with opacity 0 and x position 0
+            initial={{ opacity: 0, y: -100 }}
+            // Animate to opacity 1 and x position 100
+            animate={{ opacity: 1, y: 0 }}
+            // Set the duration of the animation
+            transition={{ duration: 0.5 }}
+          >
             {renderWord()}
-          </ul>
+          </motion.ul>
           <div className="flex flex-col gap-10 items-start justify-between w-full">
             <section className="w-1/2 flex gap-4 items-center mx-auto">
               <img
@@ -208,14 +224,7 @@ const Home = () => {
             <div className="flex flex-col gap-2">
               {scoreCounter}
               {timerCounter}
-              <motion.p
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                className="text-[#cdcabb]"
-              >
-                {WordsPerMinute}
-              </motion.p>
+              <p className="text-[#cdcabb]">{WordsPerMinute}</p>
             </div>
           </div>
         </form>
@@ -226,4 +235,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default Focus;

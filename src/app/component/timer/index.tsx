@@ -1,5 +1,5 @@
 "use client";
-
+import { motion } from "framer-motion";
 import React, { useState, useEffect } from "react";
 
 interface TimerType {
@@ -25,7 +25,14 @@ export default function Timer({ startTime, handleTimeUpdate }: TimerType) {
 
   return (
     <div className="flex text-[#cdcabb] items-center gap-2">
-      <h2>{time ?? 0}</h2>
+      <motion.h2
+        key={time}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5 }}
+      >
+        {time ?? 0}
+      </motion.h2>
       <h1>Second</h1>
     </div>
   );
