@@ -185,9 +185,17 @@ const Home = () => {
     <main className="flex  items-center justify-center h-screen">
       {Array.isArray(resSplit) ? (
         <form className="flex flex-col mx-auto gap-8 w-2/3 items-center">
-          <ul className="flex items-center justify-center w-full gap-4 flex-wrap">
+          <motion.ul
+            className="flex items-center justify-center w-full gap-4 flex-wrap"
+            // Start with opacity 0 and x position 0
+            initial={{ opacity: 0, y: -100 }}
+            // Animate to opacity 1 and x position 100
+            animate={{ opacity: 1, y: 0 }}
+            // Set the duration of the animation
+            transition={{ duration: 0.5 }}
+          >
             {renderWord()}
-          </ul>
+          </motion.ul>
           <div className="flex flex-col gap-10 items-start justify-between w-full">
             <section className="w-1/2 flex gap-4 items-center mx-auto">
               <img
