@@ -54,7 +54,7 @@ const Home = () => {
         .replace(/,/g, "");
       // const lastWord = word[activeChar];
       const WPM: number = word.length / (5 * (120 / 60)); // 2 minute
-      return <p className="text-white">Word per minute : {WPM}</p>;
+      return `Word per minute : ${WPM}`;
     }
   }, [timeLeft]);
 
@@ -224,7 +224,7 @@ const Home = () => {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.5 }}
-                    className="text-[#cdcabb]"
+                    className="text-white font-Aspekta"
                   >
                     {WordsPerMinute}
                   </motion.p>
