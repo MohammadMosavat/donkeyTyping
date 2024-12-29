@@ -29,12 +29,12 @@ export default function RootLayout({
     <html lang="en">
       <title>FlashTyping</title>
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={` antialiased`}
       >
         <Header/>
         {children}
-        <Toaster toastOptions={{
-            className: '',
+        <Toaster position={"bottom-center"} toastOptions={{
+            className: 'font-Aspekta',
             style: {
               color:"white",
               background:'#ffffff21',

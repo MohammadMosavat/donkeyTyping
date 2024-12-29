@@ -9,7 +9,8 @@ export default {
   theme: {
     extend: {
       fontFamily: {
-        SpaceGrotesk: ["GeistMono-Regular"],
+        Aspekta: ["Aspekta"],
+        JetBrainsMono: ["JetBrainsMono-Regular"],
       },
       fontWeight: {
         light: "400",
@@ -21,6 +22,7 @@ export default {
         background: "var(--background)",
         foreground: "var(--foreground)",
       },
+      
     },
   },
   plugins: [],

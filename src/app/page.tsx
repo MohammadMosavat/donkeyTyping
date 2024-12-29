@@ -8,10 +8,11 @@ import {
   useState,
 } from "react";
 import toast from "react-hot-toast";
-import Loading from "@/app/component/loading";
+import Loading from "@/components/loading";
 import { getWord } from "@/hooks/randomWord";
-import Timer from "./component/timer";
+import Timer from "../components/timer";
 import { motion } from "framer-motion";
+import SettingSection from "@/components/SettingSection";
 const Home = () => {
   const [success, setSucceess] = useState<boolean | null>(null);
   const [score, setScore] = useState<number>(0);
@@ -53,7 +54,7 @@ const Home = () => {
         .replace(/,/g, "");
       // const lastWord = word[activeChar];
       const WPM: number = word.length / (5 * (120 / 60)); // 2 minute
-      return <p className="text-[#cdcabb]">Word per minute : {WPM}</p>;
+      return <p className="text-white">Word per minute : {WPM}</p>;
     }
   }, [timeLeft]);
 
@@ -105,7 +106,7 @@ const Home = () => {
           <p
             key={index}
             id={String(index)}
-            className="flex gap-0.5 items-center"
+            className="flex gap-0.5 font-JetBrainsMono items-center"
           >
             {Array.isArray(word) &&
               word.map((char, charIndex) => {
@@ -137,10 +138,10 @@ const Home = () => {
 
   const scoreCounter = useMemo(() => {
     return (
-      <section className="flex  items-center gap-4">
-        <p className="text-[#cdcabb]">Score :</p>
+      <section className="flex  items-center gap-2">
+        <p className="text-white font-Aspekta">Score :</p>
         <motion.p
-          className="text-[#cdcabb]"
+          className="text-white"
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.5 }}
@@ -156,10 +157,10 @@ const Home = () => {
     return Array.isArray(res) &&
       success != null &&
       activeWord >= 0 &&
-      timeLeft <= 120 ? (
-      <Timer startTime={120} handleTimeUpdate={handleTimeUpdate} />
+      timeLeft <= 60 ? (
+      <Timer startTime={60} handleTimeUpdate={handleTimeUpdate} />
     ) : (
-      <p className="text-[#cdcabb]">Timer is waiting for typing</p>
+      <p className="text-white font-Aspekta">Timer is waiting for typing</p>
     );
   }, [res, inputValue]);
 
@@ -169,7 +170,7 @@ const Home = () => {
     setInputValue("");
     setSucceess(null);
     setScore(0);
-    // setTimeLeft(0);
+    setTimeLeft(0);
     setActiveWord(0);
     setActiveChar(0);
   };
@@ -209,22 +210,27 @@ const Home = () => {
                 type="text"
                 onChange={handleChange}
                 value={inputValue ?? ""}
-                className="w-full p-4 rounded-xl text-white bg-glass transition duration-300 focus:outline-none focus:bg-glass "
+                className="w-full p-4 rounded-xl font-JetBrainsMono text-white bg-glass transition duration-300 focus:outline-none focus:bg-glass "
                 placeholder="Type here..."
               />
             </section>
-            <div className="flex flex-col gap-2">
-              {scoreCounter}
-              {timerCounter}
-              <motion.p
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.5 }}
-                className="text-[#cdcabb]"
-              >
-                {WordsPerMinute}
-              </motion.p>
-            </div>
+            <section className="flex justify-between items-start w-full">
+              <SettingSection />
+              <div className="flex bg-glass p-3 flex-col gap-2">
+                {scoreCounter}
+                {timerCounter}
+                {WordsPerMinute && (
+                  <motion.p
+                    initial={{ opacity: 0, y: 10 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5 }}
+                    className="text-[#cdcabb]"
+                  >
+                    {WordsPerMinute}
+                  </motion.p>
+                )}
+              </div>
+            </section>
           </div>
         </form>
       ) : (

@@ -2,6 +2,21 @@
 @tailwind components;
 @tailwind utilities;
 
+/*fonts*/
+@font-face {
+  font-family: "Aspekta";
+  src: url("/fonts/Aspekta.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "JetBrainsMono-Regular";
+  src: url("/fonts/JetBrainsMono-Regular.woff2") format("woff2");
+  font-weight: 400;
+  font-style: normal;
+}
+
 :root {
   --background: #ffffff;
   --foreground: #171717;
@@ -10,7 +25,6 @@
 body {
   color: var(--foreground);
   background: var(--background);
-  font-family: "Courier New", Courier, monospace;
 }
 
 .bg-glass {
@@ -89,4 +103,3 @@ body {
     transform: translate(24px, 0);
   }
 }
-
