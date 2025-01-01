@@ -1,0 +1,254 @@
+"use client";
+import {
+  useCallback,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import toast from "react-hot-toast";
+import Loading from "@/components/loading";
+import { getWord } from "@/hooks/randomWord";
+import { motion } from "framer-motion";
+import SettingSection from "@/components/SettingSection";
+import Timer from "../timer";
+const Typing = ({ data, timer }: { data: any; timer: boolean }) => {
+  const [success, setSucceess] = useState<boolean | null>(null);
+  const [score, setScore] = useState<number>(0);
+  const [inputValue, setInputValue] = useState<string | null>(null);
+  const [timeLeft, setTimeLeft] = useState<number>(1);
+  const [activeWord, setActiveWord] = useState<number>(0);
+  const [activeChar, setActiveChar] = useState<number>(0);
+  const inputRef = useRef<HTMLInputElement | null>(null);
+  const [res, setRes] = useState<any>([]);
+  console.log(data, getWord(10));
+  var resSplit: any = [];
+  useEffect(() => {
+    const randomWord = data;
+    // setRes(data);
+
+    if (inputRef.current) {
+      inputRef.current.focus();
+    }
+  }, []);
+
+  resSplit =
+    Array.isArray(data) &&
+    data.map((char) => {
+      console.log(char);
+      return char.split("");
+    });
+  console.log(resSplit, data[0].split(""));
+
+  const handleTimeUpdate = (time: number) => {
+    setTimeLeft(time); // Update state with data from child
+  };
+
+  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    event.preventDefault();
+    setInputValue(event.target.value);
+  };
+
+  const WordsPerMinute = useMemo(() => {
+    if (timeLeft == 0) {
+      const word = data
+        .slice(0, activeWord)
+        .join()
+        .replace(/,/g, "");
+      // const lastWord = word[activeChar];
+      const WPM: number = word.length / (5 * (120 / 60)); // 2 minute
+      return `Word per minute : ${WPM}`;
+    }
+  }, [timeLeft]);
+
+  useEffect(() => {
+    resSplit &&
+      resSplit[activeWord]?.map((char: string, index: number) => {
+        if (inputValue && index == inputValue?.length - 1) {
+          if (
+            char == inputValue?.split("")[inputValue?.split("").length - 1] &&
+            inputValue == data[activeWord].slice(0, inputValue.length)
+          ) {
+            setSucceess(true);
+            setActiveChar(inputValue?.length);
+            if (inputValue?.length == data[activeWord].length) {
+              setInputValue("");
+              setSucceess(false);
+              setScore(score + 1);
+              setActiveWord(activeWord + 1);
+              if (data.length == activeWord + 1) {
+                handleRefresh();
+              }
+            }
+          } else {
+            setSucceess(false);
+            setActiveChar(inputValue?.length);
+            if (inputValue?.length == data[activeWord].length) {
+              setActiveWord(activeWord + 1);
+              setSucceess(false);
+              setInputValue("");
+              if (data.length == activeWord + 1) {
+                handleRefresh();
+              }
+            }
+          }
+        }
+      });
+  }, [inputValue?.length, activeChar, success, data]);
+
+  useEffect(() => {
+    inputValue == "" && setSucceess(false);
+  }, [inputValue, data]);
+
+  const renderWord = useCallback(() => {
+    console.log(resSplit);
+    return (
+      Array.isArray(resSplit) &&
+      resSplit.map((word: string[], index: number) => {
+        return (
+          <p
+            key={index}
+            id={String(index)}
+            className="flex gap-0.5 whitespace-pre-line text-justify font-JetBrainsMono items-center"
+          >
+            {Array.isArray(word) &&
+              word.map((char, charIndex) => {
+                return (
+                  <li
+                    id={String(charIndex)}
+                    key={charIndex}
+                    className={`select-none whitespace-pre-line text-xl $ ${success &&
+                      activeWord == index &&
+                      activeChar > charIndex &&
+                      "!text-green-500 !opacity-100"} ${!success &&
+                      inputValue != "" &&
+                      activeWord == index &&
+                      activeChar > charIndex &&
+                      "!text-[#ca4200] !opacity-100"} text-white opacity-30 ${inputValue?.length ==
+                      charIndex &&
+                      activeWord == index &&
+                      "underline-offset-8 underline !opacity-100"} transition-all duration-200 ease-in-out font-light`}
+                  >
+                    {char}
+                  </li>
+                );
+              })}
+          </p>
+        );
+      })
+    );
+  }, [success, activeChar, activeWord, inputValue, data]);
+
+  const scoreCounter = useMemo(() => {
+    return (
+      <section className="flex  items-center gap-2">
+        <p className="text-white font-Aspekta">Score :</p>
+        <motion.p
+          className="text-white"
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.5 }}
+          key={score}
+        >
+          {score}
+        </motion.p>
+      </section>
+    );
+  }, [score]);
+
+  const timerCounter = useMemo(() => {
+    return Array.isArray(data) &&
+      success != null &&
+      activeWord >= 0 &&
+      timer &&
+      timeLeft <= 60 ? (
+      <Timer startTime={60} handleTimeUpdate={handleTimeUpdate} />
+    ) : (
+      <p className="text-white font-Aspekta">Timer is waiting for typing</p>
+    );
+  }, [data, inputValue]);
+
+  const handleRefresh = () => {
+    const fetchedWords = data;
+    setRes(fetchedWords);
+    setInputValue("");
+    setSucceess(null);
+    setScore(0);
+    setTimeLeft(0);
+    setActiveWord(0);
+    setActiveChar(0);
+  };
+
+  useEffect(() => {
+    if (timeLeft == 0) {
+      setInputValue("");
+      toast("Time is over");
+    }
+  }, [timeLeft]);
+
+  return (
+    <main
+      className={`flex  items-center justify-center ${
+        !timer ? "h-fit" : "h-screen"
+      } `}
+    >
+      {Array.isArray(res) ? (
+        <form className="flex flex-col mx-auto gap-8 w-2/3 items-center">
+          <motion.ul
+            className="flex  items-center justify-center w-full gap-4 flex-wrap"
+            // Start with opacity 0 and x position 0
+            initial={{ opacity: 0, y: -100 }}
+            // Animate to opacity 1 and x position 100
+            animate={{ opacity: 1, y: 0 }}
+            // Set the duration of the animation
+            transition={{ duration: 0.5 }}
+          >
+            {renderWord()}
+          </motion.ul>
+          <div className="flex flex-col gap-10 items-start justify-between w-full">
+            <section className="w-1/2 flex gap-4 items-center mx-auto">
+              <img
+                onClick={handleRefresh}
+                className={`cursor-pointer hover:shadow-md hover:drop-shadow-lg`}
+                src="/svgs/refresh.svg"
+                alt=""
+              />
+              <input
+                ref={inputRef}
+                type="text"
+                onChange={handleChange}
+                value={inputValue ?? ""}
+                className="w-full p-4 rounded-xl font-JetBrainsMono text-white bg-glass transition duration-300 focus:outline-none focus:bg-glass "
+                placeholder="Type here..."
+              />
+            </section>
+            {timer && (
+              <section className="flex justify-between items-start w-full">
+                <SettingSection />
+                <div className="flex bg-glass p-3 flex-col gap-2">
+                  {scoreCounter}
+                  {timerCounter}
+                  {WordsPerMinute && (
+                    <motion.p
+                      initial={{ opacity: 0, y: 10 }}
+                      animate={{ opacity: 1, y: 0 }}
+                      transition={{ duration: 0.5 }}
+                      className="text-white font-Aspekta"
+                    >
+                      {WordsPerMinute}
+                    </motion.p>
+                  )}
+                </div>
+              </section>
+            )}
+          </div>
+        </form>
+      ) : (
+        <Loading />
+      )}
+    </main>
+  );
+};
+
+export default Typing;
