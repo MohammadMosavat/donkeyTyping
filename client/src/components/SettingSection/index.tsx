@@ -87,8 +87,15 @@ const SettingSection = () => {
           </motion.div>
         )}
 
-        <Link href={'/lyric'} className="text-white font-Aspekta">Lyrics</Link>
-        <Link href={'/quote'} className="text-white font-Aspekta">Quotes</Link>
+        <Link href={"/lyric"} className="text-white font-Aspekta">
+          Lyrics
+        </Link>
+        <Link href={"/quote"} className="text-white font-Aspekta">
+          Quotes
+        </Link>
+        <Link href={"/listen-word"} className="text-white font-Aspekta">
+          Listen word
+        </Link>
       </ul>
     </>
   );

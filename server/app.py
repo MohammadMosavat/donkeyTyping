@@ -3,6 +3,7 @@ import lyricsgenius
 from pymongo import MongoClient
 from flask_cors import CORS
 import requests
+import pyttsx3
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
@@ -15,7 +16,7 @@ client = MongoClient("mongodb://localhost:27017/")  # Replace with your MongoDB 
 db = client["typing_db"]  # Database name
 collection_songs = db["songs"]  # Collection songs
 collection_quotes = db["quotes"]  # Collection songs
-
+collection_listen_word = db['words_listen']  # Collection words_listen
 # Initialize Genius API client
 genius = lyricsgenius.Genius(genius_token)
 
@@ -64,7 +65,6 @@ def run_python():
         print(f"Error occurred: {str(e)}")  # Log to console
         return jsonify({"error": f"Error occurred: {str(e)}"}), 500
 
-
 # Route to fetch songs from the MongoDB collection
 @app.route('/songs', methods=['GET'])
 def get_songs():
@@ -94,7 +94,7 @@ def get_songs():
 @app.route('/store-quotes', methods=['POST'])
 def store_quotes():
     # Fetch data from ZenQuotes API
-    response = requests.get("https://zenquotes.io/api/quotes")
+    response = requests.get("https://zenquotes.io/api/random")
     
     if response.status_code == 200:
         quotes = response.json()
@@ -116,6 +116,30 @@ def get_quotes():
         return jsonify(quotes), 200
     else:
         return jsonify({"message": "No quotes found in database."}), 404
+
+# Text-to-Speech Engine
+engine = pyttsx3.init()
+
+@app.route('/post-random-word', methods=['POST'])
+def post_random_word():
+    try:
+        # Get JSON data from the request
+        data = request.json
+
+        if not data or 'word' not in data:
+            return jsonify({"message": "Invalid input. 'word' is required."}), 400
+
+        # Extract the word
+        word = data['word']
+
+        # Insert the word into MongoDB
+        word_entry = {"word": word}
+        collection_listen_word.insert_one(word_entry)
+
+        return jsonify({"message": f"Word '{word}' stored successfully!"}), 200
+    except Exception as e:
+        return jsonify({"message": f"An error occurred: {str(e)}"}), 500
+
 
 
 if __name__ == '__main__':
