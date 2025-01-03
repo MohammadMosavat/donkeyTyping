@@ -88,6 +88,7 @@ const SettingSection = () => {
         )}
 
         <Link href={'/lyric'} className="text-white font-Aspekta">Lyrics</Link>
+        <Link href={'/quote'} className="text-white font-Aspekta">Quotes</Link>
       </ul>
     </>
   );

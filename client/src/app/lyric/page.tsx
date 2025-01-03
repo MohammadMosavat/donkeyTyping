@@ -81,7 +81,7 @@ const LyricsSearch = () => {
       <div className="flex flex-col items-center  w-5/12 mx-auto text-white p-6">
         <img
           className="fixed top-0 left-0 right-0 blur-lg bottom-0 -z-30 scale-110 w-full h-screen"
-          src={"/images/bg4.png"}
+          src={`${localStorage.getItem("theme") ?? "/images/bg6.jpg"}`}
           alt="Background"
         />
         <div className="flex flex-col items-center mt-40 w-full">
@@ -119,9 +119,7 @@ const LyricsSearch = () => {
         {error && <p className="mt-4 text-red-500">{error}</p>}
         {/* {showLyrics} */}
       </div>
-      <div className=" mb-20">
-      {showTyping}
-      </div>
+      <div className=" mb-20">{showTyping}</div>
     </>
   );
 };
