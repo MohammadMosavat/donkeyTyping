@@ -1,254 +1,121 @@
 "use client";
-import {
-  useCallback,
-  useEffect,
-  useLayoutEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
-import toast from "react-hot-toast";
-import Loading from "@/components/loading";
-import { getWord } from "@/hooks/randomWord";
-import { motion } from "framer-motion";
-import SettingSection from "@/components/SettingSection";
-import Timer from "../timer";
-const Typing = ({ data, timer }: { data: any; timer: boolean }) => {
-  const [success, setSucceess] = useState<boolean | null>(null);
-  const [score, setScore] = useState<number>(0);
-  const [inputValue, setInputValue] = useState<string | null>(null);
-  const [timeLeft, setTimeLeft] = useState<number>(1);
-  const [activeWord, setActiveWord] = useState<number>(0);
-  const [activeChar, setActiveChar] = useState<number>(0);
-  const inputRef = useRef<HTMLInputElement | null>(null);
-  const [res, setRes] = useState<any>([]);
-  console.log(data, getWord(10));
-  var resSplit: any = [];
-  useEffect(() => {
-    const randomWord = data;
-    // setRes(data);
+import { useState, useEffect } from "react";
 
-    if (inputRef.current) {
-      inputRef.current.focus();
+const TypingGame = ({
+  data,
+  onMissionComplete,
+}: {
+  data: string[];
+  onMissionComplete: () => void;
+}) => {
+  const [input, setInput] = useState(""); // State to hold the user's input
+  const [currentWordIndex, setCurrentWordIndex] = useState(0); // To track which word the user is typing
+  const [wordStatus, setWordStatus] = useState<boolean[]>([]); // Track the correctness of each word
+  const targetWord = data[currentWordIndex]; // Current word based on the index
+
+  // Function to handle changes in the input field
+  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setInput(e.target.value);
+  };
+
+  // Function to get the styles for the letters based on correctness
+  const getLetterStyles = (letter: string, index: number) => {
+    if (input[index] === letter) {
+      return { color: "green" }; // Correct letter
+    } else if (input[index] !== undefined) {
+      return { color: "red" }; // Incorrect letter
     }
-  }, []);
+    return {}; // Default style (before the user types anything)
+  };
 
-  resSplit =
-    Array.isArray(data) &&
-    data.map((char) => {
-      console.log(char);
-      return char.split("");
+  // Handle when the user completes typing the current word
+  const handleCompleteWord = () => {
+    const isCorrect = input === targetWord; // Check if the word is correct
+    setWordStatus((prevStatus) => {
+      const newStatus = [...prevStatus];
+      newStatus[currentWordIndex] = isCorrect; // Update the status for the current word
+      return newStatus;
     });
-  console.log(resSplit, data[0].split(""));
 
-  const handleTimeUpdate = (time: number) => {
-    setTimeLeft(time); // Update state with data from child
-  };
+    setCurrentWordIndex((prev) => prev + 1); // Move to the next word
+    setInput(""); // Clear the input for the next word
 
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
-    setInputValue(event.target.value);
-  };
-
-  const WordsPerMinute = useMemo(() => {
-    if (timeLeft == 0) {
-      const word = data
-        .slice(0, activeWord)
-        .join()
-        .replace(/,/g, "");
-      // const lastWord = word[activeChar];
-      const WPM: number = word.length / (5 * (120 / 60)); // 2 minute
-      return `Word per minute : ${WPM}`;
+    console.log(wordStatus);
+    // Check if all words are completed
+    console.log(currentWordIndex + 1, data.length);
+    if (currentWordIndex + 1 == data.length) {
+      onMissionComplete(); // Trigger the mission complete alert
     }
-  }, [timeLeft]);
-
-  useEffect(() => {
-    resSplit &&
-      resSplit[activeWord]?.map((char: string, index: number) => {
-        if (inputValue && index == inputValue?.length - 1) {
-          if (
-            char == inputValue?.split("")[inputValue?.split("").length - 1] &&
-            inputValue == data[activeWord].slice(0, inputValue.length)
-          ) {
-            setSucceess(true);
-            setActiveChar(inputValue?.length);
-            if (inputValue?.length == data[activeWord].length) {
-              setInputValue("");
-              setSucceess(false);
-              setScore(score + 1);
-              setActiveWord(activeWord + 1);
-              if (data.length == activeWord + 1) {
-                handleRefresh();
-              }
-            }
-          } else {
-            setSucceess(false);
-            setActiveChar(inputValue?.length);
-            if (inputValue?.length == data[activeWord].length) {
-              setActiveWord(activeWord + 1);
-              setSucceess(false);
-              setInputValue("");
-              if (data.length == activeWord + 1) {
-                handleRefresh();
-              }
-            }
-          }
-        }
-      });
-  }, [inputValue?.length, activeChar, success, data]);
-
-  useEffect(() => {
-    inputValue == "" && setSucceess(false);
-  }, [inputValue, data]);
-
-  const renderWord = useCallback(() => {
-    console.log(resSplit);
-    return (
-      Array.isArray(resSplit) &&
-      resSplit.map((word: string[], index: number) => {
-        return (
-          <p
-            key={index}
-            id={String(index)}
-            className="flex gap-0.5 whitespace-pre-line text-justify font-JetBrainsMono items-center"
-          >
-            {Array.isArray(word) &&
-              word.map((char, charIndex) => {
-                return (
-                  <li
-                    id={String(charIndex)}
-                    key={charIndex}
-                    className={`select-none whitespace-pre-line text-xl $ ${success &&
-                      activeWord == index &&
-                      activeChar > charIndex &&
-                      "!text-green-500 !opacity-100"} ${!success &&
-                      inputValue != "" &&
-                      activeWord == index &&
-                      activeChar > charIndex &&
-                      "!text-[#ca4200] !opacity-100"} text-white opacity-30 ${inputValue?.length ==
-                      charIndex &&
-                      activeWord == index &&
-                      "underline-offset-8 underline !opacity-100"} transition-all duration-200 ease-in-out font-light`}
-                  >
-                    {char}
-                  </li>
-                );
-              })}
-          </p>
-        );
-      })
-    );
-  }, [success, activeChar, activeWord, inputValue, data]);
-
-  const scoreCounter = useMemo(() => {
-    return (
-      <section className="flex  items-center gap-2">
-        <p className="text-white font-Aspekta">Score :</p>
-        <motion.p
-          className="text-white"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          key={score}
-        >
-          {score}
-        </motion.p>
-      </section>
-    );
-  }, [score]);
-
-  const timerCounter = useMemo(() => {
-    return Array.isArray(data) &&
-      success != null &&
-      activeWord >= 0 &&
-      timer &&
-      timeLeft <= 60 ? (
-      <Timer startTime={60} handleTimeUpdate={handleTimeUpdate} />
-    ) : (
-      <p className="text-white font-Aspekta">Timer is waiting for typing</p>
-    );
-  }, [data, inputValue]);
-
-  const handleRefresh = () => {
-    const fetchedWords = data;
-    setRes(fetchedWords);
-    setInputValue("");
-    setSucceess(null);
-    setScore(0);
-    setTimeLeft(0);
-    setActiveWord(0);
-    setActiveChar(0);
   };
 
+  // Check if the last word is complete
+  const isLastWordComplete = input === targetWord; // Check if the input matches the target word
+
   useEffect(() => {
-    if (timeLeft == 0) {
-      setInputValue("");
-      toast("Time is over");
+    if (input.length === targetWord?.length) {
+      handleCompleteWord(); // Move to next word if length matches, regardless of correctness
     }
-  }, [timeLeft]);
+  }, [input]); // Trigger the check when the input changes
 
   return (
-    <main
-      className={`flex  items-center justify-center ${
-        !timer ? "h-fit" : "h-screen"
-      } `}
-    >
-      {Array.isArray(res) ? (
-        <form className="flex flex-col mx-auto gap-8 w-2/3 items-center">
-          <motion.ul
-            className="flex  items-center justify-center w-full gap-4 flex-wrap"
-            // Start with opacity 0 and x position 0
-            initial={{ opacity: 0, y: -100 }}
-            // Animate to opacity 1 and x position 100
-            animate={{ opacity: 1, y: 0 }}
-            // Set the duration of the animation
-            transition={{ duration: 0.5 }}
-          >
-            {renderWord()}
-          </motion.ul>
-          <div className="flex flex-col gap-10 items-start justify-between w-full">
-            <section className="w-1/2 flex gap-4 items-center mx-auto">
-              <img
-                onClick={handleRefresh}
-                className={`cursor-pointer hover:shadow-md hover:drop-shadow-lg`}
-                src="/svgs/refresh.svg"
-                alt=""
-              />
-              <input
-                ref={inputRef}
-                type="text"
-                onChange={handleChange}
-                value={inputValue ?? ""}
-                className="w-full p-4 rounded-xl font-JetBrainsMono text-white bg-glass transition duration-300 focus:outline-none focus:bg-glass "
-                placeholder="Type here..."
-              />
-            </section>
-            {timer && (
-              <section className="flex justify-between items-start w-full">
-                <SettingSection />
-                <div className="flex bg-glass p-3 flex-col gap-2">
-                  {scoreCounter}
-                  {timerCounter}
-                  {WordsPerMinute && (
-                    <motion.p
-                      initial={{ opacity: 0, y: 10 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      transition={{ duration: 0.5 }}
-                      className="text-white font-Aspekta"
+    <div className="flex flex-col items-center pt-8 px-4 sm:px-8 md:px-16">
+      <div className="font-Aspekta mb-6">
+        {/* Display all words in the data array */}
+        <div className="flex flex-wrap justify-center gap-2 text-white">
+          {data.map((word, wordIndex) => {
+            return (
+              <div key={wordIndex} className="flex items-center ">
+                {word.split("").map((letter, letterIndex) => {
+                  const isActive =
+                    wordIndex === currentWordIndex &&
+                    letterIndex === input.length; // Mark the active character
+                  const isCompleted =
+                    wordIndex < currentWordIndex ||
+                    (wordIndex === currentWordIndex &&
+                      input.length === word.length); // Check if the word is completed
+                  const isChecking = wordIndex === currentWordIndex; // Check if it's the active word being typed
+
+                  return (
+                    <span
+                      key={letterIndex}
+                      className={`${isActive &&
+                        "underline-offset-4"} text-lg sm:text-xl text-white`}
+                      style={{
+                        ...getLetterStyles(letter, letterIndex),
+                        textDecoration: isActive ? "underline" : "none", // Add underline to active character
+                        color: isCompleted
+                          ? "white"
+                          : isChecking
+                          ? getLetterStyles(letter, letterIndex).color
+                          : "white", // Apply red to the entire word if incorrect
+                      }}
                     >
-                      {WordsPerMinute}
-                    </motion.p>
-                  )}
-                </div>
-              </section>
-            )}
-          </div>
-        </form>
-      ) : (
-        <Loading />
-      )}
-    </main>
+                      {letter}
+                    </span>
+                  );
+                })}
+              </div>
+            );
+          })}
+        </div>
+      </div>
+
+      <input
+        type="text"
+        value={input}
+        onChange={handleInputChange}
+        placeholder="Start typing..."
+        className="p-4 mb-4  text-white bg-glass font-Aspekta bg-glass outline-none rounded-lg w-full sm:w-80 md:w-96"
+      />
+
+      {/* Display message based on whether the last word is complete */}
+      <div className="mt-4 text-white font-Aspekta">
+        {isLastWordComplete
+          ? "Last word is complete!"
+          : "Keep typing the last word..."}
+      </div>
+    </div>
   );
 };
 
-export default Typing;
+export default TypingGame;

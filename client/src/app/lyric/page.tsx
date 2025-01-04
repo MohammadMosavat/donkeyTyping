@@ -1,6 +1,8 @@
 "use client";
+import TypingGame from "@/components/Typing";
 import Typing from "@/components/Typing";
 import { useMemo, useState } from "react";
+import toast from "react-hot-toast";
 
 const LyricsSearch = () => {
   const [song, setSong] = useState("");
@@ -24,25 +26,30 @@ const LyricsSearch = () => {
     setError(null);
 
     try {
+      // Make the GET request to your Flask API to get quotes
       const response = await fetch("http://localhost:5000/songs", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ song, artist }),
+        method: "GET",
       });
 
-      const data = await response.json();
-
       if (response.ok) {
-        setLyrics(data.lyrics.replace(/\[.*?\]\n?/g, ""));
+        const data = await response.json();
+       
+        const filterSong = data.map((song: any) => {
+          if (
+            song.artist.toLowerCase() == artist.toLowerCase() &&
+            song.title.toLowerCase() == song.toLowerCase()
+          ) {
+            return song;
+          }
+        });
+        console.log(filterSong);
       } else {
-        setError(data.error || "An error occurred");
+        toast("Failed to fetch quotes.");
       }
-    } catch (err) {
-      setError("Failed to connect to the backend");
+    } catch (error) {
+      toast("Error occurred while fetching quotes.");
     } finally {
-      setLoading(false);
+      setLoading(false); // Stop loading once the request is completed
     }
   };
 
@@ -62,16 +69,20 @@ const LyricsSearch = () => {
     );
   }, [lyrics]);
 
+  const handleMissionComplete = () => {
+    toast("Mission Complete! All words have been typed correctly!");
+  };
+
   const showTyping = useMemo(() => {
     console.log(lyrics.toLocaleLowerCase().split(" "));
     return (
-      <Typing
+      <TypingGame
         data={lyrics
           .toLocaleLowerCase()
           .replace(/\n/g, " ")
           .replace(/\([^)]*\)/g, "")
           .split(" ")}
-        timer={false}
+        onMissionComplete={handleMissionComplete}
       />
     );
   }, [lyrics]);

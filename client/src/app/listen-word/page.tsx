@@ -93,7 +93,7 @@ const PostRandomWord = () => {
           {word}
         </motion.p>
       )}
-      <section className="w-full flex gap-4 items-center mx-auto">
+      <section className="w-full grid grid-cols-4 gap-4 items-center mx-auto">
         <input
           ref={inputRef}
           type="text"
@@ -104,18 +104,26 @@ const PostRandomWord = () => {
               e.target.value = "";
             }
           }}
-          className="w-2/3 p-4 rounded-xl font-JetBrainsMono text-white bg-glass transition duration-300 focus:outline-none focus:bg-glass "
+          className="col-span-3 p-4 rounded-xl font-JetBrainsMono text-white bg-glass transition duration-300 focus:outline-none focus:bg-glass "
           placeholder="Type here..."
         />
         <button
-          className="bg-glass w-1/3 text-white p-4 font-Aspekta rounded"
+          className="bg-glass col-span-1 text-white p-4 font-Aspekta rounded"
           onClick={() => {
             setShow(true);
           }}
         >
           I give up
         </button>
-        <label className="">
+        <button
+          className="bg-glass col-span-2 text-white p-4 font-Aspekta rounded"
+          onClick={() => {
+            sayWord(word);
+          }}
+        >
+          Repeat it
+        </button>
+        <label className="col-span-2">
           <select
             className="text-white outline-none p-4 rounded bg-glass"
             value={wordType}

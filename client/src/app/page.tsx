@@ -13,6 +13,7 @@ import { getWord } from "@/hooks/randomWord";
 import Timer from "../components/timer";
 import { motion } from "framer-motion";
 import SettingSection from "@/components/SettingSection";
+import TypingGame from "@/components/Typing";
 const Home = () => {
   const [success, setSucceess] = useState<boolean | null>(null);
   const [score, setScore] = useState<number>(0);
@@ -31,192 +32,170 @@ const Home = () => {
       inputRef.current.focus();
     }
   }, []);
-  const resSplit =
-    Array.isArray(res) &&
-    res.map((char) => {
-      return char.split("");
-    });
+  // const resSplit =
+  //   Array.isArray(res) &&
+  //   res.map((char) => {
+  //     return char.split("");
+  //   });
 
-  const handleTimeUpdate = (time: number) => {
-    setTimeLeft(time); // Update state with data from child
+  // const handleTimeUpdate = (time: number) => {
+  //   setTimeLeft(time); // Update state with data from child
+  // };
+
+  // const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+  //   event.preventDefault();
+  //   setInputValue(event.target.value);
+  // };
+
+  // const WordsPerMinute = useMemo(() => {
+  //   if (timeLeft == 0) {
+  //     const word = res
+  //       .slice(0, activeWord)
+  //       .join()
+  //       .replace(/,/g, "");
+  //     // const lastWord = word[activeChar];
+  //     const WPM: number = word.length / (5 * (120 / 60)); // 2 minute
+  //     return `Word per minute : ${WPM}`;
+  //   }
+  // }, [timeLeft]);
+
+  // useEffect(() => {
+  //   resSplit &&
+  //     resSplit[activeWord]?.map((char: string, index: number) => {
+  //       if (inputValue && index == inputValue?.length - 1) {
+  //         if (
+  //           char == inputValue?.split("")[inputValue?.split("").length - 1] &&
+  //           inputValue == res[activeWord].slice(0, inputValue.length)
+  //         ) {
+  //           setSucceess(true);
+  //           setActiveChar(inputValue?.length);
+  //           if (inputValue?.length == res[activeWord].length) {
+  //             setInputValue("");
+  //             setSucceess(false);
+  //             setScore(score + 1);
+  //             setActiveWord(activeWord + 1);
+  //             if (res.length == activeWord + 1) {
+  //               handleRefresh();
+  //             }
+  //           }
+  //         } else {
+  //           setSucceess(false);
+  //           setActiveChar(inputValue?.length);
+  //           if (inputValue?.length == res[activeWord].length) {
+  //             setActiveWord(activeWord + 1);
+  //             setSucceess(false);
+  //             setInputValue("");
+  //             if (res.length == activeWord + 1) {
+  //               handleRefresh();
+  //             }
+  //           }
+  //         }
+  //       }
+  //     });
+  // }, [inputValue?.length, activeChar, success, res]);
+
+  // useEffect(() => {
+  //   inputValue == "" && setSucceess(false);
+  // }, [inputValue, res]);
+
+  // const renderWord = useCallback(() => {
+  //   console.log(resSplit);
+  //   return (
+  //     Array.isArray(resSplit) &&
+  //     resSplit.map((word: string[], index: number) => {
+  //       return (
+  //         <p
+  //           key={index}
+  //           id={String(index)}
+  //           className="flex gap-0.5 font-JetBrainsMono items-center"
+  //         >
+  //           {Array.isArray(word) &&
+  //             word.map((char, charIndex) => {
+  //               return (
+  //                 <li
+  //                   id={String(charIndex)}
+  //                   key={charIndex}
+  //                   className={`select-none text-xl $ ${success &&
+  //                     activeWord == index &&
+  //                     activeChar > charIndex &&
+  //                     "!text-green-500 !opacity-100"} ${!success &&
+  //                     inputValue != "" &&
+  //                     activeWord == index &&
+  //                     activeChar > charIndex &&
+  //                     "!text-[#ca4200] !opacity-100"} text-white opacity-30 ${inputValue?.length ==
+  //                     charIndex &&
+  //                     activeWord == index &&
+  //                     "underline-offset-8 underline !opacity-100"} transition-all duration-200 ease-in-out font-light`}
+  //                 >
+  //                   {char}
+  //                 </li>
+  //               );
+  //             })}
+  //         </p>
+  //       );
+  //     })
+  //   );
+  // }, [success, activeChar, activeWord, inputValue, res]);
+
+  // const scoreCounter = useMemo(() => {
+  //   return (
+  //     <section className="flex  items-center gap-2">
+  //       <p className="text-white font-Aspekta">Score :</p>
+  //       <motion.p
+  //         className="text-white"
+  //         initial={{ opacity: 0, y: 10 }}
+  //         animate={{ opacity: 1, y: 0 }}
+  //         transition={{ duration: 0.5 }}
+  //         key={score}
+  //       >
+  //         {score}
+  //       </motion.p>
+  //     </section>
+  //   );
+  // }, [score]);
+
+  // const timerCounter = useMemo(() => {
+  //   return Array.isArray(res) &&
+  //     success != null &&
+  //     activeWord >= 0 &&
+  //     timeLeft <= 60 ? (
+  //     <Timer startTime={60} handleTimeUpdate={handleTimeUpdate} />
+  //   ) : (
+  //     <p className="text-white font-Aspekta">Timer is waiting for typing</p>
+  //   );
+  // }, [res, inputValue]);
+
+  // const handleRefresh = () => {
+  //   const fetchedWords = getWord(40);
+  //   setRes(fetchedWords);
+  //   setInputValue("");
+  //   setSucceess(null);
+  //   setScore(0);
+  //   setTimeLeft(0);
+  //   setActiveWord(0);
+  //   setActiveChar(0);
+  // };
+
+  // useEffect(() => {
+  //   if (timeLeft == 0) {
+  //     setInputValue("");
+  //     toast("Time is over");
+  //   }
+  // }, [timeLeft]);
+
+  const handleMissionComplete = () => {
+    toast("Mission Complete! All words have been typed correctly!");
   };
-
-  const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-    event.preventDefault();
-    setInputValue(event.target.value);
-  };
-
-  const WordsPerMinute = useMemo(() => {
-    if (timeLeft == 0) {
-      const word = res
-        .slice(0, activeWord)
-        .join()
-        .replace(/,/g, "");
-      // const lastWord = word[activeChar];
-      const WPM: number = word.length / (5 * (120 / 60)); // 2 minute
-      return `Word per minute : ${WPM}`;
-    }
-  }, [timeLeft]);
-
-  useEffect(() => {
-    resSplit &&
-      resSplit[activeWord]?.map((char: string, index: number) => {
-        if (inputValue && index == inputValue?.length - 1) {
-          if (
-            char == inputValue?.split("")[inputValue?.split("").length - 1] &&
-            inputValue == res[activeWord].slice(0, inputValue.length)
-          ) {
-            setSucceess(true);
-            setActiveChar(inputValue?.length);
-            if (inputValue?.length == res[activeWord].length) {
-              setInputValue("");
-              setSucceess(false);
-              setScore(score + 1);
-              setActiveWord(activeWord + 1);
-              if (res.length == activeWord + 1) {
-                handleRefresh();
-              }
-            }
-          } else {
-            setSucceess(false);
-            setActiveChar(inputValue?.length);
-            if (inputValue?.length == res[activeWord].length) {
-              setActiveWord(activeWord + 1);
-              setSucceess(false);
-              setInputValue("");
-              if (res.length == activeWord + 1) {
-                handleRefresh();
-              }
-            }
-          }
-        }
-      });
-  }, [inputValue?.length, activeChar, success, res]);
-
-  useEffect(() => {
-    inputValue == "" && setSucceess(false);
-  }, [inputValue, res]);
-
-  const renderWord = useCallback(() => {
-    console.log(resSplit);
-    return (
-      Array.isArray(resSplit) &&
-      resSplit.map((word: string[], index: number) => {
-        return (
-          <p
-            key={index}
-            id={String(index)}
-            className="flex gap-0.5 font-JetBrainsMono items-center"
-          >
-            {Array.isArray(word) &&
-              word.map((char, charIndex) => {
-                return (
-                  <li
-                    id={String(charIndex)}
-                    key={charIndex}
-                    className={`select-none text-xl $ ${success &&
-                      activeWord == index &&
-                      activeChar > charIndex &&
-                      "!text-green-500 !opacity-100"} ${!success &&
-                      inputValue != "" &&
-                      activeWord == index &&
-                      activeChar > charIndex &&
-                      "!text-[#ca4200] !opacity-100"} text-white opacity-30 ${inputValue?.length ==
-                      charIndex &&
-                      activeWord == index &&
-                      "underline-offset-8 underline !opacity-100"} transition-all duration-200 ease-in-out font-light`}
-                  >
-                    {char}
-                  </li>
-                );
-              })}
-          </p>
-        );
-      })
-    );
-  }, [success, activeChar, activeWord, inputValue, res]);
-
-  const scoreCounter = useMemo(() => {
-    return (
-      <section className="flex  items-center gap-2">
-        <p className="text-white font-Aspekta">Score :</p>
-        <motion.p
-          className="text-white"
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          key={score}
-        >
-          {score}
-        </motion.p>
-      </section>
-    );
-  }, [score]);
-
-  const timerCounter = useMemo(() => {
-    return Array.isArray(res) &&
-      success != null &&
-      activeWord >= 0 &&
-      timeLeft <= 60 ? (
-      <Timer startTime={60} handleTimeUpdate={handleTimeUpdate} />
-    ) : (
-      <p className="text-white font-Aspekta">Timer is waiting for typing</p>
-    );
-  }, [res, inputValue]);
-
-  const handleRefresh = () => {
-    const fetchedWords = getWord(40);
-    setRes(fetchedWords);
-    setInputValue("");
-    setSucceess(null);
-    setScore(0);
-    setTimeLeft(0);
-    setActiveWord(0);
-    setActiveChar(0);
-  };
-
-  useEffect(() => {
-    if (timeLeft == 0) {
-      setInputValue("");
-      toast("Time is over");
-    }
-  }, [timeLeft]);
 
   return (
     <main className="flex  items-center justify-center h-screen">
-      {Array.isArray(resSplit) ? (
+      
         <form className="flex flex-col mx-auto gap-8 w-2/3 items-center">
-          <motion.ul
-            className="flex items-center justify-center w-full gap-4 flex-wrap"
-            // Start with opacity 0 and x position 0
-            initial={{ opacity: 0, y: -100 }}
-            // Animate to opacity 1 and x position 100
-            animate={{ opacity: 1, y: 0 }}
-            // Set the duration of the animation
-            transition={{ duration: 0.5 }}
-          >
-            {renderWord()}
-          </motion.ul>
           <div className="flex flex-col gap-10 items-start justify-between w-full">
-            <section className="w-1/2 flex gap-4 items-center mx-auto">
-              <img
-                onClick={handleRefresh}
-                className={`cursor-pointer hover:shadow-md hover:drop-shadow-lg`}
-                src="/svgs/refresh.svg"
-                alt=""
-              />
-              <input
-                ref={inputRef}
-                type="text"
-                onChange={handleChange}
-                value={inputValue ?? ""}
-                className="w-full p-4 rounded-xl font-JetBrainsMono text-white bg-glass transition duration-300 focus:outline-none focus:bg-glass "
-                placeholder="Type here..."
-              />
-            </section>
+            <TypingGame data={res} onMissionComplete={handleMissionComplete} />
             <section className="flex justify-between items-start w-full">
               <SettingSection />
-              <div className="flex bg-glass p-3 flex-col gap-2">
+              {/* <div className="flex bg-glass p-3 flex-col gap-2">
                 {scoreCounter}
                 {timerCounter}
                 {WordsPerMinute && (
@@ -229,13 +208,11 @@ const Home = () => {
                     {WordsPerMinute}
                   </motion.p>
                 )}
-              </div>
+              </div> */}
             </section>
           </div>
         </form>
-      ) : (
-        <Loading />
-      )}
+      
     </main>
   );
 };
