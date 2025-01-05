@@ -105,7 +105,7 @@ const TypingGame = ({
         value={input}
         onChange={handleInputChange}
         placeholder="Start typing..."
-        className="p-4 mb-4  text-white bg-glass font-Aspekta bg-glass outline-none rounded-lg w-full sm:w-80 md:w-96"
+        className="p-4 mb-4 placeholder:text-white placeholder:opacity-40 text-white bg-glass font-Aspekta bg-glass outline-none rounded-lg w-full sm:w-80 md:w-96"
       />
 
       {/* Display message based on whether the last word is complete */}

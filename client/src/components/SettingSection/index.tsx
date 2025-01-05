@@ -40,7 +40,7 @@ const SettingSection = () => {
         src={getThemeFromLocal ?? "/images/bg4.png"}
         alt="Background"
       />
-      <ul className="flex flex-col gap-4 bg-glass relative p-3 rounded-none">
+      <ul className="flex flex-col max-md:w-full gap-4 bg-glass relative p-3 rounded-none">
         <li
           onClick={() => setIsOpen(!isOpen)}
           className="flex w-fit items-center gap-2 cursor-pointer"
@@ -53,12 +53,8 @@ const SettingSection = () => {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
-            className="absolute flex flex-col gap-2 bg-glass p-3 rounded-md 
-            [&>*]:text-white [&>*]:font-Aspekta 
-            top-full right-0
-            sm:top-full sm:right-0 
-            md:flex-row md:gap-4 
-            lg:top-auto lg:right-auto lg:relative"
+            className=" flex-wrap flex  gap-2 bg-glass p-1.5 rounded-md 
+            [&>*]:text-white [&>*]:font-Aspekta "
           >
             {imagesArray.map((image, index) => (
               <div
@@ -76,7 +72,7 @@ const SettingSection = () => {
                     setIsOpen(false);
                     localStorage.setItem("theme", image.src);
                   }}
-                  className={`w-full h-full object-cover rounded-md cursor-pointer ${
+                  className={`w-full h-full object-cover rounded-lg cursor-pointer ${
                     loading[index] ? "hidden" : "block"
                   }`}
                   src={image.src}

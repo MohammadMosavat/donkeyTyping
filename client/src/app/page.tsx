@@ -188,9 +188,9 @@ const Home = () => {
   };
 
   return (
-    <main className="flex  items-center justify-center h-screen">
+    <main className="flex pt-40 items-center justify-center h-screen">
       
-        <form className="flex flex-col mx-auto gap-8 w-2/3 items-center">
+        <form className="flex flex-col mx-auto gap-8 w-11/12 items-center">
           <div className="flex flex-col gap-10 items-start justify-between w-full">
             <TypingGame data={res} onMissionComplete={handleMissionComplete} />
             <section className="flex justify-between items-start w-full">

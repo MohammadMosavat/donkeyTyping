@@ -70,7 +70,7 @@ const PostRandomWord = () => {
   };
 
   return (
-    <div className="flex pt-40 w-3/12 gap-10 mx-auto flex-col items-center p-4">
+    <div className="flex pt-40 w-10/12 lg:w-5/12 gap-10 mx-auto flex-col items-center p-4">
       <img
         className="fixed top-0 left-0 right-0 blur-lg bottom-0 -z-30 scale-110 w-full h-screen"
         src={`${localStorage.getItem("theme") ?? "/images/bg6.jpg"}`}
@@ -104,11 +104,11 @@ const PostRandomWord = () => {
               e.target.value = "";
             }
           }}
-          className="col-span-3 p-4 rounded-xl font-JetBrainsMono text-white bg-glass transition duration-300 focus:outline-none focus:bg-glass "
+          className="col-span-full md:col-span-3 p-4 rounded-xl font-JetBrainsMono text-white bg-glass transition duration-300 focus:outline-none focus:bg-glass "
           placeholder="Type here..."
         />
         <button
-          className="bg-glass col-span-1 text-white p-4 font-Aspekta rounded"
+          className="bg-glass col-span-full md:col-span-1 text-white p-4 font-Aspekta rounded"
           onClick={() => {
             setShow(true);
           }}
@@ -125,7 +125,7 @@ const PostRandomWord = () => {
         </button>
         <label className="col-span-2">
           <select
-            className="text-white outline-none p-4 rounded bg-glass"
+            className="text-white w-full outline-none p-4 rounded bg-glass"
             value={wordType}
             onChange={(e) => setWordType(e.target.value)}
           >

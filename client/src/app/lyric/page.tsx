@@ -33,7 +33,7 @@ const LyricsSearch = () => {
 
       if (response.ok) {
         const data = await response.json();
-       
+
         const filterSong = data.map((song: any) => {
           if (
             song.artist.toLowerCase() == artist.toLowerCase() &&
@@ -89,7 +89,7 @@ const LyricsSearch = () => {
 
   return (
     <>
-      <div className="flex flex-col items-center  w-5/12 mx-auto text-white p-6">
+      <div className="flex flex-col items-center  w-10/12 mx-auto text-white ">
         <img
           className="fixed top-0 left-0 right-0 blur-lg bottom-0 -z-30 scale-110 w-full h-screen"
           src={`${localStorage.getItem("theme") ?? "/images/bg6.jpg"}`}
@@ -105,19 +105,19 @@ const LyricsSearch = () => {
               placeholder="Song"
               value={song}
               onChange={(e) => setSong(e.target.value)}
-              className="col-span-1 p-3 rounded bg-glass font-Aspekta text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-200"
+              className="col-span-full md:col-span-1 p-3 rounded bg-glass font-Aspekta text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-200"
             />
             <input
               type="text"
               placeholder="Artist"
               value={artist}
               onChange={(e) => setArtist(e.target.value)}
-              className="col-span-1 p-3 rounded bg-glass font-Aspekta text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-200"
+              className="col-span-full md:col-span-1 p-3 rounded bg-glass font-Aspekta text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-200"
             />
             <button
               onClick={handleSearch}
               disabled={loading}
-              className={`col-span-1 p-3 font-Aspekta rounded bg-glass transition-all duration-200 ease-in-out text-white  ${
+              className={`col-span-full md:col-span-1 p-3 font-Aspekta rounded bg-glass transition-all duration-200 ease-in-out text-white  ${
                 loading
                   ? "opacity-50 cursor-not-allowed"
                   : "hover:shadow-2xl hover:drop-shadow-lg"
@@ -130,7 +130,7 @@ const LyricsSearch = () => {
         {error && <p className="mt-4 text-red-500">{error}</p>}
         {/* {showLyrics} */}
       </div>
-      <div className=" mb-20">{showTyping}</div>
+      <div className=" mb-20 [&>*]:w-full w-full">{showTyping}</div>
     </>
   );
 };

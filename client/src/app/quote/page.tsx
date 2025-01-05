@@ -38,7 +38,6 @@ const QuotesPage = () => {
     }
   }, []);
 
-
   useEffect(() => {
     const fetchQuotes = async () => {
       setLoading(true); // Start loading when fetching data
@@ -66,14 +65,13 @@ const QuotesPage = () => {
     fetchQuotes();
   }, [message]);
 
-
   const handleMissionComplete = () => {
     setMessage("Mission Complete! All words have been typed correctly!");
     toast("Mission Complete! All words have been typed correctly!");
   };
 
   return (
-    <div className="pt-40 flex flex-col gap-4 w-8/12 mx-auto">
+    <div className="pt-40 flex flex-col gap-4 w-10/12 mx-auto">
       <img
         className="fixed top-0 left-0 right-0 blur-lg bottom-0 -z-30 scale-110 w-full h-screen"
         src={`${localStorage.getItem("theme") ?? "/images/bg6.jpg"}`}
@@ -104,11 +102,13 @@ const QuotesPage = () => {
             <p className="text-white font-Aspekta">No quotes available.</p>
           )}
           <TypingGame
-            data={quotes
-              .slice(-1)[0]
-              ?.q.replace(/[^a-zA-Z0-9\s_-]/g, "")
-              .toLowerCase()
-              .split(" ")??['hellp']}
+            data={
+              quotes
+                .slice(-1)[0]
+                ?.q.replace(/[^a-zA-Z0-9\s_-]/g, "")
+                .toLowerCase()
+                .split(" ") ?? ["hellp"]
+            }
             onMissionComplete={handleMissionComplete} // Pass the callback to TypingGame
           />
         </ul>
