@@ -36,6 +36,7 @@ export default function RootLayout({
         <Toaster position={"bottom-center"} toastOptions={{
             className: 'font-Aspekta',
             style: {
+              width:'fit-content',
               color:"white",
               background:'#ffffff21',
               borderRadius: '16px',

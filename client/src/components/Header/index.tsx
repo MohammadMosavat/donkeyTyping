@@ -13,6 +13,30 @@ const Header = () => {
       <Link href={"/"}>
         <img src="/svgs/logo.svg" title="go home" className="w-8 h-8" alt="" />
       </Link>
+      <Link
+        href={"/lyric"}
+        className="text-white hover:tracking-wider transition-all ease-in-out duration-200 font-Aspekta"
+      >
+        Lyrics
+      </Link>
+      <Link
+        href={"/quote"}
+        className="text-white hover:tracking-wider transition-all ease-in-out duration-200 font-Aspekta"
+      >
+        Quotes
+      </Link>
+      <Link
+        href={"/listen-word"}
+        className="text-white hover:tracking-wider transition-all ease-in-out duration-200 font-Aspekta"
+      >
+        Listen word
+      </Link>
+      <Link
+        href={"/jokes"}
+        className="text-white hover:tracking-wider transition-all ease-in-out duration-200 font-Aspekta"
+      >
+        Jokes
+      </Link>
     </motion.header>
   );
 };

@@ -1,8 +1,7 @@
-"use client";
+"use client";;
 import { useState } from "react";
 import { motion } from "framer-motion";
 import Loading from "../loading";
-import Link from "next/link";
 
 const SettingSection = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -82,16 +81,6 @@ const SettingSection = () => {
             ))}
           </motion.div>
         )}
-
-        <Link href={"/lyric"} className="text-white font-Aspekta">
-          Lyrics
-        </Link>
-        <Link href={"/quote"} className="text-white font-Aspekta">
-          Quotes
-        </Link>
-        <Link href={"/listen-word"} className="text-white font-Aspekta">
-          Listen word
-        </Link>
       </ul>
     </>
   );

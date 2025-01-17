@@ -7,7 +7,6 @@ import Image from "next/image";
 
 const QuotesPage = () => {
   const [quotes, setQuotes] = useState<any[]>([]);
-  const [quotesOwner, setQuotesOwner] = useState<any[]>([]);
   const [message, setMessage] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(true); // Loading state
 
@@ -85,7 +84,7 @@ const QuotesPage = () => {
       ) : (
         <ul className="p-4 text-white rounded-lg flex flex-col items-center bg-glass">
           {quotes.length > 0 ? (
-            quotes.slice(-1).map((quote, index) => (
+            quotes.slice(-1).map((quote) => (
               <a
                 key={quote.a}
                 target="_blank"
