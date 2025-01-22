@@ -4,96 +4,145 @@ import { useState, useEffect } from "react";
 const TypingGame = ({
   data,
   onMissionComplete,
+  onLastWordComplete, // Callback to pass isLastWordComplete to parent
 }: {
   data: string[];
   onMissionComplete: () => void;
+  onLastWordComplete: (isLastWordComplete: boolean) => void; // Callback to send the status
 }) => {
-  const [input, setInput] = useState(""); // State to hold the user's input
-  const [currentWordIndex, setCurrentWordIndex] = useState(0); // To track which word the user is typing
-  const [wordStatus, setWordStatus] = useState<boolean[]>([]); // Track the correctness of each word
-  const targetWord = data[currentWordIndex]; // Current word based on the index
+  const initialTime = 120;
+  const [input, setInput] = useState("");
+  const [currentWordIndex, setCurrentWordIndex] = useState(0);
+  const [wordStatus, setWordStatus] = useState<boolean[]>([]);
+  const [timer, setTimer] = useState<number>(initialTime); // Timer in seconds (2 minutes)
+  const [isDisabled, setIsDisabled] = useState<boolean>(false); // To disable the input
+  const [completedWords, setCompletedWords] = useState<number>(0); // To track correct words typed
+  const [wpm, setWpm] = useState<number>(0); // Words per minute
+  const targetWord = data[currentWordIndex];
 
-  // Function to handle changes in the input field
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInput(e.target.value);
+    if (!isDisabled) {
+      setInput(e.target.value);
+    }
   };
 
-  // Function to get the styles for the letters based on correctness
   const getLetterStyles = (letter: string, index: number) => {
     if (input[index] === letter) {
-      return { color: "green" }; // Correct letter
+      return { color: "green" };
     } else if (input[index] !== undefined) {
-      return { color: "red" }; // Incorrect letter
+      return { color: "red" };
     }
-    return {}; // Default style (before the user types anything)
+    return {};
   };
 
-  // Handle when the user completes typing the current word
   const handleCompleteWord = () => {
-    const isCorrect = input === targetWord; // Check if the word is correct
+    const isCorrect = input === targetWord;
     setWordStatus((prevStatus) => {
       const newStatus = [...prevStatus];
-      newStatus[currentWordIndex] = isCorrect; // Update the status for the current word
+      newStatus[currentWordIndex] = isCorrect;
       return newStatus;
     });
 
-    setCurrentWordIndex((prev) => prev + 1); // Move to the next word
-    setInput(""); // Clear the input for the next word
+    setCurrentWordIndex((prev) => prev + 1);
+    setInput("");
 
-    console.log(wordStatus);
-    // Check if all words are completed
-    console.log(currentWordIndex + 1, data.length);
+    if (isCorrect) {
+      setCompletedWords((prev) => prev + 1);
+    }
+
     if (currentWordIndex + 1 == data.length) {
-      onMissionComplete(); // Trigger the mission complete alert
+      onMissionComplete();
     }
   };
 
-  // Check if the last word is complete
-  const isLastWordComplete = input === targetWord; // Check if the input matches the target word
+  const isLastWordComplete = input === targetWord;
 
   useEffect(() => {
     if (input.length === targetWord?.length) {
-      handleCompleteWord(); // Move to next word if length matches, regardless of correctness
+      handleCompleteWord();
     }
-  }, [input]); // Trigger the check when the input changes
+  }, [input]);
+
+  // Timer functionality
+  useEffect(() => {
+    if (timer === 0) {
+      setIsDisabled(true); // Disable input when time is up
+    }
+  }, [timer]);
+
+  useEffect(() => {
+    if (isDisabled) return;
+
+    const intervalId = setInterval(() => {
+      setTimer((prev) => {
+        if (prev <= 1) {
+          clearInterval(intervalId);
+          return 0;
+        }
+        return prev - 1;
+      });
+    }, 1000);
+
+    return () => clearInterval(intervalId);
+  }, [isDisabled]);
+
+  // Call onTimerUpdate to pass the timer value to the parent
+  useEffect(() => {
+    if (isLastWordComplete !== undefined) {
+      onLastWordComplete(isLastWordComplete); // Pass the value to parent
+    }
+  }, [isLastWordComplete, onLastWordComplete]);
+
+  // Calculate WPM when time is up
+  useEffect(() => {
+    if (timer === 0) {
+      const minutes = initialTime / 60;
+      setWpm(Math.floor(completedWords / minutes));
+    }
+  }, [completedWords, timer]);
 
   return (
     <div className="flex flex-col items-center pt-8 px-4 sm:px-8 md:px-16">
       <div className="font-Aspekta mb-6">
-        {/* Display all words in the data array */}
         <div className="flex flex-wrap justify-center gap-2 text-white">
           {data.map((word, wordIndex) => {
+            // Check if the current word is active or not
+            const isActiveWord = wordIndex === currentWordIndex;
             return (
-              <div key={wordIndex} className="flex items-center ">
-                {word.split("").map((letter, letterIndex) => {
-                  const isActive =
-                    wordIndex === currentWordIndex &&
-                    letterIndex === input.length; // Mark the active character
-                  const isCompleted =
-                    wordIndex < currentWordIndex ||
-                    (wordIndex === currentWordIndex &&
-                      input.length === word.length); // Check if the word is completed
-                  const isChecking = wordIndex === currentWordIndex; // Check if it's the active word being typed
+              <div key={wordIndex} className="flex items-center">
+                {/* Apply lower opacity for non-active words */}
+                <div
+                  className={`flex items-center ${!isActiveWord ? "opacity-40" : ""}`}
+                >
+                  {word.split("").map((letter, letterIndex) => {
+                    const isActive =
+                      wordIndex === currentWordIndex &&
+                      letterIndex === input.length;
+                    const isCompleted =
+                      wordIndex < currentWordIndex ||
+                      (wordIndex === currentWordIndex &&
+                        input.length === word.length);
+                    const isChecking = wordIndex === currentWordIndex;
 
-                  return (
-                    <span
-                      key={letterIndex}
-                      className={`${isActive &&
-                        "underline-offset-4"} text-lg sm:text-xl text-white`}
-                      style={{
-                        ...getLetterStyles(letter, letterIndex),
-                        textDecoration: isActive ? "underline" : "none", // Add underline to active character
-                        color: isCompleted
-                          ? "white"
-                          : isChecking
-                          ? getLetterStyles(letter, letterIndex).color
-                          : "white", // Apply red to the entire word if incorrect
-                      }}
-                    >
-                      {letter}
-                    </span>
-                  );
-                })}
+                    return (
+                      <span
+                        key={letterIndex}
+                        className={`${isActive && "underline-offset-4"} transition-all duration-200 ease-in-out text-lg sm:text-xl text-white`}
+                        style={{
+                          ...getLetterStyles(letter, letterIndex),
+                          textDecoration: isActive ? "underline" : "none",
+                          color: isCompleted
+                            ? "white"
+                            : isChecking
+                            ? getLetterStyles(letter, letterIndex).color
+                            : "white",
+                        }}
+                      >
+                        {letter}
+                      </span>
+                    );
+                  })}
+                </div>
               </div>
             );
           })}
@@ -106,14 +155,24 @@ const TypingGame = ({
         onChange={handleInputChange}
         placeholder="Start typing..."
         className="p-4 mb-4 placeholder:text-white placeholder:opacity-40 text-white bg-glass font-Aspekta bg-glass outline-none rounded-lg w-full sm:w-80 md:w-96"
+        disabled={isDisabled}
       />
 
-      {/* Display message based on whether the last word is complete */}
       <div className="mt-4 text-white font-Aspekta">
         {isLastWordComplete
           ? "Last word is complete!"
           : "Keep typing the last word..."}
       </div>
+
+      <div className="mt-4 text-white font-Aspekta">
+        {Math.floor(timer / 60)}:{String(timer % 60).padStart(2, "0")}
+      </div>
+
+      {wpm ? (
+        <div className="mt-4 text-white font-Aspekta">
+          Words per minute: {wpm}
+        </div>
+      ) : null}
     </div>
   );
 };
