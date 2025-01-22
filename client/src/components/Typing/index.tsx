@@ -4,11 +4,9 @@ import { useState, useEffect } from "react";
 const TypingGame = ({
   data,
   onMissionComplete,
-  onLastWordComplete, // Callback to pass isLastWordComplete to parent
 }: {
   data: string[];
   onMissionComplete: () => void;
-  onLastWordComplete: (isLastWordComplete: boolean) => void; // Callback to send the status
 }) => {
   const initialTime = 120;
   const [input, setInput] = useState("");
@@ -85,13 +83,6 @@ const TypingGame = ({
 
     return () => clearInterval(intervalId);
   }, [isDisabled]);
-
-  // Call onTimerUpdate to pass the timer value to the parent
-  useEffect(() => {
-    if (isLastWordComplete !== undefined) {
-      onLastWordComplete(isLastWordComplete); // Pass the value to parent
-    }
-  }, [isLastWordComplete, onLastWordComplete]);
 
   // Calculate WPM when time is up
   useEffect(() => {
