@@ -30,12 +30,12 @@ const JokesPage = () => {
   };
   useEffect(() => {
     fetchJoke();
-  }, []);
+  }, [loading]);
 
   if (loading) return <Loading />;
 
   const handleMissionComplete = () => {
-    fetchJoke();
+    setLoading(true);
     toast("Mission Complete! All words have been typed correctly!");
   };
 
@@ -46,15 +46,17 @@ const JokesPage = () => {
         src={`${localStorage.getItem("theme") ?? "/images/bg6.jpg"}`}
         alt="Background"
       />
-      {data?.setup && (
+      {data?.joke && (
         <TypingGame
           data={
-            (data?.setup + " " + data?.delivery)
+            (data?.joke)
               .replace(/[^a-zA-Z0-9\s_-]/g, "")
               .toLowerCase()
               .split(" ") ?? ["hellp"]
           }
           onMissionComplete={handleMissionComplete} // Pass the callback to TypingGame
+          showWpm={false}
+          showTimer={false}
         />
       )}
     </div>

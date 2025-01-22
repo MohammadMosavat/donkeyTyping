@@ -109,6 +109,8 @@ const QuotesPage = () => {
                 .split(" ") ?? ["hellp"]
             }
             onMissionComplete={handleMissionComplete} // Pass the callback to TypingGame
+            showWpm={false}
+            showTimer={false}
           />
         </ul>
       )}

@@ -4,9 +4,13 @@ import { useState, useEffect } from "react";
 const TypingGame = ({
   data,
   onMissionComplete,
+  showWpm, // Add the showWpm prop
+  showTimer, // Add the showTimer prop
 }: {
   data: string[];
   onMissionComplete: () => void;
+  showWpm: boolean; // Define the prop type for the WPM flag
+  showTimer: boolean; // Define the prop type for the timer flag
 }) => {
   const initialTime = 120;
   const [input, setInput] = useState("");
@@ -48,7 +52,7 @@ const TypingGame = ({
       setCompletedWords((prev) => prev + 1);
     }
 
-    if (currentWordIndex + 1 == data.length) {
+    if (currentWordIndex + 1 === data.length) {
       onMissionComplete();
     }
   };
@@ -97,11 +101,9 @@ const TypingGame = ({
       <div className="font-Aspekta mb-6">
         <div className="flex flex-wrap justify-center gap-2 text-white">
           {data.map((word, wordIndex) => {
-            // Check if the current word is active or not
             const isActiveWord = wordIndex === currentWordIndex;
             return (
               <div key={wordIndex} className="flex items-center">
-                {/* Apply lower opacity for non-active words */}
                 <div
                   className={`flex items-center ${!isActiveWord ? "opacity-40" : ""}`}
                 >
@@ -155,11 +157,14 @@ const TypingGame = ({
           : "Keep typing the last word..."}
       </div>
 
-      <div className="mt-4 text-white font-Aspekta">
-        {Math.floor(timer / 60)}:{String(timer % 60).padStart(2, "0")}
-      </div>
+      {/* Conditional rendering for timer */}
+      {showTimer && (
+        <div className="mt-4 text-white font-Aspekta">
+          {Math.floor(timer / 60)}:{String(timer % 60).padStart(2, "0")}
+        </div>
+      )}
 
-      {wpm ? (
+      {showWpm && wpm ? (
         <div className="mt-4 text-white font-Aspekta">
           Words per minute: {wpm}
         </div>

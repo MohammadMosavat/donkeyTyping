@@ -189,13 +189,17 @@ const Home = () => {
 
   return (
     <main className="flex pt-40 items-center justify-center h-screen">
-      
-        <form className="flex flex-col mx-auto gap-8 w-11/12 items-center">
-          <div className="flex flex-col gap-10 items-start justify-between w-full">
-            <TypingGame data={res} onMissionComplete={handleMissionComplete} />
-            <section className="flex justify-between items-start w-full">
-              <SettingSection />
-              {/* <div className="flex bg-glass p-3 flex-col gap-2">
+      <form className="flex flex-col mx-auto gap-8 w-11/12 items-center">
+        <div className="flex flex-col gap-10 items-start justify-between w-full">
+          <TypingGame
+            data={res}
+            onMissionComplete={handleMissionComplete}
+            showWpm={true}
+            showTimer={true}
+          />
+          <section className="flex justify-between items-start w-full">
+            <SettingSection />
+            {/* <div className="flex bg-glass p-3 flex-col gap-2">
                 {scoreCounter}
                 {timerCounter}
                 {WordsPerMinute && (
@@ -209,10 +213,9 @@ const Home = () => {
                   </motion.p>
                 )}
               </div> */}
-            </section>
-          </div>
-        </form>
-      
+          </section>
+        </div>
+      </form>
     </main>
   );
 };
