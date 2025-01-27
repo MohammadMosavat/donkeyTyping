@@ -13,12 +13,12 @@ const Header = () => {
       <Link href={"/"}>
         <img src="/svgs/logo.svg" title="go home" className="w-8 h-8" alt="" />
       </Link>
-      <Link
+      {/* <Link
         href={"/lyric"}
         className="text-white capitalize hover:tracking-wider transition-all ease-in-out duration-200 font-Aspekta"
       >
         Lyrics
-      </Link>
+      </Link> */}
       <Link
         href={"/quote"}
         className="text-white capitalize hover:tracking-wider transition-all ease-in-out duration-200 font-Aspekta"
@@ -31,12 +31,12 @@ const Header = () => {
       >
         Listen word
       </Link>
-      <Link
+      {/* <Link
         href={"/jokes"}
         className="text-white capitalize hover:tracking-wider transition-all ease-in-out duration-200 font-Aspekta"
       >
         Jokes
-      </Link>
+      </Link> */}
     </motion.header>
   );
 };
