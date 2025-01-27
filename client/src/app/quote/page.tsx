@@ -1,9 +1,8 @@
-"use client";
+"use client";;
 import { useState, useEffect, useCallback } from "react";
 import TypingGame from "@/components/Typing";
 import Loading from "@/components/loading";
 import toast from "react-hot-toast";
-import Image from "next/image";
 
 const QuotesPage = () => {
   const [quotes, setQuotes] = useState<any[]>([]);
