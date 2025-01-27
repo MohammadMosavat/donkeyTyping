@@ -9,10 +9,12 @@ const PostRandomWord = () => {
   const [wordType, setWordType] = useState<string>("noun");
   const [word, setWord] = useState<string>("");
   const [show, setShow] = useState(false);
-  const inputRef = useRef(null);
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
   const postRandomWord = async () => {
-    inputRef.current.focus();
+    if (inputRef.current) {
+      inputRef?.current.focus();
+    }
     toast("Generating a random word...");
     const randomWord = generateWord();
     setWord(randomWord);
