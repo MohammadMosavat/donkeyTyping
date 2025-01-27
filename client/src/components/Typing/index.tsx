@@ -117,10 +117,6 @@ const TypingGame = ({
     setInput("");
     setCurrentWordIndex(0);
     setWordStatus([]);
-    // Do not reset correct/incorrect characters when data changes
-    if (inputRef.current) {
-      inputRef.current.focus();
-    }
   }, [data]);
 
   // Function to determine the letter styles (color) for each character
