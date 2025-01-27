@@ -3,6 +3,7 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 
 const Header = () => {
+  const username = localStorage.getItem("username")
   return (
     <motion.header
       initial={{ opacity: 0, y: -100 }}
@@ -37,6 +38,12 @@ const Header = () => {
       >
         Jokes
       </Link> */}
+      <Link
+        href={`/dashboard/${username}`}
+        className="text-white capitalize hover:tracking-wider transition-all ease-in-out duration-200 font-Aspekta"
+      >
+        dashboard
+      </Link>
     </motion.header>
   );
 };

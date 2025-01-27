@@ -1,6 +1,6 @@
 from flask import Flask, request, jsonify
 import lyricsgenius
-from pymongo import MongoClient
+from pymongo import MongoClient , errors
 from flask_cors import CORS
 import requests
 import pyttsx3
@@ -17,9 +17,71 @@ db = client["typing_db"]  # Database name
 collection_songs = db["songs"]  # Collection songs
 collection_quotes = db["quotes"]  # Collection songs
 collection_listen_word = db['words_listen']  # Collection words_listen
+collection_users = db['users']  # Collection words_listen
 # Initialize Genius API client
 genius = lyricsgenius.Genius(genius_token)
 
+# Ensure 'username' field is unique
+collection_users.create_index("username", unique=True)
+collection_users.create_index("email", unique=True)
+
+@app.route("/signup", methods=["POST", "GET"])
+def signup():
+    if request.method == "POST":
+        try:
+            # Parse JSON data from request
+            data = request.json
+            username = data.get("username")
+            email = data.get("email")
+            location = data.get("location")
+            joinedAt = data.get("joinedAt")
+
+            # Validate input
+            if not username or not email or not location:
+                return jsonify({"message": "Username, email, and location are required."}), 400
+
+
+            # Insert user into the database with the joinedAt field
+            user = {"username": username, "email": email, "location": location, "joinedAt": joinedAt}
+            result = collection_users.insert_one(user)
+
+            # Convert the `_id` to a string for the response
+            user["_id"] = str(result.inserted_id)
+
+            return jsonify({"message": "Sign up successful!", "user": user}), 201
+
+        except errors.DuplicateKeyError:
+            return jsonify({"message": "Username or email already exists. Please choose another one."}), 409
+        except Exception as e:
+            return jsonify({"message": f"An error occurred: {str(e)}"}), 500
+
+    elif request.method == "GET":
+        try:
+            # Retrieve all users from the database
+            users = list(collection_users.find())
+            # Convert ObjectId to string for JSON serialization
+            for user in users:
+                user["_id"] = str(user["_id"])
+
+            return jsonify(users), 200
+
+        except Exception as e:
+            return jsonify({"message": f"An error occurred: {str(e)}"}), 500
+
+@app.route("/user/<username>", methods=["GET"])
+def get_user(username):
+    try:
+        # Retrieve the user data based on username
+        user = collection_users.find_one({"username": username})
+
+        if user:
+            # Convert ObjectId to string for JSON serialization
+            user["_id"] = str(user["_id"])
+            return jsonify(user), 200
+        else:
+            return jsonify({"message": "User not found."}), 404
+    except Exception as e:
+        return jsonify({"message": f"An error occurred: {str(e)}"}), 500
 
 @app.route('/songs', methods=['POST'])
 def run_python():
