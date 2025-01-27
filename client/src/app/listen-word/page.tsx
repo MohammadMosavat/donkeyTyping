@@ -1,5 +1,5 @@
 "use client";
-import { useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { faker } from "@faker-js/faker";
 import toast from "react-hot-toast";
 import { motion } from "framer-motion";
@@ -10,15 +10,14 @@ const PostRandomWord = () => {
   const [word, setWord] = useState<string>("");
   const [show, setShow] = useState(false);
   const inputRef = useRef(null);
+
   const postRandomWord = async () => {
     inputRef.current.focus();
     toast("Generating a random word...");
-    // Generate a random word using Faker.js
-    const randomWord = generateWord(); // You can change this to adjective, verb, etc.
+    const randomWord = generateWord();
     setWord(randomWord);
     setShow(false);
     try {
-      // Make a POST request to the Flask route
       const response = await fetch("http://localhost:5000/post-random-word", {
         method: "POST",
         headers: {
@@ -42,15 +41,10 @@ const PostRandomWord = () => {
 
   const sayWord = (word: string) => {
     if ("speechSynthesis" in window) {
-      // Create a new speech synthesis utterance
       const utterance = new SpeechSynthesisUtterance(word);
-
-      // Optionally set voice, pitch, and rate
-      utterance.pitch = 1; // Normal pitch
-      utterance.rate = 1; // Normal speed
-      utterance.volume = 1; // Maximum volume
-
-      // Speak the word
+      utterance.pitch = 1;
+      utterance.rate = 1;
+      utterance.volume = 1;
       window.speechSynthesis.speak(utterance);
     } else {
       console.error("SpeechSynthesis is not supported in this browser.");
@@ -69,6 +63,30 @@ const PostRandomWord = () => {
     }
   };
 
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Check if Ctrl + S is pressed
+      if (e.ctrlKey && e.key === "s") {
+        e.preventDefault(); // Prevent the default save behavior
+        sayWord(word); // Run sayWord
+      }
+      if (e.ctrlKey && e.key === "i") {
+        e.preventDefault(); // Prevent the default save behavior
+        setShow(!show);
+      }
+      if (e.ctrlKey && e.key === "w") {
+        e.preventDefault(); // Prevent the default save behavior
+        postRandomWord();
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+
+    return () => {
+      window.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [word, show]); // Re-run the effect when 'word' changes
+
   return (
     <div className="flex pt-40 w-10/12 lg:w-5/12 gap-10 mx-auto flex-col items-center p-4">
       <img
@@ -77,10 +95,11 @@ const PostRandomWord = () => {
         alt="Background"
       />
       <button
-        className="bg-glass font-Aspekta text-white py-2 px-4 rounded"
+        className="bg-glass font-Aspekta w-1/3 flex items-center gap-4 justify-center flex-wrap text-white py-2 px-4 rounded"
         onClick={postRandomWord}
       >
         Say a word
+        <span className="px-1.5 text-s bg-glass">Ctrl + w</span>
       </button>
 
       {word && show && (
@@ -93,6 +112,7 @@ const PostRandomWord = () => {
           {word}
         </motion.p>
       )}
+
       <section className="w-full grid grid-cols-4 gap-4 items-center mx-auto">
         <input
           ref={inputRef}
@@ -104,24 +124,26 @@ const PostRandomWord = () => {
               e.target.value = "";
             }
           }}
-          className="col-span-full md:col-span-3 p-4 rounded-xl font-JetBrainsMono text-white bg-glass transition duration-300 focus:outline-none focus:bg-glass "
+          className="col-span-full md:col-span-3 p-4 rounded-xl font-JetBrainsMono text-white bg-glass transition duration-300 focus:outline-none focus:bg-glass"
           placeholder="Type here..."
         />
         <button
-          className="bg-glass col-span-full md:col-span-1 text-white p-4 font-Aspekta rounded"
+          className="bg-glass flex items-center gap-4 justify-center flex-wrap col-span-full md:col-span-1 text-white p-4 font-Aspekta rounded"
           onClick={() => {
-            setShow(true);
+            setShow(!show);
           }}
         >
           I give up
+          <span className="px-1.5 text-s bg-glass">Ctrl + i</span>
         </button>
         <button
-          className="bg-glass col-span-2 text-white p-4 font-Aspekta rounded"
+          className="bg-glass flex items-center gap-4 justify-center flex-wrap col-span-2 text-white p-4 font-Aspekta rounded"
           onClick={() => {
             sayWord(word);
           }}
         >
           Repeat it
+          <span className="px-1.5 text-s bg-glass">Ctrl + s</span>
         </button>
         <label className="col-span-2">
           <select
