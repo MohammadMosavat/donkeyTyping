@@ -1,6 +1,17 @@
 "use client";
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
+import axios from "axios";
+
+interface FormData {
+  username: string | null;
+  id_username: string;
+  wpm: number | "";
+  correct_char: number | "";
+  incorrect_char: number | "";
+  date: string;
+  language: string;
+}
 
 const TypingGame = ({
   data,
@@ -13,7 +24,7 @@ const TypingGame = ({
   showWpm: boolean;
   showTimer: boolean;
 }) => {
-  const initialTime = 120;
+  const initialTime = 20;
   const [input, setInput] = useState("");
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [wordStatus, setWordStatus] = useState<boolean[]>([]);
@@ -25,8 +36,65 @@ const TypingGame = ({
   const [correctChars, setCorrectChars] = useState<number>(0);
   const [incorrectChars, setIncorrectChars] = useState<number>(0);
   const inputRef = useRef<HTMLInputElement | null>(null);
-
   const targetWord = data[currentWordIndex];
+  const [id, setID] = useState();
+
+  const [message, setMessage] = useState<{
+    type: "success" | "error";
+    text: string;
+  } | null>(null);
+
+  useEffect(() => {
+    // Fetch user data from the API
+    const fetchUserData = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:5000/user/${localStorage.getItem("username")}`
+        );
+        const data = await response.json();
+        console.log(data);
+        if (response.ok) {
+          console.log("data", data);
+          setID(data._id);
+        }
+      } catch (error) {
+        console.log("An error occurred while fetching user data.");
+      }
+    };
+
+    fetchUserData();
+  }, []);
+
+  // Handle form submission
+  const handleSubmit = async () => {
+    setMessage(null);
+    console.log(id);
+    const submissionData = {
+      username: localStorage.getItem("username"),
+      id_username: id,
+      wpm: wpm,
+      correct_char: correctChars,
+      incorrect_char: incorrectChars,
+      date: new Date().toISOString(),
+      language: "en",
+    };
+
+    console.log("Submitting data:", submissionData);
+
+    try {
+      const response = await axios.post(
+        "http://localhost:5000/store_wpm",
+        submissionData
+      );
+      setMessage({ type: "success", text: response.data.message });
+    } catch (error) {
+      console.error("Submission error:", error);
+      setMessage({
+        type: "error",
+        text: error.response?.data?.error || "Something went wrong!",
+      });
+    }
+  };
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (!isDisabled) {
@@ -94,6 +162,7 @@ const TypingGame = ({
 
       const minutes = initialTime / 60;
       setWpm(Math.floor(totalWordsTyped / minutes));
+      handleSubmit();
     }
   }, [timer, totalWordsTyped]);
 

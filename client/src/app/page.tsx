@@ -1,4 +1,4 @@
-"use client";
+"use client";;
 import { useLayoutEffect, useRef, useState } from "react";
 import toast from "react-hot-toast";
 import { getWord } from "@/hooks/randomWord";
@@ -8,7 +8,7 @@ import SettingSection from "@/components/SettingSection";
 const Home = () => {
   const [res, setRes] = useState<string[]>([]); // Words for the game
   const inputRef = useRef<HTMLInputElement | null>(null);
-
+  
   // Generate random words on the initial render
   useLayoutEffect(() => {
     regenerateWords();

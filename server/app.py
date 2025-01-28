@@ -4,6 +4,8 @@ from pymongo import MongoClient , errors
 from flask_cors import CORS
 import requests
 import pyttsx3
+from bson import ObjectId
+from datetime import datetime
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
@@ -18,12 +20,71 @@ collection_songs = db["songs"]  # Collection songs
 collection_quotes = db["quotes"]  # Collection songs
 collection_listen_word = db['words_listen']  # Collection words_listen
 collection_users = db['users']  # Collection words_listen
+wpm_collection = db["wpm_records"]  # Replace with your collection name
 # Initialize Genius API client
 genius = lyricsgenius.Genius(genius_token)
 
 # Ensure 'username' field is unique
 collection_users.create_index("username", unique=True)
 collection_users.create_index("email", unique=True)
+
+@app.route('/store_wpm', methods=['POST'])
+def store_wpm():
+    # Get data from the request
+    data = request.json
+
+    # Validate required fields
+    required_fields = ['username', 'id_username', 'wpm', 'correct_char', 'incorrect_char', 'date', 'language']
+    if not all(field in data for field in required_fields):
+        return jsonify({'error': 'Missing required fields'}), 400
+
+    # Prepare the record
+    try:
+        record = {
+            'username': data['username'],
+            'id_username': data['id_username'],
+            'wpm': (data['wpm']),
+            'correct_char': (data['correct_char']),
+            'incorrect_char': (data['incorrect_char']),
+            'date': (data['date']),
+            'language': data['language']
+        }
+    except ValueError as e:
+        return jsonify({'error': f'Invalid data format: {e}'}), 400
+
+    # Insert into MongoDB
+    result = wpm_collection.insert_one(record)
+
+    return jsonify({
+        'message': 'WPM record stored successfully!',
+        'record_id': str(result.inserted_id)
+    }), 201
+
+@app.route('/store_wpm', methods=['GET'])
+def get_wpm_records():
+    # Get query parameters
+    username = request.args.get('username')  # Optional: Filter by username
+    start_date = request.args.get('start_date')  # Optional: Filter by start date
+    end_date = request.args.get('end_date')  # Optional: Filter by end date
+
+    # Build the query
+    query = {}
+    if username:
+        query['username'] = username
+
+    if start_date or end_date:
+        query['date'] = {}
+        if start_date:
+            query['date']['$gte'] = datetime.strptime(start_date, '%Y-%m-%d')  # Start date filter
+        if end_date:
+            query['date']['$lte'] = datetime.strptime(end_date, '%Y-%m-%d')  # End date filter
+
+    # Fetch records from MongoDB
+    try:
+        records = list(wpm_collection.find(query, {'_id': 0}))  # Exclude `_id` from response
+        return jsonify(records), 200
+    except Exception as e:
+        return jsonify({'error': f'Error fetching records: {e}'}), 500
 
 @app.route("/signup", methods=["POST", "GET"])
 def signup():
@@ -68,20 +129,26 @@ def signup():
         except Exception as e:
             return jsonify({"message": f"An error occurred: {str(e)}"}), 500
 
-@app.route("/user/<username>", methods=["GET"])
-def get_user(username):
-    try:
-        # Retrieve the user data based on username
-        user = collection_users.find_one({"username": username})
+@app.route('/user/<string:identifier>', methods=['GET'])
+def get_user(identifier):
+    query = {}
 
-        if user:
-            # Convert ObjectId to string for JSON serialization
-            user["_id"] = str(user["_id"])
-            return jsonify(user), 200
-        else:
-            return jsonify({"message": "User not found."}), 404
-    except Exception as e:
-        return jsonify({"message": f"An error occurred: {str(e)}"}), 500
+    # Check if identifier is a valid ObjectId (for MongoDB _id)
+    try:
+        query['_id'] = ObjectId(identifier)
+    except:
+        # If not a valid ObjectId, assume it is a username
+        query['username'] = identifier
+
+    # Query MongoDB
+    user = collection_users.find_one(query)
+    if user:
+        # Convert MongoDB ObjectId to string for JSON serialization
+        user['_id'] = str(user['_id'])
+        return jsonify(user), 200
+    else:
+        return jsonify({'error': 'User not found'}), 404
+
 
 @app.route('/songs', methods=['POST'])
 def run_python():
