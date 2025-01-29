@@ -91,11 +91,7 @@ const PostRandomWord = () => {
 
   return (
     <div className="flex pt-40 w-10/12 lg:w-5/12 gap-10 mx-auto flex-col items-center p-4">
-      <img
-        className="fixed top-0 left-0 right-0 blur-lg bottom-0 -z-30 scale-110 w-full h-screen"
-        src={`${localStorage.getItem("theme") ?? "/images/bg6.jpg"}`}
-        alt="Background"
-      />
+    
       <button
         className="bg-glass font-Aspekta w-1/3 flex items-center gap-4 justify-center flex-wrap text-white py-2 px-4 rounded"
         onClick={postRandomWord}

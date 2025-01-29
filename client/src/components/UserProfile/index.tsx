@@ -3,29 +3,23 @@ import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import Loading from "../loading";
 import WpmRecords from "../WpmRecord";
+import UserProfileCardProps from "@/types";
 
-interface UserProfileCardProps {
-  username: string;
-  email: string;
-  location: string;
-  joinedAt: string;
-  avatarUrl?: string;
-}
-
-export default function UserProfileCard({ id }: { id: string }) {
+export default function UserProfileCard({ username }: { username: string }) {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<UserProfileCardProps>();
+  console.log("username in user profile", username);
   useEffect(() => {
     // Fetch user data from the API
     const fetchUserData = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`http://localhost:5000/user/${id}`);
+        const response = await fetch(`http://localhost:5000/user?username=${username}`);
         const data = await response.json();
         console.log(data);
         if (response.ok) {
-          console.log("data", data);
-          setData(data);
+          console.log("data", data[0]);
+          setData(data[0]);
         } else {
           toast.error(data.message || "Failed to fetch user data.");
         }
@@ -61,7 +55,7 @@ export default function UserProfileCard({ id }: { id: string }) {
         ) : (
           <Loading />
         )}
-        <WpmRecords />
+        <WpmRecords username={username} />
       </div>
     )
   );

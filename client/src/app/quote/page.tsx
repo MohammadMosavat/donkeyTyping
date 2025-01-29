@@ -69,12 +69,7 @@ const QuotesPage = () => {
   };
 
   return (
-    <div className="pt-40 flex flex-col gap-4 w-10/12 mx-auto">
-      <img
-        className="fixed top-0 left-0 right-0 blur-lg bottom-0 -z-30 scale-110 w-full h-screen"
-        src={`${localStorage.getItem("theme") ?? "/images/bg6.jpg"}`}
-        alt="Background"
-      />
+    <div className="pt-40 flex flex-col gap-4 w-10/12 mx-auto"> 
       <h1 className="font-JetBrainsMono text-white text-3xl">Quotes</h1>
 
       {/* Show loading spinner while fetching */}

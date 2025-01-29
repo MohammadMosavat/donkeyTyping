@@ -6,10 +6,10 @@ interface Props {
 
 export default function UserPage({ params }: Props) {
   const { id } = params; // Get the dynamic route parameter
-
+  console.log(id);
   return (
     <div className="flex pt-40 w-10/12 lg:w-5/12 gap-10 mx-auto flex-col items-center p-4">
-      <UserProfileCard id={id} />
+      <UserProfileCard username={id} />
     </div>
   );
 }

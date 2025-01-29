@@ -2,6 +2,8 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation"; // Import useRouter for navigation
+import { hashUsername } from "@/utils/hashUsername";
+import Cookies from 'js-cookie';
 
 const SignUpForm = () => {
   const [username, setUsername] = useState<string>("");
@@ -57,7 +59,7 @@ const SignUpForm = () => {
     }
     try {
       const joinedAt = new Date().toISOString();
-      const response = await fetch("http://localhost:5000/signup", {
+      const response = await fetch("http://localhost:5000/user", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -69,7 +71,11 @@ const SignUpForm = () => {
       if (response.ok) {
         toast.success(data.message);
         localStorage.setItem("username", username);
-        router.push("/"); // Navigate to the homepage
+        hashUsername(email).then((hashedUsername) => {
+          Cookies.set("hashedUsername", hashedUsername, { expires: 14 });
+          console.log("Hashed Username saved in cookie:", hashedUsername);
+        });
+        router.push("/");
       } else {
         toast.error(data.message || "Failed to sign up.");
       }

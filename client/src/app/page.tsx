@@ -4,11 +4,12 @@ import toast from "react-hot-toast";
 import { getWord } from "@/hooks/randomWord";
 import TypingGame from "@/components/Typing";
 import SettingSection from "@/components/SettingSection";
+import useAuth from "@/hooks/useAuth";
 
 const Home = () => {
   const [res, setRes] = useState<string[]>([]); // Words for the game
   const inputRef = useRef<HTMLInputElement | null>(null);
-  
+  useAuth()
   // Generate random words on the initial render
   useLayoutEffect(() => {
     regenerateWords();

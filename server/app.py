@@ -60,33 +60,47 @@ def store_wpm():
         'record_id': str(result.inserted_id)
     }), 201
 
-@app.route('/store_wpm', methods=['GET'])
+from bson import ObjectId
+
+from bson import ObjectId
+
+@app.route("/store_wpm", methods=["GET"])
 def get_wpm_records():
-    # Get query parameters
-    username = request.args.get('username')  # Optional: Filter by username
-    start_date = request.args.get('start_date')  # Optional: Filter by start date
-    end_date = request.args.get('end_date')  # Optional: Filter by end date
-
-    # Build the query
-    query = {}
-    if username:
-        query['username'] = username
-
-    if start_date or end_date:
-        query['date'] = {}
-        if start_date:
-            query['date']['$gte'] = datetime.strptime(start_date, '%Y-%m-%d')  # Start date filter
-        if end_date:
-            query['date']['$lte'] = datetime.strptime(end_date, '%Y-%m-%d')  # End date filter
-
-    # Fetch records from MongoDB
     try:
-        records = list(wpm_collection.find(query, {'_id': 0}))  # Exclude `_id` from response
-        return jsonify(records), 200
-    except Exception as e:
-        return jsonify({'error': f'Error fetching records: {e}'}), 500
+        # Get query parameters
+        user_id = request.args.get('id_username')  # Query parameter 'id'
+        username = request.args.get('username')  # Query parameter 'username'
 
-@app.route("/signup", methods=["POST", "GET"])
+        # Build the query
+        query = {}
+
+        # If id is provided, add it to the query
+        if user_id:
+            try:
+                # Convert string id to ObjectId
+                query["id_username"] = ObjectId(user_id)
+            except Exception as e:
+                return jsonify({"message": f"Invalid _id format: {e}"}), 400  # Handle invalid _id format
+
+        # If username is provided, add it to the query
+        if username:
+            query["username"] = username
+
+        # Fetch records from MongoDB based on query
+        records = list(wpm_collection.find(query, {"_id": 0}))  # Exclude _id from response
+
+        # If no records found
+        if not records:
+            return jsonify({"message": "No records found for the given criteria"}), 404
+
+        return jsonify(records), 200
+
+    except Exception as e:
+        return jsonify({"error": f"Error fetching records: {str(e)}"}), 500
+
+
+
+@app.route("/user", methods=["POST", "GET"])
 def signup():
     if request.method == "POST":
         try:
@@ -100,7 +114,6 @@ def signup():
             # Validate input
             if not username or not email or not location:
                 return jsonify({"message": "Username, email, and location are required."}), 400
-
 
             # Insert user into the database with the joinedAt field
             user = {"username": username, "email": email, "location": location, "joinedAt": joinedAt}
@@ -118,36 +131,46 @@ def signup():
 
     elif request.method == "GET":
         try:
-            # Retrieve all users from the database
-            users = list(collection_users.find())
+            # Get query parameters for filtering
+            user_id = request.args.get("id")  # Optional: Filter by _id
+            username = request.args.get("username")  # Optional: Filter by username
+            start_date = request.args.get("start_date")  # Optional: Filter by start date
+            end_date = request.args.get("end_date")  # Optional: Filter by end date
+
+            # Build the query
+            query = {}
+
+            if user_id:
+                try:
+                    query["_id"] = ObjectId(user_id)  # If _id is provided, query by _id
+                except Exception as e:
+                    return jsonify({"message": f"Invalid _id format: {e}"}), 400
+
+            if username:
+                query["username"] = username
+
+            if start_date or end_date:
+                query["joinedAt"] = {}
+                if start_date:
+                    query["joinedAt"]["$gte"] = datetime.strptime(start_date, "%Y-%m-%d")  # Start date filter
+                if end_date:
+                    query["joinedAt"]["$lte"] = datetime.strptime(end_date, "%Y-%m-%d")  # End date filter
+
+            # Retrieve users from the database with the query
+            users = list(collection_users.find(query))
+
             # Convert ObjectId to string for JSON serialization
             for user in users:
-                user["_id"] = str(user["_id"])
+                user["_id"] = str(user["_id"])  # Convert ObjectId to string
+
+            # If no users found, return a message
+            if not users:
+                return jsonify({"message": "No users found matching the criteria."}), 404
 
             return jsonify(users), 200
 
         except Exception as e:
             return jsonify({"message": f"An error occurred: {str(e)}"}), 500
-
-@app.route('/user/<string:identifier>', methods=['GET'])
-def get_user(identifier):
-    query = {}
-
-    # Check if identifier is a valid ObjectId (for MongoDB _id)
-    try:
-        query['_id'] = ObjectId(identifier)
-    except:
-        # If not a valid ObjectId, assume it is a username
-        query['username'] = identifier
-
-    # Query MongoDB
-    user = collection_users.find_one(query)
-    if user:
-        # Convert MongoDB ObjectId to string for JSON serialization
-        user['_id'] = str(user['_id'])
-        return jsonify(user), 200
-    else:
-        return jsonify({'error': 'User not found'}), 404
 
 
 @app.route('/songs', methods=['POST'])

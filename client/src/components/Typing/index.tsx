@@ -24,7 +24,7 @@ const TypingGame = ({
   showWpm: boolean;
   showTimer: boolean;
 }) => {
-  const initialTime = 20;
+  const initialTime = 120;
   const [input, setInput] = useState("");
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [wordStatus, setWordStatus] = useState<boolean[]>([]);
@@ -43,7 +43,7 @@ const TypingGame = ({
     type: "success" | "error";
     text: string;
   } | null>(null);
-
+console.log('user name from local',localStorage.getItem("username"))
   useEffect(() => {
     // Fetch user data from the API
     const fetchUserData = async () => {

@@ -3,30 +3,23 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { motion } from "framer-motion";
 import Loading from "../loading";
+import { WpmRecord } from "@/types";
 
-interface WpmRecord {
-  username: string;
-  id_username: string;
-  wpm: number;
-  correct_char: number;
-  incorrect_char: number;
-  date: string;
-  language: string;
-}
-
-const WpmRecords = () => {
+const WpmRecords = ({ username }: { username: string } ) => {
   const [records, setRecords] = useState<WpmRecord[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
-
+  
   useEffect(() => {
     const fetchRecords = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/store_wpm");
+        const response = await axios.get(
+          `http://localhost:5000/store_wpm?username=${username}`
+        );
         setRecords(response.data);
         setError(null); // Clear any previous errors
       } catch (err) {
-        setError(err.response?.data?.error || "Failed to fetch records.");
+        console.log("Failed to fetch records.");
       } finally {
         setLoading(false);
       }
@@ -37,7 +30,7 @@ const WpmRecords = () => {
 
   return (
     <div className="p-6 sm:p-8 h-fit">
-      <h1 className="text-3xl font-bold text-white text-center mb-8">
+      <h1 className="text-3xl font-Aspekta font-bold text-white text-center mb-8">
         WPM Records
       </h1>
 
