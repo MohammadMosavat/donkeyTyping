@@ -25,6 +25,7 @@ const Header = () => {
               alt=""
             />
           </Link>
+          <NavLinks link="/" value="Home" />
           <NavLinks link="/quote" value="Quotes" />
           <NavLinks link="/listen-word" value="Listen word" />
           <NavLinks link={`/yourhall/${username}`} value="yourhall" />

@@ -41,7 +41,7 @@ const Home = () => {
             showTimer={true}
           />
           <section className="flex justify-between items-start w-full">
-            <SettingSection />
+            {/* <SettingSection /> */}
             {/* Additional settings or counters can go here */}
           </section>
         </div>

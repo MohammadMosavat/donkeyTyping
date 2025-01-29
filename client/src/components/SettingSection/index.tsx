@@ -1,4 +1,4 @@
-"use client";;
+"use client";
 import { useState } from "react";
 import { motion } from "framer-motion";
 import Loading from "../loading";
@@ -26,10 +26,10 @@ const SettingSection = () => {
   const imagesArray = [
     { src: "/images/bg3.jpg", alt: "Background Option 1" },
     // { src: "/images/bg5.jpg", alt: "Background Option 2" },
-    { src: "/images/bg4.png", alt: "Background Option 3" },
+    { src: "/images/bg2.jpg.jpg.png", alt: "Background Option 3" },
     { src: "/images/bg6.jpg", alt: "Background Option 4" },
     { src: "/images/bg7.jpg", alt: "Background Option 5" },
-    { src: "/images/bg8.jpg", alt: "Background Option 6" },
+    { src: "/images/bg2.jpg.jpg", alt: "Background Option 6" },
     // { src: "/images/bg9.jpg", alt: "Background Option 7" },
   ];
   return (
