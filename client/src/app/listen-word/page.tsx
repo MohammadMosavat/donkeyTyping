@@ -76,7 +76,7 @@ const PostRandomWord = () => {
         e.preventDefault(); // Prevent the default save behavior
         setShow(!show);
       }
-      if (e.ctrlKey && e.key === "w") {
+      if (e.ctrlKey && e.key === "q") {
         e.preventDefault(); // Prevent the default save behavior
         postRandomWord();
       }
@@ -93,11 +93,11 @@ const PostRandomWord = () => {
     <div className="flex pt-40 w-10/12 lg:w-5/12 gap-10 mx-auto flex-col items-center p-4">
     
       <button
-        className="bg-glass font-Aspekta w-1/3 flex items-center gap-4 justify-center flex-wrap text-white py-2 px-4 rounded"
+        className="bg-glass font-Aspekta  flex items-center gap-4 justify-center flex-wrap text-white py-2 px-4 rounded"
         onClick={postRandomWord}
       >
         Say a word
-        <span className="px-1.5 text-s bg-glass">Ctrl + w</span>
+        <span className="px-1.5 text-sm bg-glass">Ctrl + q</span>
       </button>
 
       {word && show && (
@@ -122,11 +122,11 @@ const PostRandomWord = () => {
               e.target.value = "";
             }
           }}
-          className="col-span-full md:col-span-3 p-4 rounded-xl font-JetBrainsMono text-white bg-glass transition duration-300 focus:outline-none focus:bg-glass"
+          className="col-span-full md:col-span-3  py-2 px-4 rounded-xl font-JetBrainsMono text-white bg-glass transition duration-300 focus:outline-none focus:bg-glass"
           placeholder="Type here..."
         />
         <button
-          className="bg-glass flex items-center gap-4 justify-center flex-wrap col-span-full md:col-span-1 text-white p-4 font-Aspekta rounded"
+          className="bg-glass flex items-center gap-4 justify-center flex-wrap col-span-full md:col-span-1 text-white py-2 px-4 font-Aspekta rounded"
           onClick={() => {
             setShow(!show);
           }}
@@ -135,27 +135,27 @@ const PostRandomWord = () => {
           <span className="px-1.5 text-s bg-glass">Ctrl + i</span>
         </button>
         <button
-          className="bg-glass flex items-center gap-4 justify-center flex-wrap col-span-2 text-white p-4 font-Aspekta rounded"
+          className="bg-glass flex items-center gap-4 justify-center flex-wrap col-span-2 text-white py-2 px-4 font-Aspekta rounded"
           onClick={() => {
             sayWord(word);
           }}
         >
           Repeat it
-          <span className="px-1.5 text-s bg-glass">Ctrl + s</span>
+          <span className="px-1.5 text-sm bg-glass">Ctrl + s</span>
         </button>
-        <label className="col-span-2">
+        <label className="col-span-2 font-Aspekta">
           <select
-            className="text-white w-full outline-none p-4 rounded bg-glass"
+            className="text-white w-full outline-none  py-2 px-4 rounded bg-glass"
             value={wordType}
             onChange={(e) => setWordType(e.target.value)}
           >
-            <option className="text-black bg-transparent" value="noun">
+            <option className="text-black font-Aspekta bg-transparent" value="noun">
               Noun
             </option>
-            <option className="text-black bg-transparent" value="adjective">
+            <option className="text-black font-Aspekta bg-transparent" value="adjective">
               Adjective
             </option>
-            <option className="text-black bg-transparent" value="verb">
+            <option className="text-black font-Aspekta bg-transparent" value="verb">
               Verb
             </option>
           </select>

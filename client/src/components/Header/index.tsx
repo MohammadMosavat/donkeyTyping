@@ -1,4 +1,4 @@
-"use client";;
+"use client";
 import Link from "next/link";
 import { motion } from "framer-motion";
 import NavLinks from "../NavLinks";
@@ -14,23 +14,28 @@ const Header = () => {
         initial={{ opacity: 0, y: -100 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="w-10/12 bg-glass my-4 z-10 fixed left-[8%] mx-auto flex items-center gap-10 p-2"
+        className="w-10/12  my-4 z-10 fixed left-[8%] mx-auto flex justify-between items-center gap-10 p-2"
       >
-        <>
-          <Link href={"/"}>
-            <img
-              src="/svgs/logo.svg"
-              title="go home"
-              className="w-8 h-8"
-              alt=""
-            />
-          </Link>
+        <Link href={"/"}>
+          <img
+            src="/svgs/logo.svg"
+            title="go home"
+            className="w-8 h-8"
+            alt=""
+          />
+        </Link>
+        <ul className="flex items-center justify-center gap-10 ">
           <NavLinks link="/" value="Home" />
           <NavLinks link="/quote" value="Quotes" />
           <NavLinks link="/listen-word" value="Listen word" />
-          <NavLinks link={`/yourhall/${username}`} value="yourhall" />
           <NavLinks link={`/explore/typehall`} value="Typehall" />
-        </>
+        </ul>
+        <Link
+          className="capitalize  rounded-full px-1.5 hover:shadow-xl hover:drop-shadow-xl text-white font-Aspekta"
+          href={`/yourhall/${username}`}
+        >
+          {username?.split("")[0]}
+        </Link>
       </motion.header>
     </>
   );

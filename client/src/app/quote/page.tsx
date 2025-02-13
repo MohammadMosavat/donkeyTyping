@@ -76,7 +76,7 @@ const QuotesPage = () => {
       {loading ? (
         <Loading />
       ) : (
-        <ul className="p-4 text-white rounded-lg flex flex-col items-center bg-glass">
+        <ul className="p-4 text-white rounded-lg flex flex-col items-center">
           {quotes.length > 0 ? (
             quotes.slice(-1).map((quote) => (
               <a

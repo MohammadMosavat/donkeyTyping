@@ -34,7 +34,7 @@ export default function UserProfileCard({ username }: { username: string }) {
   }, []);
   return (
     data && (
-      <div className="w-full p-4 bg-glass">
+      <div className="flex flex-col gap-10 w-full">
         {!loading ? (
           <div className="flex items-center gap-4 justify-between">
             <div className="flex gap-4 items-center">

@@ -75,7 +75,7 @@ console.log('user name from local',localStorage.getItem("username"))
       wpm: wpm,
       correct_char: correctChars,
       incorrect_char: incorrectChars,
-      date: new Date().toISOString(),
+      date: new Date().toUTCString(),
       language: "en",
     };
 

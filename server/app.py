@@ -1,11 +1,12 @@
 from flask import Flask, request, jsonify
 import lyricsgenius
-from pymongo import MongoClient , errors
+from pymongo import MongoClient, errors,DESCENDING, ASCENDING
 from flask_cors import CORS
 import requests
 import pyttsx3
 from bson import ObjectId
 from datetime import datetime
+import email.utils 
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
@@ -27,6 +28,13 @@ genius = lyricsgenius.Genius(genius_token)
 # Ensure 'username' field is unique
 collection_users.create_index("username", unique=True)
 collection_users.create_index("email", unique=True)
+
+def parse_rfc1123_date(date_str):
+    """Convert RFC 1123 date string to datetime object."""
+    try:
+        return email.utils.parsedate_to_datetime(date_str)
+    except Exception:
+        return None  # Return None if parsing fails
 
 @app.route('/store_wpm', methods=['POST'])
 def store_wpm():
@@ -60,44 +68,64 @@ def store_wpm():
         'record_id': str(result.inserted_id)
     }), 201
 
-from bson import ObjectId
-
-from bson import ObjectId
-
 @app.route("/store_wpm", methods=["GET"])
 def get_wpm_records():
     try:
         # Get query parameters
-        user_id = request.args.get('id_username')  # Query parameter 'id'
-        username = request.args.get('username')  # Query parameter 'username'
+        user_id = request.args.get('id_username')
+        username = request.args.get('username')
+        sort_by = request.args.get("sort")
 
         # Build the query
         query = {}
 
-        # If id is provided, add it to the query
         if user_id:
             try:
-                # Convert string id to ObjectId
                 query["id_username"] = ObjectId(user_id)
             except Exception as e:
-                return jsonify({"message": f"Invalid _id format: {e}"}), 400  # Handle invalid _id format
+                return jsonify({"message": f"Invalid id_username format: {e}"}), 400  
 
-        # If username is provided, add it to the query
         if username:
             query["username"] = username
 
-        # Fetch records from MongoDB based on query
-        records = list(wpm_collection.find(query, {"_id": 0}))  # Exclude _id from response
+        # Fetch records
+        records = list(wpm_collection.find(query))
 
-        # If no records found
         if not records:
             return jsonify({"message": "No records found for the given criteria"}), 404
+
+        # Convert `_id` to string and parse dates
+        for record in records:
+            record["_id"] = str(record["_id"])
+
+            # Convert string date to datetime object
+            if "date" in record and isinstance(record["date"], str):
+                parsed_date = parse_rfc1123_date(record["date"])
+                if parsed_date:
+                    record["parsed_date"] = parsed_date  # Store separately for sorting
+                else:
+                    record["parsed_date"] = datetime.min  # Default value for invalid dates
+
+        # Sorting logic
+        if sort_by == "highest":
+            records.sort(key=lambda x: x["wpm"], reverse=True)  # Highest WPM first
+        elif sort_by == "lowest":
+            records.sort(key=lambda x: x["wpm"])  # Lowest WPM first
+        elif sort_by == "newest":
+            records.sort(key=lambda x: x["parsed_date"], reverse=True)  # Newest first
+        elif sort_by == "oldest":
+            records.sort(key=lambda x: x["parsed_date"])  # Oldest first
+
+        # Convert `datetime` back to RFC 1123 string before returning response
+        for record in records:
+            if isinstance(record.get("parsed_date"), datetime):
+                record["date"] = record["parsed_date"].strftime("%a, %d %b %Y %H:%M:%S GMT")
+                del record["parsed_date"]  # Remove temporary field
 
         return jsonify(records), 200
 
     except Exception as e:
         return jsonify({"error": f"Error fetching records: {str(e)}"}), 500
-
 
 
 @app.route("/user", methods=["POST", "GET"])

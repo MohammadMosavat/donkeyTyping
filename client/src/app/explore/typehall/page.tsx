@@ -11,37 +11,81 @@ const TypeHall = () => {
   const [records, setRecords] = useState<WpmRecord[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
-  useEffect(() => {
-    const fetchRecords = async () => {
-      try {
-        const response = await axios.get(`http://localhost:5000/store_wpm`);
+  const fetchRecords = async (reverse: boolean) => {
+    setLoading(true);
+    try {
+      const response = await axios.get(`http://localhost:5000/store_wpm`);
+      if (reverse) {
+        setRecords(response.data.reverse());
+      } else {
         setRecords(response.data);
-      } catch (err) {
-        toast.error("Failed to fetch records.");
-      } finally {
-        setLoading(false);
       }
-    };
-
-    fetchRecords();
+    } catch (err) {
+      toast.error("Failed to fetch records.");
+    } finally {
+      setLoading(false);
+    }
+  };
+  useEffect(() => {
+    fetchRecords(false);
   }, []);
+
+  const fetchFilterRecords = async (filter: string) => {
+    setLoading(true);
+    try {
+      const response = await axios.get(
+        `http://localhost:5000/store_wpm?sort=${filter}`
+      );
+      setRecords(response.data);
+    } catch (err) {
+      toast.error("Failed to fetch records.");
+    } finally {
+      setLoading(false);
+    }
+  };
 
   return (
     <div className="w-full flex flex-col gap-4">
-      <nav>
+      <nav className="flex flex-col gap-4">
         <h1 className="text-3xl font-Aspekta text-white">
           Wellcome to Typehall
         </h1>
-        <button className=""></button>
+        <section className="flex items-center gap-4 w-fit">
+          <button
+            onClick={() => fetchFilterRecords("highest")}
+            className="font-Aspekta text-sm text-white bg-glass p-2 rounded-md"
+          >
+            Highest WPM
+          </button>
+          <button
+            onClick={() => fetchFilterRecords("lowest")}
+            className="font-Aspekta text-sm text-white bg-glass p-2 rounded-md"
+          >
+            Lowest WPM
+          </button>
+          <button
+            onClick={() => fetchRecords(false)}
+            className="font-Aspekta text-sm text-white bg-glass p-2 rounded-md"
+          >
+            Newest WPM
+          </button>
+          <button
+            onClick={() => fetchRecords(true)}
+            className="font-Aspekta text-sm text-white bg-glass p-2 rounded-md"
+          >
+            Oldest WPM
+          </button>
+        </section>
       </nav>
       {!loading ? (
         <main className="grid grid-cols-2 gap-4 w-full ">
           <div className="overflow-x-auto col-span-full rounded-xl shadow-lg">
             <motion.table
+              key={loading}
               initial={{ opacity: 0, y: 10 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ duration: 0.4, ease: "easeOut" }}
-              className="min-w-full bg-glass text-white rounded-xl border border-white/10"
+              className="min-w-full bg-glass text-white rounded-xl "
             >
               {/* Table Header */}
               <thead>
@@ -67,7 +111,7 @@ const TypeHall = () => {
                     initial={{ opacity: 0, y: 10 }}
                     animate={{ opacity: 1, y: 0 }}
                     transition={{ duration: 0.3, delay: index * 0.05 }}
-                    className="border-b border-white/10 hover:border-white/50 hover:bg-white/10 transition-colors"
+                    className="  hover:bg-white/10 transition-colors"
                   >
                     <td className="px-6 py-4 font-JetBrainsMono">
                       <Link href={`/yourhall/${record.username}`}>
