@@ -49,13 +49,13 @@ console.log('user name from local',localStorage.getItem("username"))
     const fetchUserData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/user/${localStorage.getItem("username")}`
+          `http://localhost:5000/user?username=${localStorage.getItem("username")}`
         );
         const data = await response.json();
         console.log(data);
         if (response.ok) {
           console.log("data", data);
-          setID(data._id);
+          setID(data[0]._id);
         }
       } catch (error) {
         console.log("An error occurred while fetching user data.");
