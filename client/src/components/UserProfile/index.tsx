@@ -8,13 +8,14 @@ import UserProfileCardProps from "@/types";
 export default function UserProfileCard({ username }: { username: string }) {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<UserProfileCardProps>();
-  console.log("username in user profile", username);
   useEffect(() => {
     // Fetch user data from the API
     const fetchUserData = async () => {
       setLoading(true);
       try {
-        const response = await fetch(`http://localhost:5000/user?username=${username}`);
+        const response = await fetch(
+          `http://localhost:5000/user?username=${username}`
+        );
         const data = await response.json();
         console.log(data);
         if (response.ok) {
@@ -29,6 +30,8 @@ export default function UserProfileCard({ username }: { username: string }) {
         setLoading(false);
       }
     };
+
+    
 
     fetchUserData();
   }, []);
