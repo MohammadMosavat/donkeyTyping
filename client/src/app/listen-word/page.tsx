@@ -90,77 +90,90 @@ const PostRandomWord = () => {
   }, [word, show]); // Re-run the effect when 'word' changes
 
   return (
-    <div className="flex pt-40 w-10/12 lg:w-5/12 gap-10 mx-auto flex-col items-center p-4">
-    
-      <button
-        className="bg-glass font-Aspekta  flex items-center gap-4 justify-center flex-wrap text-white py-2 px-4 rounded"
-        onClick={postRandomWord}
-      >
-        Say a word
-        <span className="px-1.5 text-sm bg-glass">Ctrl + q</span>
-      </button>
-
-      {word && show && (
-        <motion.p
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ duration: 0.5 }}
-          className="mt-4 textxl font-JetBrainsMono text-white"
-        >
-          {word}
-        </motion.p>
-      )}
-
-      <section className="w-full grid grid-cols-4 gap-4 items-center mx-auto">
-        <input
-          ref={inputRef}
-          type="text"
-          onChange={(e) => {
-            if (e.target.value == word) {
-              toast.success("Good Job!");
-              postRandomWord();
-              e.target.value = "";
-            }
-          }}
-          className="col-span-full md:col-span-3  py-2 px-4 rounded-xl font-JetBrainsMono text-white bg-glass transition duration-300 focus:outline-none focus:bg-glass"
-          placeholder="Type here..."
-        />
+    <div className="flex pt-40 w-10/12 gap-10 mx-auto flex-col items-center p-4">
+      <h1 className="text-5xl self-start font-JetBrainsMono text-[#ffffffb4]">
+        Listen Word
+      </h1>
+      <main className="flex flex-col gap-4 w-6/12">
         <button
-          className="bg-glass flex items-center gap-4 justify-center flex-wrap col-span-full md:col-span-1 text-white py-2 px-4 font-Aspekta rounded"
-          onClick={() => {
-            setShow(!show);
-          }}
+          className="bg-glass font-Aspekta  flex items-center gap-4 justify-center flex-wrap text-white py-2 px-4 rounded"
+          onClick={postRandomWord}
         >
-          I give up
-          <span className="px-1.5 text-s bg-glass">Ctrl + i</span>
+          Say a word
+          <span className="px-1.5 text-sm bg-glass">Ctrl + q</span>
         </button>
-        <button
-          className="bg-glass flex items-center gap-4 justify-center flex-wrap col-span-2 text-white py-2 px-4 font-Aspekta rounded"
-          onClick={() => {
-            sayWord(word);
-          }}
-        >
-          Repeat it
-          <span className="px-1.5 text-sm bg-glass">Ctrl + s</span>
-        </button>
-        <label className="col-span-2 font-Aspekta">
-          <select
-            className="text-white w-full outline-none  py-2 px-4 rounded bg-glass"
-            value={wordType}
-            onChange={(e) => setWordType(e.target.value)}
+
+        {word && show && (
+          <motion.p
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.5 }}
+            className="mt-4 textxl font-JetBrainsMono text-white"
           >
-            <option className="text-black font-Aspekta bg-transparent" value="noun">
-              Noun
-            </option>
-            <option className="text-black font-Aspekta bg-transparent" value="adjective">
-              Adjective
-            </option>
-            <option className="text-black font-Aspekta bg-transparent" value="verb">
-              Verb
-            </option>
-          </select>
-        </label>
-      </section>
+            {word}
+          </motion.p>
+        )}
+
+        <section className="w-full grid grid-cols-4 gap-4 items-center mx-auto">
+          <input
+            ref={inputRef}
+            type="text"
+            onChange={(e) => {
+              if (e.target.value == word) {
+                toast.success("Good Job!");
+                postRandomWord();
+                e.target.value = "";
+              }
+            }}
+            className="col-span-full md:col-span-3  py-2 px-4 rounded-xl font-JetBrainsMono text-white bg-glass transition duration-300 focus:outline-none focus:bg-glass"
+            placeholder="Type here..."
+          />
+          <button
+            className="bg-glass flex items-center gap-4 justify-center flex-wrap col-span-full md:col-span-1 text-white py-2 px-4 font-Aspekta rounded"
+            onClick={() => {
+              setShow(!show);
+            }}
+          >
+            I give up
+            <span className="px-1.5 text-sm bg-glass">Ctrl + i</span>
+          </button>
+          <button
+            className="bg-glass flex items-center gap-4 justify-center flex-wrap col-span-2 text-white py-2 px-4 font-Aspekta rounded"
+            onClick={() => {
+              sayWord(word);
+            }}
+          >
+            Repeat it
+            <span className="px-1.5 text-sm bg-glass">Ctrl + s</span>
+          </button>
+          <label className="col-span-2 font-Aspekta">
+            <select
+              className="text-white w-full outline-none  py-2 px-4 rounded bg-glass"
+              value={wordType}
+              onChange={(e) => setWordType(e.target.value)}
+            >
+              <option
+                className="text-black font-Aspekta bg-transparent"
+                value="noun"
+              >
+                Noun
+              </option>
+              <option
+                className="text-black font-Aspekta bg-transparent"
+                value="adjective"
+              >
+                Adjective
+              </option>
+              <option
+                className="text-black font-Aspekta bg-transparent"
+                value="verb"
+              >
+                Verb
+              </option>
+            </select>
+          </label>
+        </section>
+      </main>
     </div>
   );
 };

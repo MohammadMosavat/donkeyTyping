@@ -58,6 +58,7 @@ const SignUpForm = () => {
       return;
     }
     try {
+      localStorage.setItem("username", username);
       const joinedAt = new Date().toISOString();
       const response = await fetch("http://localhost:5000/user", {
         method: "POST",
@@ -88,11 +89,6 @@ const SignUpForm = () => {
 
   return (
     <div className="flex justify-center items-center min-h-screen">
-      <img
-        className="fixed top-0 left-0 right-0 blur-lg bottom-0 -z-30 scale-110 w-full h-screen"
-        src={getThemeFromLocal ?? "/images/bg2.jpg.jpg.png"}
-        alt="Background"
-      />
       <form
         onSubmit={handleSubmit}
         className="bg-glass p-8 rounded-lg shadow-lg w-96"

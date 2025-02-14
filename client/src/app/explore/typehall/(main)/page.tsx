@@ -2,81 +2,54 @@
 import Loading from "@/components/loading";
 import { WpmRecord } from "@/types";
 import axios from "axios";
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import Link from "next/link";
 import toast from "react-hot-toast";
+import { useSearchParams } from "next/navigation";
 
-const TypeHall = () => {
+const TypeHallFilterPage = () => {
+  const searchParams = useSearchParams();
+  const query = searchParams.get("sort");
+  console.log(query);
   const [records, setRecords] = useState<WpmRecord[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
 
-  const fetchRecords = async (reverse: boolean) => {
+  const fetchFilterRecords = async () => {
     setLoading(true);
-    try {
-      const response = await axios.get(`http://localhost:5000/store_wpm`);
-      if (reverse) {
-        setRecords(response.data.reverse());
-      } else {
-        setRecords(response.data);
+    if (query == "newest" || query == "oldest") {
+      try {
+        const response = await axios.get(`http://localhost:5000/store_wpm`);
+        if (query == "oldest") {
+          setRecords(response.data);
+        } else {
+          setRecords(response.data.reverse());
+        }
+      } catch (err) {
+        toast.error("Failed to fetch records.");
+      } finally {
+        setLoading(false);
       }
-    } catch (err) {
-      toast.error("Failed to fetch records.");
-    } finally {
-      setLoading(false);
+    } else {
+      try {
+        const response = await axios.get(
+          `http://localhost:5000/store_wpm?sort=${query}`
+        );
+        setRecords(response.data);
+      } catch (err) {
+        toast.error("Failed to fetch records.");
+      } finally {
+        setLoading(false);
+      }
     }
   };
-  useEffect(() => {
-    fetchRecords(false);
-  }, []);
 
-  const fetchFilterRecords = async (filter: string) => {
-    setLoading(true);
-    try {
-      const response = await axios.get(
-        `http://localhost:5000/store_wpm?sort=${filter}`
-      );
-      setRecords(response.data);
-    } catch (err) {
-      toast.error("Failed to fetch records.");
-    } finally {
-      setLoading(false);
-    }
-  };
+  useEffect(() => {
+    fetchFilterRecords();
+  }, [query]);
 
   return (
-    <div className="w-full flex flex-col gap-4">
-      <nav className="flex flex-col gap-4">
-        <h1 className="text-3xl font-Aspekta text-white">
-          Wellcome to Typehall
-        </h1>
-        <section className="flex items-center gap-4 w-fit">
-          <button
-            onClick={() => fetchFilterRecords("highest")}
-            className="font-Aspekta text-sm text-white bg-glass p-2 rounded-md"
-          >
-            Highest WPM
-          </button>
-          <button
-            onClick={() => fetchFilterRecords("lowest")}
-            className="font-Aspekta text-sm text-white bg-glass p-2 rounded-md"
-          >
-            Lowest WPM
-          </button>
-          <button
-            onClick={() => fetchRecords(false)}
-            className="font-Aspekta text-sm text-white bg-glass p-2 rounded-md"
-          >
-            Newest WPM
-          </button>
-          <button
-            onClick={() => fetchRecords(true)}
-            className="font-Aspekta text-sm text-white bg-glass p-2 rounded-md"
-          >
-            Oldest WPM
-          </button>
-        </section>
-      </nav>
+    <>
       {!loading ? (
         <main className="grid grid-cols-2 gap-4 w-full ">
           <div className="overflow-x-auto col-span-full rounded-xl shadow-lg">
@@ -144,8 +117,8 @@ const TypeHall = () => {
       ) : (
         <Loading />
       )}
-    </div>
+    </>
   );
 };
 
-export default TypeHall;
+export default TypeHallFilterPage;

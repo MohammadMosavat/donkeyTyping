@@ -70,7 +70,7 @@ const QuotesPage = () => {
 
   return (
     <div className="pt-40 flex flex-col gap-4 w-10/12 mx-auto"> 
-      <h1 className="font-JetBrainsMono text-white text-3xl">Quotes</h1>
+      <h1 className="text-5xl font-JetBrainsMono text-[#ffffffb4]">Quotes</h1>
 
       {/* Show loading spinner while fetching */}
       {loading ? (
