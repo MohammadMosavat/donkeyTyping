@@ -1,18 +1,16 @@
-import { hashUsername } from "@/utils/hashUsername";
-import { useRouter } from "next/router";
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 
 const useAuth = () => {
-  const username = localStorage.getItem("username");
-
-  hashUsername(username ?? "").then((hashedUsername) => {
-    if (hashedUsername === username) {
-      console.log("Match found:", hashedUsername, username);
-    } else {
-      console.log("No match. Redirecting to signup.", hashedUsername, username);
+  const router = useRouter();
+  const username = localStorage.getItem("username") ?? null;
+  useEffect(() => {
+    if (!username) {
+      router.push("/register/signup"); // Navigate after render
     }
-  }).catch((error) => {
-    console.error("Error hashing username:", error);
-  });
+  }, [username, router]); // Runs when `username` changes
+
+  return username; // Or any other authentication-related data
 };
 
 export default useAuth;
