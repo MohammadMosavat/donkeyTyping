@@ -4,7 +4,6 @@ import toast from "react-hot-toast";
 import { getWord } from "@/hooks/randomWord";
 import useAuth from "@/hooks/useAuth";
 import TypingGame from "@/components/Typing";
-import { Button } from "@mui/material";
 const Home = () => {
   const [res, setRes] = useState<string[]>([]);
   const [timerKey, setTimerKey] = useState<number>(0); // This will control the timer reset
@@ -52,13 +51,12 @@ const Home = () => {
         <div className="flex flex-col gap-10 items-start justify-between w-full">
           <div className="flex flex-col items-center gap-4 w-full">
             {Typing()}
-            <Button
-              variant="outlined"
+            <button
               onClick={regenerateWords}
-              className="px-4 py-2 bg-glass text-white rounded"
+              className="p-2 bg-glass text-white !rounded-full"
             >
-              Refresh Words
-            </Button>
+              <img className="size-6" src="/svgs/refresh.svg" alt="" />
+            </button>
           </div>
           <section className="flex justify-between items-start w-full">
             {/* <SettingSection /> */}

@@ -20,15 +20,15 @@ const Header = () => {
           <img
             src="/svgs/logo.svg"
             title="go home"
-            className="w-8 h-8"
+            className="size-8"
             alt=""
           />
         </Link>
         <ul className="flex items-center justify-center gap-10 ">
-          <NavLinks link="/" value="Home" />
-          <NavLinks link="/quote" value="Quotes" />
-          <NavLinks link="/listen-word" value="Listen word" />
-          <NavLinks link={`/explore/typehall`} value="Typehall" />
+          <NavLinks iconSrc="/svgs/home.svg" link="/" value="Home" />
+          <NavLinks iconSrc="/svgs/quote.svg" link="/quote" value="Quotes" />
+          <NavLinks iconSrc="/svgs/headphones.svg" link="/listen-word" value="Listen word" />
+          <NavLinks iconSrc="/svgs/cup.svg" link={`/explore/typehall`} value="Typehall" />
         </ul>
         <Link
           className="capitalize  rounded-full px-1.5 hover:shadow-xl hover:drop-shadow-xl text-white font-Aspekta"
