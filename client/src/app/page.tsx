@@ -1,45 +1,65 @@
-"use client";;
-import { useLayoutEffect, useRef, useState } from "react";
+"use client";
+import { useEffect, useState, useRef, useCallback } from "react";
 import toast from "react-hot-toast";
 import { getWord } from "@/hooks/randomWord";
-import TypingGame from "@/components/Typing";
-import SettingSection from "@/components/SettingSection";
 import useAuth from "@/hooks/useAuth";
-
+import TypingGame from "@/components/Typing";
+import { Button } from "@mui/material";
 const Home = () => {
-  const [res, setRes] = useState<string[]>([]); // Words for the game
+  const [res, setRes] = useState<string[]>([]);
+  const [timerKey, setTimerKey] = useState<number>(0); // This will control the timer reset
   const inputRef = useRef<HTMLInputElement | null>(null);
-  useAuth()
+  useAuth();
+
   // Generate random words on the initial render
-  useLayoutEffect(() => {
-    regenerateWords();
+  useEffect(() => {
+    const randomWord = getWord(40);
+    setRes(randomWord);
     if (inputRef.current) {
       inputRef.current.focus();
     }
   }, []);
 
-  // Function to regenerate words
-  const regenerateWords = () => {
-    const randomWord = getWord(40); // Adjust the number of words as needed
+  // Function to regenerate words and reset the timer
+  const regenerateWords = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    const randomWord = getWord(40);
+    setRes(randomWord);
+    setTimerKey((prev) => prev + 1); // Reset the timer by changing the key
+    toast.success("Words refreshed!");
+  };
+
+  const handleMissionComplete = () => {
+    toast.success("Mission Complete! Generating new words...");
+    const randomWord = getWord(40);
     setRes(randomWord);
   };
 
-  // Handle mission completion
-  const handleMissionComplete = () => {
-    toast.success("Mission Complete! Generating new words...");
-    regenerateWords(); // Regenerate words when the mission is complete
-  };
-
+  const Typing = useCallback(() => {
+    return (
+      <TypingGame
+        data={res} // Pass words to the child component
+        onMissionComplete={handleMissionComplete} // Pass the callback
+        showWpm={true}
+        showTimer={true}
+        key={timerKey} // Change key to reset the entire component, including the timer
+      />
+    );
+  }, [res]);
   return (
     <main className="flex pt-40 items-center justify-center h-screen">
       <form className="flex flex-col mx-auto gap-8 w-11/12 items-center">
         <div className="flex flex-col gap-10 items-start justify-between w-full">
-          <TypingGame
-            data={res} // Pass words to the child component
-            onMissionComplete={handleMissionComplete} // Pass the callback
-            showWpm={true}
-            showTimer={true}
-          />
+          <div className="flex flex-col items-center gap-4 w-full">
+            {Typing()}
+            <Button
+              variant="outlined"
+              onClick={regenerateWords}
+              className="px-4 py-2 bg-glass text-white rounded"
+            >
+              Refresh Words
+            </Button>
+          </div>
           <section className="flex justify-between items-start w-full">
             {/* <SettingSection /> */}
             {/* Additional settings or counters can go here */}
