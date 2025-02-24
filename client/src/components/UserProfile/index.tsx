@@ -31,8 +31,6 @@ export default function UserProfileCard({ username }: { username: string }) {
       }
     };
 
-    
-
     fetchUserData();
   }, []);
   return (
@@ -41,16 +39,18 @@ export default function UserProfileCard({ username }: { username: string }) {
         {!loading ? (
           <div className="flex items-center gap-4 justify-between">
             <div className="flex gap-4 items-center">
-              <h2 className="text-xl font-Aspekta  text-white">
+              <h2 className="text-xl font-JetBrainsMono  text-white">
                 @{data.username}
               </h2>
-              <p className="text-white text-sm font-Aspekta">{data.email}</p>
+              <p className="text-white text-sm font-JetBrainsMono">
+                {data.email}
+              </p>
             </div>
             <div className="flex items-center gap-4">
-              <p className="text-sm font-Aspekta text-white">
+              <p className="text-sm font-JetBrainsMono text-white">
                 Location: {data.location}
               </p>
-              <p className="text-sm font-Aspekta text-white">
+              <p className="text-sm font-JetBrainsMono text-white">
                 Joined At: {new Date(data.joinedAt).toLocaleDateString()}
               </p>
             </div>

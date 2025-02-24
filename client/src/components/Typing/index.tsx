@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import { motion } from "framer-motion";
 import axios from "axios";
+import SplitText from "../SplitText";
 
 interface FormData {
   username: string | null;
@@ -43,13 +44,15 @@ const TypingGame = ({
     type: "success" | "error";
     text: string;
   } | null>(null);
-console.log('user name from local',localStorage.getItem("username"))
+  console.log("user name from local", localStorage.getItem("username"));
   useEffect(() => {
     // Fetch user data from the API
     const fetchUserData = async () => {
       try {
         const response = await fetch(
-          `http://localhost:5000/user?username=${localStorage.getItem("username")}`
+          `http://localhost:5000/user?username=${localStorage.getItem(
+            "username"
+          )}`
         );
         const data = await response.json();
         console.log(data);
@@ -200,7 +203,7 @@ console.log('user name from local',localStorage.getItem("username"))
 
   return (
     <div className="flex flex-col items-center pt-8 px-4 sm:px-8 md:px-16">
-      <div className="font-Aspekta mb-6">
+      <div className="font-JetBrainsMono mb-6">
         <div className="flex flex-wrap justify-center gap-2 text-white">
           {data.map((word, wordIndex) => {
             const isActiveWord = wordIndex === currentWordIndex;
@@ -254,12 +257,12 @@ console.log('user name from local',localStorage.getItem("username"))
         onChange={handleInputChange}
         onFocus={handleInputFocus}
         placeholder="Start typing..."
-        className="p-4 mb-4 placeholder:text-white placeholder:opacity-40 text-white font-Aspekta bg-glass outline-none rounded-lg w-full sm:w-80 md:w-96"
+        className="p-4 mb-4 placeholder:text-white placeholder:opacity-40 text-white font-JetBrainsMono bg-glass outline-none rounded-lg w-full sm:w-80 md:w-96"
         disabled={isDisabled}
       />
 
       {showTimer && (
-        <p className="mt-4 text-white font-Aspekta">
+        <p className="mt-4 text-white font-JetBrainsMono">
           {Math.floor(timer / 60)}:{String(timer % 60).padStart(2, "0")}
         </p>
       )}
@@ -271,14 +274,14 @@ console.log('user name from local',localStorage.getItem("username"))
           transition={{ duration: 0.5 }}
           className="flex mt-4 flex-col gap-2"
         >
-          <div className=" text-white font-Aspekta">
+          <div className=" text-white font-JetBrainsMono">
             Words per minute: {wpm}
           </div>
 
-          <div className="text-white font-Aspekta">
+          <div className="text-white font-JetBrainsMono">
             Correct characters: {correctChars}
           </div>
-          <div className="text-white font-Aspekta">
+          <div className="text-white font-JetBrainsMono">
             Incorrect characters: {incorrectChars}
           </div>
         </motion.section>

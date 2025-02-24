@@ -40,7 +40,7 @@ const SettingSection = () => {
           className="flex w-fit items-center gap-2 cursor-pointer"
         >
           <img src="/svgs/brush.svg" alt="Brush Icon" />
-          <p className="text-white font-Aspekta">Theme</p>
+          <p className="text-white font-JetBrainsMono">Theme</p>
         </li>
         {isOpen && (
           <motion.div
@@ -48,7 +48,7 @@ const SettingSection = () => {
             animate={{ opacity: 1 }}
             transition={{ duration: 0.5 }}
             className=" flex-wrap flex  gap-2 bg-glass p-1.5 rounded-md 
-            [&>*]:text-white [&>*]:font-Aspekta "
+            [&>*]:text-white [&>*]:font-JetBrainsMono "
           >
             {imagesArray.map((image, index) => (
               <div

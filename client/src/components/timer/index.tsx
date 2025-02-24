@@ -24,7 +24,7 @@ export default function Timer({ startTime, handleTimeUpdate }: TimerType) {
   }, [time]); // Dependency ensures this runs when `time` changes
 
   return (
-    <div className="flex text-white [&>*]:font-Aspekta items-center gap-2">
+    <div className="flex text-white [&>*]:font-JetBrainsMono items-center gap-2">
       <motion.h2
         key={time}
         initial={{ opacity: 0, y: 10 }}

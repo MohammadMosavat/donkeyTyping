@@ -7,6 +7,7 @@ import pyttsx3
 from bson import ObjectId
 from datetime import datetime
 import email.utils 
+import bcrypt
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
@@ -67,6 +68,41 @@ def store_wpm():
         'message': 'WPM record stored successfully!',
         'record_id': str(result.inserted_id)
     }), 201
+
+@app.route("/login", methods=["POST"])
+def login():
+    try:
+        # Get email and password from the request
+        data = request.json
+        email = data.get("email")
+        password = data.get("password")
+
+        # Validate input
+        if not email or not password:
+            return jsonify({"message": "Email and password are required."}), 400
+
+        # Find the user by email
+        user = collection_users.find_one({"email": email})
+
+        if not user:
+            return jsonify({"message": "Invalid email or password."}), 401
+
+        # Compare the hashed password with the provided password
+        if bcrypt.checkpw(password.encode('utf-8'), user['password'].encode('utf-8')):
+            # If passwords match, return a success response with user info (excluding password)
+            user_data = {
+                "id": str(user["_id"]),
+                "username": user["username"],
+                "email": user["email"],
+                "location": user["location"],
+                "joinedAt": user["joinedAt"]
+            }
+            return jsonify({"message": "Login successful", "user": user_data}), 200
+        else:
+            return jsonify({"message": "Invalid email or password."}), 401
+
+    except Exception as e:
+        return jsonify({"message": f"An error occurred: {str(e)}"}), 500
 
 @app.route("/store_wpm", methods=["GET"])
 def get_wpm_records():
@@ -136,18 +172,28 @@ def signup():
             data = request.json
             username = data.get("username")
             email = data.get("email")
+            password = data.get("password")  # Get the password field
             location = data.get("location")
             joinedAt = data.get("joinedAt")
 
             # Validate input
-            if not username or not email or not location:
-                return jsonify({"message": "Username, email, and location are required."}), 400
+            if not username or not email or not password or not location:
+                return jsonify({"message": "Username, email, password, and location are required."}), 400
 
-            # Insert user into the database with the joinedAt field
-            user = {"username": username, "email": email, "location": location, "joinedAt": joinedAt}
+            # Hash the password before storing it
+            hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
+
+            # Insert user into the database with hashed password
+            user = {
+                "username": username,
+                "email": email,
+                "password": hashed_password.decode('utf-8'),  # Store as string
+                "location": location,
+                "joinedAt": joinedAt
+            }
             result = collection_users.insert_one(user)
 
-            # Convert the `_id` to a string for the response
+            # Convert `_id` to a string for the response
             user["_id"] = str(result.inserted_id)
 
             return jsonify({"message": "Sign up successful!", "user": user}), 201
@@ -199,8 +245,6 @@ def signup():
 
         except Exception as e:
             return jsonify({"message": f"An error occurred: {str(e)}"}), 500
-
-
 @app.route('/songs', methods=['POST'])
 def run_python():
     data = request.json

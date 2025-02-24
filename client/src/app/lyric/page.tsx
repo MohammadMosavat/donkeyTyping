@@ -62,7 +62,7 @@ const LyricsSearch = () => {
     );
     return (
       lyrics && (
-        <pre className="mt-4 tracking-wider p-4 font-Aspekta w-full bg-glass rounded text-white">
+        <pre className="mt-4 tracking-wider p-4 font-JetBrainsMono w-full bg-glass rounded text-white">
           {lyrics}
         </pre>
       )
@@ -96,7 +96,7 @@ const LyricsSearch = () => {
           alt="Background"
         />
         <div className="flex flex-col items-center mt-40 w-full">
-          <h1 className="text-3xl font-bold mb-6 font-Aspekta">
+          <h1 className="text-3xl font-bold mb-6 font-JetBrainsMono">
             Lyrics Search
           </h1>
           <div className="w-full grid-cols-3 grid gap-4">
@@ -105,19 +105,19 @@ const LyricsSearch = () => {
               placeholder="Song"
               value={song}
               onChange={(e) => setSong(e.target.value)}
-              className="col-span-full md:col-span-1 p-3 rounded bg-glass font-Aspekta text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-200"
+              className="col-span-full md:col-span-1 p-3 rounded bg-glass font-JetBrainsMono text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-200"
             />
             <input
               type="text"
               placeholder="Artist"
               value={artist}
               onChange={(e) => setArtist(e.target.value)}
-              className="col-span-full md:col-span-1 p-3 rounded bg-glass font-Aspekta text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-200"
+              className="col-span-full md:col-span-1 p-3 rounded bg-glass font-JetBrainsMono text-white placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-200"
             />
             <button
               onClick={handleSearch}
               disabled={loading}
-              className={`col-span-full md:col-span-1 p-3 font-Aspekta rounded bg-glass transition-all duration-200 ease-in-out text-white  ${
+              className={`col-span-full md:col-span-1 p-3 font-JetBrainsMono rounded bg-glass transition-all duration-200 ease-in-out text-white  ${
                 loading
                   ? "opacity-50 cursor-not-allowed"
                   : "hover:shadow-2xl hover:drop-shadow-lg"

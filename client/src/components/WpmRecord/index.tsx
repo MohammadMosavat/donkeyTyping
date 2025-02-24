@@ -148,9 +148,11 @@ const WpmRecords = ({ username }: { username: string }) => {
       {loading ? (
         <Loading />
       ) : error ? (
-        <p className="text-red-500 text-center font-Aspekta">{error}</p>
+        <p className="text-red-500 text-center font-JetBrainsMono">{error}</p>
       ) : records.length === 0 ? (
-        <p className="text-white text-center font-Aspekta">No records found.</p>
+        <p className="text-white text-center font-JetBrainsMono">
+          No records found.
+        </p>
       ) : (
         <div className="grid grid-cols-1 gap-6">
           <motion.table

@@ -4,6 +4,7 @@ import toast from "react-hot-toast";
 import { getWord } from "@/hooks/randomWord";
 import useAuth from "@/hooks/useAuth";
 import TypingGame from "@/components/Typing";
+import SplitText from "@/components/SplitText";
 const Home = () => {
   const [res, setRes] = useState<string[]>([]);
   const [timerKey, setTimerKey] = useState<number>(0); // This will control the timer reset
@@ -46,7 +47,16 @@ const Home = () => {
     );
   }, [res]);
   return (
-    <main className="flex pt-40 items-center justify-center h-screen">
+    <main className="flex flex-col pt-40 items-center justify-center h-screen">
+      <SplitText
+        text={`Hello, ${localStorage.getItem('username')??'Unknown person'}!`}
+        className="text-2xl text-white font-JetBrainsMono font-bold text-center"
+        delay={150}
+        animationFrom={{ opacity: 0, transform: "translate3d(0,50px,0)" }}
+        animationTo={{ opacity: 1, transform: "translate3d(0,0,0)" }}
+        threshold={0.2}
+        rootMargin="-50px"
+      />
       <form className="flex flex-col mx-auto gap-8 w-11/12 items-center">
         <div className="flex flex-col gap-10 items-start justify-between w-full">
           <div className="flex flex-col items-center gap-4 w-full">

@@ -96,7 +96,7 @@ const PostRandomWord = () => {
       </h1>
       <main className="flex flex-col gap-4 w-6/12">
         <button
-          className="bg-glass font-Aspekta  flex items-center gap-4 justify-center flex-wrap text-white py-2 px-4 rounded"
+          className="bg-glass font-JetBrainsMono  flex items-center gap-4 justify-center flex-wrap text-white py-2 px-4 rounded"
           onClick={postRandomWord}
         >
           Say a word
@@ -129,7 +129,7 @@ const PostRandomWord = () => {
             placeholder="Type here..."
           />
           <button
-            className="bg-glass flex items-center gap-4 justify-center flex-wrap col-span-full md:col-span-1 text-white py-2 px-4 font-Aspekta rounded"
+            className="bg-glass flex items-center gap-4 justify-center flex-wrap col-span-full md:col-span-1 text-white py-2 px-4 font-JetBrainsMono rounded"
             onClick={() => {
               setShow(!show);
             }}
@@ -138,7 +138,7 @@ const PostRandomWord = () => {
             <span className="px-1.5 text-sm bg-glass">Ctrl + i</span>
           </button>
           <button
-            className="bg-glass flex items-center gap-4 justify-center flex-wrap col-span-2 text-white py-2 px-4 font-Aspekta rounded"
+            className="bg-glass flex items-center gap-4 justify-center flex-wrap col-span-2 text-white py-2 px-4 font-JetBrainsMono rounded"
             onClick={() => {
               sayWord(word);
             }}
@@ -146,26 +146,26 @@ const PostRandomWord = () => {
             Repeat it
             <span className="px-1.5 text-sm bg-glass">Ctrl + s</span>
           </button>
-          <label className="col-span-2 font-Aspekta">
+          <label className="col-span-2 font-JetBrainsMono">
             <select
               className="text-white w-full outline-none  py-2 px-4 rounded bg-glass"
               value={wordType}
               onChange={(e) => setWordType(e.target.value)}
             >
               <option
-                className="text-black font-Aspekta bg-transparent"
+                className="text-black font-JetBrainsMono bg-transparent"
                 value="noun"
               >
                 Noun
               </option>
               <option
-                className="text-black font-Aspekta bg-transparent"
+                className="text-black font-JetBrainsMono bg-transparent"
                 value="adjective"
               >
                 Adjective
               </option>
               <option
-                className="text-black font-Aspekta bg-transparent"
+                className="text-black font-JetBrainsMono bg-transparent"
                 value="verb"
               >
                 Verb

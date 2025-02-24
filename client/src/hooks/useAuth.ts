@@ -6,7 +6,7 @@ const useAuth = () => {
   const username = localStorage.getItem("username") ?? null;
   useEffect(() => {
     if (!username) {
-      router.push("/register/signup"); // Navigate after render
+      router.push("/register/login"); // Navigate after render
     }
   }, [username, router]); // Runs when `username` changes
 

@@ -34,7 +34,7 @@ export default function RootLayout({
         <Header/>
         {children}
         <Toaster position={"bottom-center"} toastOptions={{
-            className: 'font-Aspekta',
+            className: 'font-JetBrainsMono',
             style: {
               width:'fit-content',
               color:"white",

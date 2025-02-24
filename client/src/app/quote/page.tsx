@@ -1,4 +1,4 @@
-"use client";;
+"use client";
 import { useState, useEffect, useCallback } from "react";
 import TypingGame from "@/components/Typing";
 import Loading from "@/components/loading";
@@ -69,7 +69,7 @@ const QuotesPage = () => {
   };
 
   return (
-    <div className="pt-40 flex flex-col gap-4 w-10/12 mx-auto"> 
+    <div className="pt-40 flex flex-col gap-4 w-10/12 mx-auto">
       <h1 className="text-5xl font-JetBrainsMono text-[#ffffffb4]">Quotes</h1>
 
       {/* Show loading spinner while fetching */}
@@ -82,7 +82,7 @@ const QuotesPage = () => {
               <a
                 key={quote.a}
                 target="_blank"
-                className="underline-offset-4 font-Aspekta underline"
+                className="underline-offset-4 font-JetBrainsMono underline"
                 href={`https://en.wikipedia.org/wiki/${quote.a.replace(
                   " ",
                   "_"
@@ -92,7 +92,9 @@ const QuotesPage = () => {
               </a>
             ))
           ) : (
-            <p className="text-white font-Aspekta">No quotes available.</p>
+            <p className="text-white font-JetBrainsMono">
+              No quotes available.
+            </p>
           )}
           <TypingGame
             data={
