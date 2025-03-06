@@ -27,11 +27,11 @@ const Header = () => {
             link="/listen-word"
             value="Listen word"
           />
-          <NavLinks
+          {/* <NavLinks
             iconSrc="/svgs/cup.svg"
             link={`/explore/typehall`}
             value="Typehall"
-          />
+          /> */}
         </ul>
         <Link
           className="capitalize  rounded-full px-1.5 hover:shadow-xl hover:drop-shadow-xl text-white font-JetBrainsMono"
