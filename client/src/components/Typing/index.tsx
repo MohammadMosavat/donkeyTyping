@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef, useMemo } from "react";
 import { motion } from "framer-motion";
+import Image from "next/image";
 
 interface TypingGameProps {
   data: string[];
@@ -16,62 +17,70 @@ export default function TypingGame({
   showTimer,
   keyUniqe,
 }: TypingGameProps) {
+  const [isFocused, setIsFocused] = useState(false);
   const [input, setInput] = useState("");
   const [startTime, setStartTime] = useState<number | null>(null);
   const [wpm, setWpm] = useState(0);
   const [accuracy, setAccuracy] = useState(100);
-  const [correctCount, setCorrectCount] = useState(0);
-  const [incorrectCount, setIncorrectCount] = useState(0);
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
-  const [timeLeft, setTimeLeft] = useState(60);
+  const [charCount, setCharCount] = useState(0);
+  const [timeLeft, setTimeLeft] = useState(30);
   const [gameOver, setGameOver] = useState(false);
 
   const inputRef = useRef<HTMLInputElement | null>(null);
-  console.log(data);
   const wordsToType = data;
 
   useEffect(() => {
     if (inputRef.current) inputRef.current.focus();
+    setIsFocused(true);
+  }, []);
 
+  useEffect(() => {
     const timerInterval = setInterval(() => {
       if (timeLeft > 0 && !gameOver) {
-        setTimeLeft((prevTimeLeft) => prevTimeLeft - 1);
+        isFocused && setTimeLeft((prevTimeLeft) => prevTimeLeft - 1);
       } else {
         setGameOver(true);
         calculateResults();
-        if (onMissionComplete) onMissionComplete();
+        // if (onMissionComplete) onMissionComplete();
       }
     }, 1000);
-
     return () => clearInterval(timerInterval);
-  }, [timeLeft, gameOver, onMissionComplete]);
+  }, [timeLeft, gameOver, isFocused, onMissionComplete]);
+
+  useEffect(() => {
+    const handleKeyPress = (event: KeyboardEvent) => {
+      if (inputRef.current && document.activeElement !== inputRef.current) {
+        setIsFocused(true);
+        inputRef.current.focus();
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyPress);
+    return () => document.removeEventListener("keydown", handleKeyPress);
+  }, []);
 
   useEffect(() => {
     calculateResults();
-  }, [input, currentWordIndex]);
+  }, [input]);
 
   const calculateResults = () => {
     if (!startTime) return;
+    // Calculate WPM based on entire text input
+    const totalTimeInMinutes = 30 / 60;
     const currentWord = wordsToType[currentWordIndex];
-    const totalTimeInMinutes = (Date.now() - startTime) / 1000 / 60;
-    const totalWordsTyped = 1 + correctCount + incorrectCount;
-    const wpmCalc = Math.round(totalWordsTyped / 5 / totalTimeInMinutes);
+    console.log("Current word:", currentWord, charCount);
+    const totalWordsTyped = input;
+
+    console.log(" totalWordsTyped ", totalWordsTyped);
+    const wpmCalc = Math.round(charCount / (5 * totalTimeInMinutes));
     setWpm(wpmCalc);
-
-    if (input[input.length - 1] === currentWord[input.length - 1]) {
-      setCorrectCount(correctCount + 1);
-    } else {
-      setIncorrectCount(incorrectCount + 1);
-    }
-
-    const accuracyCalc = Math.round(
-      (correctCount / (correctCount + incorrectCount)) * 100
-    );
-    setAccuracy(accuracyCalc);
   };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    setInput(e.target.value);
+    const newValue = e.target.value;
+    setInput(newValue);
+    setCharCount(charCount + 1);
 
     if (!startTime) {
       setStartTime(Date.now());
@@ -82,92 +91,107 @@ export default function TypingGame({
     if (e.key === " ") {
       e.preventDefault();
       setInput("");
+      setCharCount(charCount + 1);
       setCurrentWordIndex((prevIndex) => prevIndex + 1);
     }
   };
 
   const getWordStyle = (index: number) => {
-    if (index === currentWordIndex) {
-      return "text-white underline";
-    }
-    return "!opacity-30";
+    return index === currentWordIndex ? "text-white underline" : "!opacity-30";
   };
 
   const getCharStyle = (char: string, index: number) => {
-    if (index < input.length && input !== "") {
-      if (char === input[index]) {
-        return "text-green-500";
-      } else {
-        return "text-red-500";
-      }
+    if (index < input.length) {
+      return char === input[index] ? "text-green-500" : "text-red-500";
     }
     return "";
   };
 
   const textsType = useMemo(() => {
-    return wordsToType.map((word, wordIndex) => (
-      <motion.span
-        key={wordIndex}
-        className={
-          getWordStyle(wordIndex) +
-          " font-JetBrainsMono font-extralight text-xl"
-        }
-        animate={{ opacity: 1 }}
-        initial={{ opacity: 0 }}
-        transition={{ duration: 0.3 }}
-      >
-        {word.split("").map((char, charIndex) => (
-          <span
-            key={charIndex}
-            className={
-              wordsToType[currentWordIndex] === word
-                ? getCharStyle(char, charIndex)
-                : ""
-            }
-          >
-            {char}
-          </span>
-        ))}{" "}
-      </motion.span>
-    ));
+    return wordsToType.map((word, wordIndex) => {
+      const isCurrentWord = wordIndex === currentWordIndex;
+      const extraChars = isCurrentWord ? input.slice(word.length) : "";
+
+      return (
+        <motion.span
+          key={wordIndex}
+          className={`${getWordStyle(
+            wordIndex
+          )} font-JetBrainsMono font-extralight text-xl select-none`}
+          animate={{ opacity: 1 }}
+          initial={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+        >
+          {word.split("").map((char, charIndex) => (
+            <span
+              key={charIndex}
+              className={isCurrentWord ? getCharStyle(char, charIndex) : ""}
+            >
+              {char}
+            </span>
+          ))}
+          {/* Extra characters typed (shown in red) */}
+          {isCurrentWord && extraChars.length > 0 && (
+            <span className="text-red-500">{extraChars}</span>
+          )}
+        </motion.span>
+      );
+    });
   }, [input, wordsToType, currentWordIndex]);
 
   return (
     <div className="flex flex-col items-center mx-auto mt-16">
-      <h1 className="text-2xl font-semibold text-white mb-6">Typing Game</h1>
-
-      <div className="mb-4 text-white flex gap-2.5 flex-wrap justify-center">
-        {textsType}
-      </div>
+      <main className="relative w-10/12 mx-auto">
+        <motion.label
+          htmlFor="test"
+          animate={{ opacity: 1 }}
+          initial={{ opacity: 0 }}
+          transition={{ duration: 0.3 }}
+          className={`text-white font-JetBrainsMono flex items-center justify-center gap-2 w-full h-full place-content-center text-center absolute ${isFocused &&
+            "hidden"}`}
+        >
+          <Image
+            src={`/svgs/cursor.svg`}
+            width={24}
+            height={24}
+            alt={"cursor"}
+          />
+          <p>Click here to focus</p>
+        </motion.label>
+        <label
+          htmlFor="test"
+          className={` ${!isFocused &&
+            "blur-sm"} mb-4 text-white mx-auto w-full flex gap-2.5 flex-wrap justify-center`}
+        >
+          {textsType}
+        </label>
+      </main>
 
       <input
+        id="test"
         ref={inputRef}
         type="search"
         value={input}
+        onFocus={() => setIsFocused(true)}
+        onBlur={() => setIsFocused(false)}
         onKeyDown={handleKeyDown}
+        autoComplete="off"
+        spellCheck={false}
+        autoCorrect="off"
         onChange={handleChange}
-        className="rounded-full p-2 w-full max-w-lg focus:outline-none px-2 font-JetBrainsMono bg-glass text-white"
+        className="rounded-full opacity-0 focus:outline-none h-0.5 w-0.5 font-JetBrainsMono bg-glass text-white"
         disabled={gameOver}
       />
 
       <div className="mt-6 text-white">
         {showTimer && (
-          <div className="text-white font-JetBrainsMono">
-            Time Left: {timeLeft}s
-          </div>
+          <div className="text-white font-JetBrainsMono">{timeLeft}</div>
         )}
-        {showWpm && gameOver && (
-          <>
-            <p className=" font-JetBrainsMono">Words Per Minute: {wpm}</p>
-            <p className=" font-JetBrainsMono">Accuracy: {accuracy}%</p>
-            <p className="font-JetBrainsMono">
-              Correct Characters: {correctCount}
-            </p>
-            <p className="font-JetBrainsMono">
-              Incorrect Characters: {incorrectCount}
-            </p>
-          </>
-        )}
+        {showWpm &&
+          gameOver&&(
+            <p className="fognt-JetBrainsMono">Words Per Minute: {wpm}</p>
+          )}
+        {/* <p className="font-JetBrainsMono">Accuracy: {accuracy}%</p> */}
       </div>
 
       {gameOver && (
