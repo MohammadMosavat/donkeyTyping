@@ -5,16 +5,37 @@ import { getWord } from "@/hooks/randomWord";
 import useAuth from "@/hooks/useAuth";
 import TypingGame from "@/components/Typing";
 import SplitText from "@/components/SplitText";
+import commonWords from "@/data/commonWords";
+import { WpmRecord } from "@/types";
 const Home = () => {
-  const [res, setRes] = useState<string[]>([]);
   const [timerKey, setTimerKey] = useState<number>(0); // This will control the timer reset
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const [selectedWords, setSelectedWords] = useState<string[]>([]);
+  const [bestOf, setBestOf] = useState<WpmRecord>();
+
   useAuth();
 
-  // Generate random words on the initial render
+  const genRandomWord = () => {
+    const newWords: string[] = [];
+
+    // Pick random arrays and push words into newWords
+    while (newWords.length < 40) {
+      const randomArray =
+        commonWords[Math.floor(Math.random() * commonWords.length)];
+      const randomWord =
+        randomArray[Math.floor(Math.random() * randomArray.length)];
+
+      // Ensure no duplicates
+      if (!newWords.includes(randomWord)) {
+        newWords.push(randomWord);
+      }
+    }
+
+    setSelectedWords(newWords);
+  };
+
   useEffect(() => {
-    const randomWord = getWord(40);
-    setRes(randomWord);
+    genRandomWord();
     if (inputRef.current) {
       inputRef.current.focus();
     }
@@ -23,29 +44,51 @@ const Home = () => {
   // Function to regenerate words and reset the timer
   const regenerateWords = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    const randomWord = getWord(40);
-    setRes(randomWord);
+    genRandomWord();
     setTimerKey((prev) => prev + 1); // Reset the timer by changing the key
     toast.success("Words refreshed!");
   };
 
   const handleMissionComplete = () => {
     toast.success("Mission Complete! Generating new words...");
-    const randomWord = getWord(40);
-    setRes(randomWord);
+    genRandomWord();
   };
+  useEffect(() => {
+    const fetchBestRecordOfUserData = async () => {
+      try {
+        const response = await fetch(
+          `http://localhost:5000/store_wpm?username=${localStorage.getItem(
+            "username"
+          )}&sort=highest`
+        );
+        const data = await response.json();
+        console.log(data);
+        if (response.ok) {
+          setBestOf(data[0]);
+          console.log(data)
+        } else {
+          toast.error(data.message || "Failed to fetch user data.");
+        }
+      } catch (error) {
+        toast.error("An error occurred while fetching user data.");
+      } finally {
+      }
+    };
+    fetchBestRecordOfUserData();
+  }, []);
 
   const Typing = useCallback(() => {
     return (
       <TypingGame
-        data={res} // Pass words to the child component
+        data={selectedWords} // Pass words to the child component
         onMissionComplete={handleMissionComplete} // Pass the callback
         showWpm={true}
         showTimer={true}
+        bestOf={bestOf?.wpm}
         key={timerKey} // Change key to reset the entire component, including the timer
       />
     );
-  }, [res]);
+  }, [selectedWords]);
   return (
     <main className="flex flex-col pt-40 items-center justify-center h-screen">
       {/* <SplitText
