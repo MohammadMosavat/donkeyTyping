@@ -5,6 +5,8 @@ import { motion } from "framer-motion";
 import Loading from "../loading";
 import { WpmRecord } from "@/types";
 import toast from "react-hot-toast";
+import LineChart from "../Charts";
+import PaginatedItems from "../PaginationItems";
 
 const WpmRecords = ({ username }: { username: string }) => {
   const [records, setRecords] = useState<WpmRecord[]>([]);
@@ -68,6 +70,48 @@ const WpmRecords = ({ username }: { username: string }) => {
     fetchBestRecordOfUserData();
   }, []);
 
+  const RecordChart = useMemo(() => {
+    const lastFive = Array.isArray(records) && records?.slice(-5);
+    console.log("lastFive", lastFive);
+    const LastFiveRecordFilter = (label: string): number[] => {
+      if (Array.isArray(lastFive)) {
+        if (label == "wpm") return lastFive.map((rec: WpmRecord) => rec.wpm);
+        if (label == "inChar")
+          return lastFive.map((rec: WpmRecord) => rec.incorrect_char);
+        if (label == "corChar")
+          return lastFive.map((rec: WpmRecord) => rec.correct_char);
+      }
+      return [];
+    };
+    const datasets = [
+      {
+        label: "WPM",
+        data: LastFiveRecordFilter("wpm"),
+        backgroundColor: "rgba(75, 192, 192, 0.6)",
+      },
+      {
+        label: "Correct Characters",
+        data: LastFiveRecordFilter("inChar"),
+        backgroundColor: "rgba(153, 102, 255, 0.6)",
+      },
+      {
+        label: "Incorrect Characters",
+        data: LastFiveRecordFilter("corChar"),
+        backgroundColor: "rgba(255, 159, 64, 0.6)",
+      },
+    ];
+    const labels = ["R5", "R4", "R3", "R2", "R1"];
+    const title = "Last 5 Record";
+    return (
+      <div className="flex flex-col gap-4">
+        <LineChart labels={labels} datasets={datasets} title={title} />
+        <p className="font-JetBrainsMono text-sm text-center text-white">
+          R1 : Record Number 1
+        </p>
+      </div>
+    );
+  }, [records]);
+
   return (
     <div className=" h-fit">
       {bestOf && (
@@ -99,7 +143,7 @@ const WpmRecords = ({ username }: { username: string }) => {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, ease: "easeOut" }}
-            className="min-w-full bg-glass text-white col-span-full rounded-xl"
+            className="min-w-full bg-glass overflow-hidden text-white col-span-full rounded-xl"
           >
             {/* Table Header */}
             <thead>
@@ -131,7 +175,11 @@ const WpmRecords = ({ username }: { username: string }) => {
                   {bestOf.incorrect_char || "—"}
                 </td>
                 <td className="px-6 py-4 font-JetBrainsMono">
-                  {new Date(bestOf.date).toLocaleDateString()}
+                  {new Date(bestOf.date).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
                 </td>
                 <td className="px-6 py-4  font-JetBrainsMono">
                   {bestOf.language || "—"}
@@ -155,29 +203,18 @@ const WpmRecords = ({ username }: { username: string }) => {
         </p>
       ) : (
         <div className="grid grid-cols-1 gap-6">
-          <motion.table
+          <motion.div
             key={loading}
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, ease: "easeOut" }}
-            className="min-w-full bg-glass text-white col-span-full rounded-xl"
+            className="min-w-full flex flex-col pb-10 gap-10 bg-glass overflow-hidden text-white col-span-full rounded-xl"
           >
-            {/* Table Header */}
-            <thead>
-              <tr className="text-left text-white uppercase text-sm tracking-wider">
-                <th className="px-6 py-4 font-JetBrainsMono">WPM</th>
-                <th className="px-6 py-4 font-JetBrainsMono">Correct Chars</th>
-                <th className="px-6 py-4 font-JetBrainsMono">
-                  Incorrect Chars
-                </th>
-                <th className="px-6 py-4 font-JetBrainsMono">Date</th>
-                <th className="px-6 py-4 font-JetBrainsMono">Language</th>
-              </tr>
-            </thead>
-
             {/* Table Body */}
-            <tbody>
-              {records.map((record, index) => (
+            <PaginatedItems
+              items={records}
+              itemsPerPage={10}
+              renderItem={(record, index) => (
                 <motion.tr
                   key={index}
                   initial={{ opacity: 0, y: 10 }}
@@ -195,15 +232,52 @@ const WpmRecords = ({ username }: { username: string }) => {
                     {record.incorrect_char || "—"}
                   </td>
                   <td className="px-6 py-4 font-JetBrainsMono">
-                    {new Date(record.date).toLocaleDateString()}
+                    {new Date(record.date).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
+                  </td>
+                  <td className="px-6 py-4 font-JetBrainsMono">
+                    {record.language || "—"}
+                  </td>
+                </motion.tr>
+              )}
+            />
+
+            {/* <tbody>
+              {records.reverse().map((record, index) => (
+                <motion.tr
+                  key={index}
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  transition={{ duration: 0.3, delay: index * 0.05 }}
+                  className="hover:bg-white/10 transition-colors"
+                >
+                  <td className="px-6 py-4 font-JetBrainsMono">
+                    {record.wpm || "—"}
+                  </td>
+                  <td className="px-6 py-4 font-JetBrainsMono">
+                    {record.correct_char || "—"}
+                  </td>
+                  <td className="px-6 py-4 font-JetBrainsMono">
+                    {record.incorrect_char || "—"}
+                  </td>
+                  <td className="px-6 py-4 font-JetBrainsMono">
+                    {new Date(record.date).toLocaleDateString("en-US", {
+                      year: "numeric",
+                      month: "long",
+                      day: "numeric",
+                    })}
                   </td>
                   <td className="px-6 py-4 font-JetBrainsMono">
                     {record.language || "—"}
                   </td>
                 </motion.tr>
               ))}
-            </tbody>
-          </motion.table>
+            </tbody> */}
+          </motion.div>
+          {RecordChart}
         </div>
       )}
     </div>

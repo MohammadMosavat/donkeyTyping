@@ -8,7 +8,9 @@ import SplitText from "@/components/SplitText";
 import commonWords from "@/data/commonWords";
 import { WpmRecord } from "@/types";
 const Home = () => {
-  const [timerKey, setTimerKey] = useState<number>(0); // This will control the timer reset
+  const [time, setTime] = useState<number>(
+    Number(localStorage.getItem("time")) ?? 0
+  ); // This will control the timer reset
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [selectedWords, setSelectedWords] = useState<string[]>([]);
   const [bestOf, setBestOf] = useState<WpmRecord>();
@@ -39,20 +41,8 @@ const Home = () => {
     if (inputRef.current) {
       inputRef.current.focus();
     }
-  }, []);
+  }, [time]);
 
-  // Function to regenerate words and reset the timer
-  const regenerateWords = (e: React.MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault();
-    genRandomWord();
-    setTimerKey((prev) => prev + 1); // Reset the timer by changing the key
-    toast.success("Words refreshed!");
-  };
-
-  const handleMissionComplete = () => {
-    toast.success("Mission Complete! Generating new words...");
-    genRandomWord();
-  };
   useEffect(() => {
     const fetchBestRecordOfUserData = async () => {
       try {
@@ -65,7 +55,7 @@ const Home = () => {
         console.log(data);
         if (response.ok) {
           setBestOf(data[0]);
-          console.log(data)
+          console.log(data);
         } else {
           toast.error(data.message || "Failed to fetch user data.");
         }
@@ -77,20 +67,29 @@ const Home = () => {
     fetchBestRecordOfUserData();
   }, []);
 
+  const regenerateWords = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    genRandomWord();
+    toast.success("Words refreshed!");
+  };
+
+  const handleMissionComplete = () => {
+    toast.success("Mission Complete! Generating new words...");
+    genRandomWord();
+  };
   const Typing = useCallback(() => {
     return (
       <TypingGame
         data={selectedWords} // Pass words to the child component
-        onMissionComplete={handleMissionComplete} // Pass the callback
+        time={time}
         showWpm={true}
         showTimer={true}
-        bestOf={bestOf?.wpm}
-        key={timerKey} // Change key to reset the entire component, including the timer
+        bestOf={bestOf?.wpm ?? 0}
       />
     );
-  }, [selectedWords]);
+  }, [selectedWords, time]);
   return (
-    <main className="flex flex-col pt-40 items-center justify-center h-screen">
+    <main className="flex flex-col items-center justify-center h-screen">
       {/* <SplitText
         text={`Hello, ${localStorage.getItem('username')??'Unknown person'}!`}
         className="text-2xl text-white font-JetBrainsMono font-bold text-center"
@@ -101,21 +100,69 @@ const Home = () => {
         rootMargin="-50px"
       /> */}
       <form className="flex flex-col mx-auto gap-8 w-11/12 items-center">
+        <ul className="w-fit p-2 justify-self-center rounded-lg flex items-center gap-4">
+          <li
+            onClick={() => {
+              localStorage.setItem("time", "30");
+              setTime(30);
+            }}
+            className={`font-JetBrainsMono text-white px-4 py-2 rounded-lg cursor-pointer transition-colors ${
+              time === 30
+                ? "bg-glass !rounded-lg text-black"
+                : "hover:bg-white/10"
+            }`}
+          >
+            30s
+          </li>
+          <li
+            onClick={() => {
+              localStorage.setItem("time", "60");
+              setTime(60);
+            }}
+            className={`font-JetBrainsMono text-white px-4 py-2 rounded-lg cursor-pointer transition-colors ${
+              time === 60
+                ? "bg-glass !rounded-lg text-black"
+                : "hover:bg-white/10"
+            }`}
+          >
+            60s
+          </li>
+          <li
+            onClick={() => {
+              localStorage.setItem("time", "90");
+              setTime(90);
+            }}
+            className={`font-JetBrainsMono text-white px-4 py-2 rounded-lg cursor-pointer transition-colors ${
+              time === 90
+                ? "bg-glass !rounded-lg text-black"
+                : "hover:bg-white/10"
+            }`}
+          >
+            90s
+          </li>
+          <li
+            onClick={() => {
+              localStorage.setItem("time", "120");
+              setTime(120);
+            }}
+            className={`font-JetBrainsMono text-white px-4 py-2 rounded-lg cursor-pointer transition-colors ${
+              time === 120
+                ? "bg-glass !rounded-lg text-black"
+                : "hover:bg-white/10"
+            }`}
+          >
+            120s
+          </li>
+        </ul>
         <div className="flex flex-col gap-10 items-start justify-between w-full">
-          <div className="flex flex-col items-center gap-4 w-full">
-            {Typing()}
-            <button
-              onClick={regenerateWords}
-              className=" hover:opacity-100 opacity-40 !rounded-full"
-            >
-              <img className="size-6" src="/svgs/refresh.svg" alt="" />
-            </button>
-          </div>
-          <section className="flex justify-between items-start w-full">
-            {/* <SettingSection /> */}
-            {/* Additional settings or counters can go here */}
-          </section>
+          {Typing()}
         </div>
+        <button
+          onClick={regenerateWords}
+          className=" hover:opacity-100 opacity-40 !rounded-full"
+        >
+          <img className="size-6" src="/svgs/refresh.svg" alt="" />
+        </button>
       </form>
     </main>
   );

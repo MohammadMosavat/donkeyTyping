@@ -14,7 +14,7 @@ const Header = () => {
         initial={{ opacity: 0, y: -100 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="w-10/12  my-4 z-10 fixed left-[8%] mx-auto flex justify-between items-center gap-10 p-2"
+        className="w-10/12  my-4 z-20 bg-glass fixed left-[8%] mx-auto flex justify-between items-center gap-10 p-2"
       >
         <Link href={"/"}>
           <img src="/svgs/logo.svg" title="go home" className="size-8" alt="" />
