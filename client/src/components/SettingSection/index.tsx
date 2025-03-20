@@ -66,7 +66,7 @@ const SettingSection = () => {
                     setIsOpen(false);
                     localStorage.setItem("theme", image.src);
                   }}
-                  className={`w-full h-full object-cover rounded-lg cursor-pointer ${
+                  className={`w-full h-full object-cover rounded-xl cursor-pointer ${
                     loading[index] ? "hidden" : "block"
                   }`}
                   src={image.src}

@@ -29,12 +29,12 @@ export default function RootLayout({
     <html lang="en">
       <title>FlashTyping</title>
       <body
-        className={` antialiased`}
+        className={`bg-sec antialiased`}
       >
         <Header/>
         {children}
         <Toaster position={"bottom-center"} toastOptions={{
-            className: 'font-JetBrainsMono',
+            className: 'font-JetBrainsMono text-sec',
             style: {
               width:'fit-content',
               color:"white",

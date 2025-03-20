@@ -10,6 +10,9 @@ export default function UserProfileCard({ username }: { username: string }) {
   const [data, setData] = useState<UserProfileCardProps>();
   useEffect(() => {
     // Fetch user data from the API
+    document.documentElement.className =
+      localStorage.getItem("theme") ?? "theme-indigo-emerald";
+
     const fetchUserData = async () => {
       setLoading(true);
       try {
@@ -33,24 +36,25 @@ export default function UserProfileCard({ username }: { username: string }) {
 
     fetchUserData();
   }, []);
+
   return (
     data && (
       <div className="flex flex-col gap-10 w-full">
         {!loading ? (
           <div className="flex items-center gap-4 justify-between">
             <div className="flex gap-4 items-center">
-              <h2 className="text-xl font-JetBrainsMono  text-white">
+              <h2 className="text-xl font-JetBrainsMono  text-primary">
                 @{data.username}
               </h2>
-              <p className="text-white text-sm font-JetBrainsMono">
+              <p className="text-primary text-sm font-JetBrainsMono">
                 {data.email}
               </p>
             </div>
             <div className="flex items-center gap-4">
-              <p className="text-sm font-JetBrainsMono text-white">
+              <p className="text-sm font-JetBrainsMono text-primary">
                 Location: {data.location}
               </p>
-              <p className="text-sm font-JetBrainsMono text-white">
+              <p className="text-sm font-JetBrainsMono text-primary">
                 Joined At: {new Date(data.joinedAt).toLocaleDateString()}
               </p>
             </div>

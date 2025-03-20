@@ -102,3 +102,145 @@ body {
     transform: translate(24px, 0);
   }
 }
+
+/* Theme - Indigo Emerald */
+.theme-indigo-emerald {
+  --primary: #f9fafb;
+  --sec: #4f46e5;
+  --thrid: #10b981;
+}
+
+/* Theme - Nocturnal Gold */
+.theme-nocturnal-gold {
+  --primary: #1e293b;
+  --sec: #facc15;
+  --thrid: #ef4444;
+}
+
+/* Theme - Coral Lavender */
+.theme-coral-lavender {
+  --primary: #f8ede3;
+  --sec: #ff7e67;
+  --thrid: #6a57d5;
+}
+
+/* Theme - Ocean Breeze */
+.theme-ocean-breeze {
+  --primary: #caf0f8;
+  --sec: #0077b6;
+  --thrid: #00b4d8;
+}
+
+/* Theme - Sunset Glow */
+.theme-sunset-glow {
+  --primary: #ffcad4;
+  --sec: #ff9f1c;
+  --thrid: #ff4040;
+}
+
+/* Theme - Dark Mode */
+.theme-dark {
+  --primary: #ffffff;
+  --sec: #121212;
+  --thrid: #464646;
+}
+
+/* Theme - Matrix */
+.theme-matrix {
+  --primary: #00ff00;
+  --sec: #0f0f0f;
+  --thrid: #005f00;
+}
+
+
+/* Theme - Pastel Paradise */
+.theme-pastel-paradise {
+  --primary: #f7d4e0;
+  --sec: #b7c5d3;
+  --thrid: #d9a3e0;
+}
+
+/* Theme - Cyberpunk Neon */
+.theme-cyberpunk-neon {
+  --primary: #2b2b2b;
+  --sec: #ff0055;
+  --thrid: #00ffcc;
+}
+
+/* Theme - Solarized */
+.theme-solarized {
+  --primary: #fdf6e3;
+  --sec: #268bd2;
+  --thrid: #2aa198;
+}
+
+/* Theme - Aurora */
+.theme-aurora {
+  --primary: #8f00ff;
+  --sec: #00f9ff;
+  --thrid: #ff00c8;
+}
+
+/* Theme - Mellow Mint */
+.theme-mellow-mint {
+  --primary: #e0f7fa;
+  --sec: #b2dfdb;
+  --thrid: #004d40;
+}
+
+/* Theme - Midnight Sky */
+.theme-midnight-sky {
+  --primary: #0c1b2b;
+  --sec: #f9b84b;
+  --thrid: #07eeff;
+}
+
+/* Theme - Rosewood */
+.theme-rosewood {
+  --primary: #8b4f4f;
+  --sec: #f9c8d1;
+  --thrid: #f2a0a1;
+}
+
+/* Theme - Tropical Breeze */
+.theme-tropical-breeze {
+  --primary: #f0e68c;
+  --sec: #ff6347;
+  --thrid: #ff4500;
+}
+
+/* Theme - Urban Jungle */
+.theme-urban-jungle {
+  --primary: #2d4739;
+  --sec: #9dbe8b;
+  --thrid: #468f6f;
+}
+
+/* Theme - Lime Crush */
+.theme-lime-crush {
+  --primary: #a9e34b;
+  --sec: #ff4c00;
+  --thrid: #1d4ed8;
+}
+
+/* Theme - Cherry Blossom */
+.theme-cherry-blossom {
+  --primary: #ff9b9b;
+  --sec: #a5c9d3;
+  --thrid: #f16d91;
+}
+
+/* Theme - Neon Purple */
+.theme-neon-purple {
+  --primary: #2d1a8d;
+  --sec: #d500f9;
+  --thrid: #6200ea;
+}
+
+/* Theme - Golden Hour */
+.theme-golden-hour {
+  --primary: #ffcc00;
+  --sec: #ff7800;
+  --thrid: #ff4500;
+}
+

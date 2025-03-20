@@ -1,9 +1,9 @@
 import { useState, useEffect, useRef, useMemo, memo } from "react";
 import { motion } from "framer-motion";
-import Image from "next/image";
 import axios from "axios";
 import toast from "react-hot-toast";
 import RecordResult from "../recordResult";
+import { ReactSVG } from "react-svg";
 
 interface TypingGameProps {
   data: string[];
@@ -11,6 +11,7 @@ interface TypingGameProps {
   showWpm: boolean;
   bestOf: number;
   showTimer: boolean;
+  resetTimer: any;
 }
 function TypingGame({
   data,
@@ -18,7 +19,9 @@ function TypingGame({
   showWpm,
   showTimer,
   bestOf,
+  resetTimer,
 }: TypingGameProps) {
+  const [timer, setTimer] = useState(time);
   const [isFocused, setIsFocused] = useState(false);
   const [loading, setLoading] = useState(false);
   const [input, setInput] = useState("");
@@ -28,14 +31,15 @@ function TypingGame({
   const [currentWordIndex, setCurrentWordIndex] = useState(0);
   const [charCount, setCharCount] = useState(0);
   const [timeLeft, setTimeLeft] = useState(time);
-  console.log(time, timeLeft);
   const [gameOver, setGameOver] = useState(false);
   const [correctChars, setCorrectChars] = useState(0);
   const [incorrectChars, setIncorrectChars] = useState(0);
   const [id, setID] = useState();
   const inputRef = useRef<HTMLInputElement | null>(null);
   const wordsToType = data;
-  
+
+  // New state to track if the game has started
+  const [hasStarted, setHasStarted] = useState(false);
 
   useEffect(() => {
     setTimeLeft(time);
@@ -44,9 +48,26 @@ function TypingGame({
     setCurrentWordIndex(0);
     setCorrectChars(0);
     setIncorrectChars(0);
-    setCharCount(0)
-    setInput('')
+    setCharCount(0);
+    setInput("");
   }, [time]);
+
+  useEffect(() => {
+    // Reset the timer to the initial value when resetTimer is triggered
+    if (resetTimer) {
+      setTimeLeft(time);
+      setAccuracy(0);
+      setWpm(0);
+      setCurrentWordIndex(0);
+      setCorrectChars(0);
+      setIncorrectChars(0);
+      setCharCount(0);
+      setInput("");
+      setTimer(time); // Reset to the original time value
+      setHasStarted(false); // Set hasStarted to false so the timer doesn't start
+    }
+  }, [resetTimer, time]); // Dependency array to run whenever resetTimer or time changes
+
   useEffect(() => {
     // Fetch user data from the API
     const fetchUserData = async () => {
@@ -57,9 +78,7 @@ function TypingGame({
           )}`
         );
         const data = await response.json();
-        console.log(data);
         if (response.ok) {
-          console.log("data", data);
           setID(data[0]._id);
         }
       } catch (error) {
@@ -71,7 +90,6 @@ function TypingGame({
   }, []);
 
   const storeWPM = async () => {
-    console.log(id);
     setLoading(true);
     if (bestOf < wpm) {
       toast.success(`New record ${bestOf}`);
@@ -90,15 +108,12 @@ function TypingGame({
       language: "en",
     };
 
-    console.log("Submitting data:", submissionData);
-
     try {
       const response = await axios.post(
         "http://localhost:5000/store_wpm",
         submissionData
       );
       setLoading(false);
-      console.log(response.data);
     } catch (error) {
       console.error("Submission error:", error);
     }
@@ -118,7 +133,7 @@ function TypingGame({
   useEffect(() => {
     let timerInterval: NodeJS.Timeout;
 
-    if (startTime && timeLeft > 0 && !gameOver && isFocused) {
+    if (hasStarted && timeLeft > 0 && !gameOver) {
       timerInterval = setInterval(() => {
         setTimeLeft((prevTimeLeft) => prevTimeLeft - 1);
       }, 1000);
@@ -128,7 +143,7 @@ function TypingGame({
     }
 
     return () => clearInterval(timerInterval);
-  }, [timeLeft, time, gameOver, startTime, isFocused]);
+  }, [timeLeft, gameOver, hasStarted]);
 
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
@@ -136,15 +151,14 @@ function TypingGame({
         setIsFocused(true);
         inputRef.current.focus();
       }
+      if (!hasStarted) {
+        setHasStarted(true); // Start the timer when the first key is pressed
+      }
     };
 
     document.addEventListener("keydown", handleKeyPress);
     return () => document.removeEventListener("keydown", handleKeyPress);
-  }, []);
-
-  useEffect(() => {
-    calculateResults();
-  }, [input]);
+  }, [hasStarted]);
 
   const calculateResults = () => {
     if (!startTime) return;
@@ -170,7 +184,6 @@ function TypingGame({
       setGameOver(false); // Ensure the game restarts
     }
 
-    // If backspace is pressed (newValue is shorter than the previous input), do not update the counters
     if (newValue.length < input.length) {
       setInput(newValue);
       setCharCount(charCount + 1); // We still increment char count on backspace
@@ -180,7 +193,6 @@ function TypingGame({
     setInput(newValue);
     setCharCount(charCount + 1);
 
-    // Update correct and incorrect characters only for added characters, not for backspace
     const currentWord = wordsToType[currentWordIndex];
     const inputChar = newValue[newValue.length - 1];
 
@@ -201,12 +213,12 @@ function TypingGame({
   };
 
   const getWordStyle = (index: number) => {
-    return index === currentWordIndex ? "text-white underline" : "!opacity-30";
+    return index === currentWordIndex ? "text-thrid underline" : "";
   };
 
   const getCharStyle = (char: string, index: number) => {
     if (index < input.length) {
-      return char === input[index] ? "text-green-500" : "text-red-500";
+      return char === input[index] ? "text-primary" : "text-red-600";
     }
     return "";
   };
@@ -221,7 +233,7 @@ function TypingGame({
           key={wordIndex}
           className={`${getWordStyle(
             wordIndex
-          )} font-JetBrainsMono font-extralight text-xl select-none`}
+          )} font-JetBrainsMono font-extralight text-2xl select-none`}
           animate={{ opacity: 1 }}
           initial={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
@@ -234,9 +246,8 @@ function TypingGame({
               {char}
             </span>
           ))}
-          {/* Extra characters typed (shown in red) */}
           {isCurrentWord && extraChars.length > 0 && (
-            <span className="text-red-500">{extraChars}</span>
+            <span className="text-red-600">{extraChars}</span>
           )}
         </motion.span>
       );
@@ -244,34 +255,32 @@ function TypingGame({
   }, [input, wordsToType, currentWordIndex]);
 
   return (
-    <div className="flex flex-col w-10/12  items-center mx-auto mt-16">
+    <div className="flex flex-col w-full items-center mx-auto ">
       <main className="relative w-full mx-auto">
         <motion.label
           htmlFor="test"
           animate={{ opacity: 1, marginTop: gameOver ? -50 : 0 }}
           initial={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
-          className={`text-white font-JetBrainsMono flex items-center justify-center gap-2 w-full h-full place-content-center text-center absolute ${isFocused &&
+          className={`text-primary font-JetBrainsMono flex items-center justify-center gap-2 w-full h-full place-content-center text-center absolute ${isFocused &&
             "hidden"}`}
         >
-          <Image
-            src={`/svgs/cursor.svg`}
-            width={24}
-            height={24}
-            alt={"cursor"}
+          <ReactSVG
+            src="/svgs/cursor.svg"
+            className="[&>div>svg]:size-6 [&_*]:stroke-primary"
           />
           <p>Click here to focus</p>
         </motion.label>
         <section>
           {showTimer && (
-            <div className="text-white text-xl font-JetBrainsMono">
+            <div className="text-primary text-2xl font-JetBrainsMono">
               {timeLeft}
             </div>
           )}
           <label
             htmlFor="test"
             className={` ${!isFocused &&
-              "blur-sm"} mb-4 text-white mx-auto w-full flex gap-2.5 flex-wrap `}
+              "blur-sm"} mb-4 text-thrid mx-auto w-full flex gap-2.5 flex-wrap `}
           >
             {textsType}
           </label>

@@ -45,6 +45,7 @@ const LineChart = ({ labels, datasets, title }: LineChartProps): JSX.Element => 
     })),
   };
 
+  const rootStyles = getComputedStyle(document.documentElement);
   // Chart options
   const options: ChartOptions<"line"> = {
     responsive: true,
@@ -52,7 +53,7 @@ const LineChart = ({ labels, datasets, title }: LineChartProps): JSX.Element => 
       legend: {
         position: "top",
         labels: {
-          color: "white", // Set legend text color to white
+          color:  rootStyles.getPropertyValue("--primary").trim() || "#ffffff", // Set legend text color to white
           font: {
             family: "JetBrainsMono-Regular", // Set font to JetBrainsMono-Regular
             size: 14, // You can adjust the font size as needed
@@ -62,7 +63,7 @@ const LineChart = ({ labels, datasets, title }: LineChartProps): JSX.Element => 
       title: {
         display: true,
         text: title,
-        color: "white", // Set title text color to white
+        color:  rootStyles.getPropertyValue("--primary").trim() || "#ffffff", // Set title text color to white
         font: {
           family: "JetBrainsMono-Regular", // Set font to JetBrainsMono-Regular
           size: 16, // You can adjust the font size as needed
@@ -73,7 +74,7 @@ const LineChart = ({ labels, datasets, title }: LineChartProps): JSX.Element => 
       x: {
         beginAtZero: true,
         ticks: {
-          color: "white", // Set x-axis ticks (labels) color to white
+          color:  rootStyles.getPropertyValue("--primary").trim() || "#ffffff", // Set x-axis ticks (labels) color to white
           font: {
             family: "JetBrainsMono-Regular", // Set font to JetBrainsMono-Regular
             size: 12, // You can adjust the font size as needed
@@ -83,7 +84,7 @@ const LineChart = ({ labels, datasets, title }: LineChartProps): JSX.Element => 
       y: {
         beginAtZero: true,
         ticks: {
-          color: "white", // Set y-axis ticks (labels) color to white
+          color:  rootStyles.getPropertyValue("--primary").trim() || "#ffffff", // Set y-axis ticks (labels) color to white
           font: {
             family: "JetBrainsMono-Regular", // Set font to JetBrainsMono-Regular
             size: 12, // You can adjust the font size as needed
@@ -93,7 +94,7 @@ const LineChart = ({ labels, datasets, title }: LineChartProps): JSX.Element => 
     },
   };
 
-  return <Line className="bg-glass !p-2 !w-full text-white" data={data} options={options} />;
+  return <Line className=" !p-2 !w-full text-primary" data={data} options={options} />;
 };
 
 export default LineChart;

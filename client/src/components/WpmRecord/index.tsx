@@ -105,7 +105,7 @@ const WpmRecords = ({ username }: { username: string }) => {
     return (
       <div className="flex flex-col gap-4">
         <LineChart labels={labels} datasets={datasets} title={title} />
-        <p className="font-JetBrainsMono text-sm text-center text-white">
+        <p className="font-JetBrainsMono text-sm text-center text-primary">
           R1 : Record Number 1
         </p>
       </div>
@@ -117,23 +117,23 @@ const WpmRecords = ({ username }: { username: string }) => {
       {bestOf && (
         <>
           <section className="flex items-center justify-between my-8 gap-4 w-full">
-            <h1 className="text-xl font-JetBrainsMono text-white ">
+            <h1 className="text-xl font-JetBrainsMono text-primary ">
               Best of {username}
             </h1>
             <ul className="flex items-center gap-4">
-              <li className="p-2 rounded-xl w-fit mb-8 flex gap-2 items-end bg-glass">
-                <p className="text-white text-3xl font-JetBrainsMono ">
+              <li className="p-2 rounded-xl w-fit mb-8 flex gap-2 items-end">
+                <p className="text-primary text-3xl font-JetBrainsMono ">
                   {correctCharCounter}
                 </p>
-                <span className="text-white font-JetBrainsMono">
+                <span className="text-primary font-JetBrainsMono">
                   Total correct characters
                 </span>
               </li>
-              <li className="p-2 rounded-xl w-fit mb-8 flex gap-2 items-end bg-glass">
-                <p className="text-white text-3xl font-JetBrainsMono ">
+              <li className="p-2 rounded-xl w-fit mb-8 flex gap-2 items-end">
+                <p className="text-primary text-3xl font-JetBrainsMono ">
                   {incorrectCharCounter}
                 </p>
-                <span className="text-white font-JetBrainsMono">
+                <span className="text-primary font-JetBrainsMono">
                   Total incorrect characters
                 </span>
               </li>
@@ -143,11 +143,11 @@ const WpmRecords = ({ username }: { username: string }) => {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, ease: "easeOut" }}
-            className="min-w-full bg-glass overflow-hidden text-white col-span-full rounded-xl"
+            className="min-w-full overflow-hidden text-primary col-span-full rounded-xl"
           >
             {/* Table Header */}
             <thead>
-              <tr className="text-left text-white uppercase text-sm tracking-wider">
+              <tr className="text-left text-primary uppercase text-sm tracking-wider">
                 <th className="px-6 py-4 font-JetBrainsMono">WPM</th>
                 <th className="px-6 py-4 font-JetBrainsMono">Correct Chars</th>
                 <th className="px-6 py-4 font-JetBrainsMono">
@@ -163,7 +163,7 @@ const WpmRecords = ({ username }: { username: string }) => {
               <motion.tr
                 initial={{ opacity: 0, y: 10 }}
                 animate={{ opacity: 1, y: 0 }}
-                className="hover:bg-white/10 transition-colors"
+                className="hover:bg-thrid rounded-xl transition-colors"
               >
                 <td className="px-6 py-4 font-JetBrainsMono">
                   {bestOf.wpm || "—"}
@@ -189,7 +189,7 @@ const WpmRecords = ({ username }: { username: string }) => {
           </motion.table>
         </>
       )}
-      <h1 className="text-xl font-JetBrainsMono  text-white my-8">
+      <h1 className="text-xl font-JetBrainsMono  text-primary my-8">
         WPM Records
       </h1>
 
@@ -198,7 +198,7 @@ const WpmRecords = ({ username }: { username: string }) => {
       ) : error ? (
         <p className="text-red-500 text-center font-JetBrainsMono">{error}</p>
       ) : records.length === 0 ? (
-        <p className="text-white text-center font-JetBrainsMono">
+        <p className="text-primary text-center font-JetBrainsMono">
           No records found.
         </p>
       ) : (
@@ -208,7 +208,7 @@ const WpmRecords = ({ username }: { username: string }) => {
             initial={{ opacity: 0, y: 10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, ease: "easeOut" }}
-            className="min-w-full flex flex-col pb-10 gap-10 bg-glass overflow-hidden text-white col-span-full rounded-xl"
+            className="min-w-full flex flex-col pb-10 gap-10 overflow-hidden text-primary col-span-full rounded-xl"
           >
             {/* Table Body */}
             <PaginatedItems
@@ -220,18 +220,18 @@ const WpmRecords = ({ username }: { username: string }) => {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: index * 0.05 }}
-                  className="hover:bg-white/10 transition-colors"
+                  className="hover:bg-thrid rounded-xl transition-colors"
                 >
-                  <td className="px-6 py-4 font-JetBrainsMono">
+                  <td className="px-6 py-4 text-primary font-JetBrainsMono">
                     {record.wpm || "—"}
                   </td>
-                  <td className="px-6 py-4 font-JetBrainsMono">
+                  <td className="px-6 py-4 text-primary font-JetBrainsMono">
                     {record.correct_char || "—"}
                   </td>
-                  <td className="px-6 py-4 font-JetBrainsMono">
+                  <td className="px-6 py-4 text-primary font-JetBrainsMono">
                     {record.incorrect_char || "—"}
                   </td>
-                  <td className="px-6 py-4 font-JetBrainsMono">
+                  <td className="px-6 py-4 text-primary font-JetBrainsMono">
                     {new Date(record.date).toLocaleDateString("en-US", {
                       year: "numeric",
                       month: "long",
@@ -252,7 +252,7 @@ const WpmRecords = ({ username }: { username: string }) => {
                   initial={{ opacity: 0, y: 10 }}
                   animate={{ opacity: 1, y: 0 }}
                   transition={{ duration: 0.3, delay: index * 0.05 }}
-                  className="hover:bg-white/10 transition-colors"
+                  className="hover:bg-thrid rounded-xl transition-colors"
                 >
                   <td className="px-6 py-4 font-JetBrainsMono">
                     {record.wpm || "—"}

@@ -96,7 +96,7 @@ const SignUpForm = () => {
 
   return (
     <div className="flex justify-center items-center min-h-screen">
-      <form onSubmit={handleSubmit} className="rounded-lg shadow-lg w-96">
+      <form onSubmit={handleSubmit} className="rounded-xl shadow-lg w-96">
         <h2 className="text-2xl font-semibold text-white mb-4 font-JetBrainsMono text-center">
           Sign Up
         </h2>
