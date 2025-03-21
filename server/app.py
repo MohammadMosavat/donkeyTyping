@@ -37,25 +37,36 @@ def parse_rfc1123_date(date_str):
     except Exception:
         return None  # Return None if parsing fails
 
+from datetime import datetime
+
 @app.route('/store_wpm', methods=['POST'])
 def store_wpm():
     # Get data from the request
     data = request.json
+    print(data)  # To check what is received
 
     # Validate required fields
-    required_fields = ['username', 'id_username', 'wpm', 'correct_char', 'incorrect_char', 'date', 'language']
-    if not all(field in data for field in required_fields):
-        return jsonify({'error': 'Missing required fields'}), 400
+    required_fields = ['username', 'wpm', 'correct_char', 'incorrect_char', 'date', 'language']
+    missing_fields = [field for field in required_fields if field not in data]
+    if missing_fields:
+        return jsonify({'error': f'Missing required fields: {", ".join(missing_fields)}'}), 400
+
+    # Ensure the date is a valid ISO 8601 string and convert it to a datetime object
+    try:
+        # Remove 'Z' and convert to datetime
+        date = datetime.fromisoformat(data['date'].replace("Z", "+00:00"))
+    except ValueError:
+        return jsonify({'error': 'Invalid date format'}), 400
 
     # Prepare the record
     try:
         record = {
             'username': data['username'],
-            'id_username': data['id_username'],
-            'wpm': (data['wpm']),
-            'correct_char': (data['correct_char']),
-            'incorrect_char': (data['incorrect_char']),
-            'date': (data['date']),
+            'wpm': data['wpm'],
+            'correct_char': data['correct_char'],
+            'incorrect_char': data['incorrect_char'],
+            'time': data['time'],
+            'date': date,  # Use the datetime object for MongoDB
             'language': data['language']
         }
     except ValueError as e:
@@ -103,7 +114,6 @@ def login():
 
     except Exception as e:
         return jsonify({"message": f"An error occurred: {str(e)}"}), 500
-
 @app.route("/store_wpm", methods=["GET"])
 def get_wpm_records():
     try:
@@ -144,13 +154,13 @@ def get_wpm_records():
 
         # Sorting logic
         if sort_by == "highest":
-            records.sort(key=lambda x: x["wpm"], reverse=True)  # Highest WPM first
+            records.sort(key=lambda x: (x.get("wpm") or 0), reverse=True)  # Highest WPM first
         elif sort_by == "lowest":
-            records.sort(key=lambda x: x["wpm"])  # Lowest WPM first
+            records.sort(key=lambda x: (x.get("wpm") or 0))  # Lowest WPM first
         elif sort_by == "newest":
-            records.sort(key=lambda x: x["parsed_date"], reverse=True)  # Newest first
+            records.sort(key=lambda x: x.get("parsed_date", datetime.min), reverse=True)  # Newest first
         elif sort_by == "oldest":
-            records.sort(key=lambda x: x["parsed_date"])  # Oldest first
+            records.sort(key=lambda x: x.get("parsed_date", datetime.min))  # Oldest first
 
         # Convert `datetime` back to RFC 1123 string before returning response
         for record in records:

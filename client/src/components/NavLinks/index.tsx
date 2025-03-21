@@ -13,13 +13,13 @@ const NavLinks = ({
   return (
     <Link
       href={`${link}`}
-      className="text-primary flex items-center gap-2 capitalize hover:tracking-widest transition-all ease-in-out duration-200 font-JetBrainsMono"
+      className="text-primary flex items-center gap-2 capitalize hover:tracking-[0.3em] transition-all ease-in-out duration-200 font-JetBrainsMono"
     >
       <ReactSVG
         src={iconSrc}
         className="[&>div>svg]:size-6 [&_*]:stroke-primary"
       />
-      {value}
+      <p>{value}</p>
     </Link>
   );
 };

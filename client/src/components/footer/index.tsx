@@ -1,14 +1,17 @@
 "use client";
 import Link from "next/link";
+import { ReactSVG } from "react-svg";
+import NavLinks from "../NavLinks";
 
 const Footer = ({ theme }: { theme: string }) => {
   return (
-    <Link
-      href={"/theme"}
-      className="fixed hover:tracking-widest transition-all duration-200 ease-in-out bottom-4 right-0 left-[8%] w-10/12 mx-0"
-    >
-      <p className="text-primary font-JetBrainsMono ">{theme}</p>
-    </Link>
+    <ul className="fixed transition-all duration-200 ease-in-out bottom-4 right-0 left-[8%] w-10/12 mx-0">
+      <NavLinks
+        iconSrc="/svgs/theme.svg"
+        link="/theme"
+        value={theme.split("-")[1]}
+      />
+    </ul>
   );
 };
 export default Footer;

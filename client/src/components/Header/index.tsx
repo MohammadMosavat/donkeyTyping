@@ -12,10 +12,13 @@ const Header = () => {
         initial={{ opacity: 0, y: -100 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5 }}
-        className="w-10/12  z-20 bg-sec rounded-xl fixed left-[8%] mx-auto flex justify-between items-center gap-10 py-4 p-2"
+        className="w-10/12  z-20 bg-fourth rounded-xl fixed left-[8%] mx-auto flex justify-between items-center gap-10 py-4 p-2"
       >
         <Link href={"/"}>
-        <ReactSVG src="/svgs/logo.svg" className="[&>div>svg]:size-8 [&_*]:fill-primary" />
+          <ReactSVG
+            src="/svgs/logo.svg"
+            className="[&>div>svg]:size-8 [&_*]:fill-primary"
+          />
         </Link>
         <ul className="flex items-center justify-center gap-10 ">
           <NavLinks iconSrc="/svgs/home.svg" link="/" value="Home" />

@@ -36,6 +36,7 @@ const PaginatedItems = <T,>({
             <th className="px-6 py-4 text-primary font-JetBrainsMono">Correct Chars</th>
             <th className="px-6 py-4 text-primary font-JetBrainsMono">Incorrect Chars</th>
             <th className="px-6 py-4 text-primary font-JetBrainsMono">Date</th>
+            <th className="px-6 py-4 text-primary font-JetBrainsMono">Time</th>
             <th className="px-6 py-4 text-primary font-JetBrainsMono">Language</th>
           </tr>
         </thead>

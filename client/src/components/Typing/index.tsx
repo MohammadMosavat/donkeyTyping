@@ -94,28 +94,35 @@ function TypingGame({
     if (bestOf < wpm) {
       toast.success(`New record ${bestOf}`);
     }
+
     const submissionData = {
       username: localStorage.getItem("username"),
-      id_username: id,
       wpm: wpm,
       correct_char: correctChars,
       incorrect_char: incorrectChars,
-      date: new Date().toLocaleDateString("en-US", {
-        year: "numeric",
-        month: "long",
-        day: "numeric",
-      }),
+      date: new Date().toISOString(),
+      time: time,
       language: "en",
     };
+
+    console.log("submissionData", submissionData);
 
     try {
       const response = await axios.post(
         "http://localhost:5000/store_wpm",
-        submissionData
+        submissionData,
+        {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }
       );
+
+      console.log(response.data);
       setLoading(false);
     } catch (error) {
       console.error("Submission error:", error);
+      setLoading(false); // Don't forget to stop loading in case of error
     }
   };
 

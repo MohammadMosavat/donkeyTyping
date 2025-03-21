@@ -18,8 +18,9 @@ export default {
       },
       colors: {
         primary: "var(--primary)",
-        sec: "var(--sec)",
+        secondary: "var(--secondary)",
         thrid: "var(--thrid)",
+        fourth: "var(--fourth)",
       },
     },
   },

@@ -101,21 +101,27 @@ const RecordResult = ({
         alt="Background"
       /> */}
       <div className="w-full grid grid-cols-4 mx-auto h-min gap-10 ">
-        <section className="col-span-1 flex flex-col items-start gap-4 sm:gap-6">
-          <p className="font-JetBrainsMono text-primary text-center sm:text-left">
-            Words Per Minute: {wpm}wpm
-          </p>
-          <p className="font-JetBrainsMono text-primary text-center sm:text-left">
-            Accuracy: {acc}%
-          </p>
+        <section className="col-span-1 flex flex-col justify-between gap-4 sm:gap-6">
+          <section className="flex flex-col items-start gap-4 sm:gap-6">
+            <p className="font-JetBrainsMono text-primary text-center sm:text-left">
+              Words Per Minute: {wpm}wpm
+            </p>
+            <p className="font-JetBrainsMono text-primary text-center sm:text-left">
+              Accuracy: {acc}%
+            </p>
 
-          {/* Display correct and incorrect characters */}
-          <p className="font-JetBrainsMono text-primary text-center sm:text-left">
-            Correct Characters: {corChar}
-          </p>
-          <p className="font-JetBrainsMono text-primary text-center sm:text-left">
-            Incorrect Characters: {inChar}
-          </p>
+            {/* Display correct and incorrect characters */}
+            <p className="font-JetBrainsMono text-primary text-center sm:text-left">
+              Correct Characters: {corChar}
+            </p>
+            <p className="font-JetBrainsMono text-primary text-center sm:text-left">
+              Incorrect Characters: {inChar}
+            </p>
+          </section>
+          <Link href={`/yourhall/${localStorage.getItem("username")}`} className="bg-thrid p-2
+          w-full text-center font-JetBrainsMono hover:tracking-[0.3em] transition-all duration-200 ease-in-out rounded-lg ">
+            Check Your Records
+          </Link>
         </section>
         <div className="col-span-3 flex flex-col gap-3">
           <section className="flex items-center gap-2">

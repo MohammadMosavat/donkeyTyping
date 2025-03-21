@@ -49,6 +49,7 @@ const Home = () => {
 
   useEffect(() => {
     const fetchBestRecordOfUserData = async () => {
+      console.log(localStorage.getItem('username'))
       try {
         const response = await fetch(
           `http://localhost:5000/store_wpm?username=${localStorage.getItem(
@@ -60,8 +61,6 @@ const Home = () => {
         if (response.ok) {
           setBestOf(data[0]);
           console.log(data);
-        } else {
-          toast.error(data.message || "Failed to fetch user data.");
         }
       } catch (error) {
         toast.error("An error occurred while fetching user data.");

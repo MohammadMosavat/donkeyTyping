@@ -106,141 +106,183 @@ body {
 /* Theme - Indigo Emerald */
 .theme-indigo-emerald {
   --primary: #f9fafb;
-  --sec: #4f46e5;
-  --thrid: #10b981;
-}
-
-/* Theme - Nocturnal Gold */
-.theme-nocturnal-gold {
-  --primary: #1e293b;
-  --sec: #facc15;
-  --thrid: #ef4444;
+  --secondary: #a1a7f7;
+  --thrid: #4f46e5;
+  --fourth: #3531a3;
 }
 
 /* Theme - Coral Lavender */
 .theme-coral-lavender {
   --primary: #f8ede3;
-  --sec: #ff7e67;
-  --thrid: #6a57d5;
+  --secondary: #f1bba4;
+  --thrid: #ff7e67;
+  --fourth: #cc5a43;
 }
 
 /* Theme - Ocean Breeze */
 .theme-ocean-breeze {
   --primary: #caf0f8;
-  --sec: #0077b6;
-  --thrid: #00b4d8;
+  --secondary: #80c8da;
+  --thrid: #0077b6;
+  --fourth: #005a80;
 }
 
 /* Theme - Sunset Glow */
 .theme-sunset-glow {
   --primary: #ffcad4;
-  --sec: #ff9f1c;
-  --thrid: #ff4040;
+  --secondary: #ff9fa1;
+  --thrid: #ff9f1c;
+  --fourth: #c67214;
 }
 
 /* Theme - Dark Mode */
 .theme-dark {
   --primary: #ffffff;
-  --sec: #121212;
-  --thrid: #464646;
+  --secondary: #6c6b6b;
+  --thrid: #4a4848;
+  --fourth: #0a0a0a;
 }
 
 /* Theme - Matrix */
 .theme-matrix {
   --primary: #00ff00;
-  --sec: #0f0f0f;
-  --thrid: #005f00;
-}
-
-
-/* Theme - Pastel Paradise */
-.theme-pastel-paradise {
-  --primary: #f7d4e0;
-  --sec: #b7c5d3;
-  --thrid: #d9a3e0;
+  --secondary: #80ff80;
+  --thrid: #025202;
+  --fourth: #001f00;
 }
 
 /* Theme - Cyberpunk Neon */
 .theme-cyberpunk-neon {
-  --primary: #2b2b2b;
-  --sec: #ff0055;
-  --thrid: #00ffcc;
+  --primary: #ff99bb;
+  --secondary: #ff6699;
+  --thrid: #ff0055;
+  --fourth: #cc0044;
 }
 
 /* Theme - Solarized */
 .theme-solarized {
   --primary: #fdf6e3;
-  --sec: #268bd2;
-  --thrid: #2aa198;
-}
-
-/* Theme - Aurora */
-.theme-aurora {
-  --primary: #8f00ff;
-  --sec: #00f9ff;
-  --thrid: #ff00c8;
+  --secondary: #d5e4ff;
+  --thrid: #268bd2;
+  --fourth: #1e6bb8;
 }
 
 /* Theme - Mellow Mint */
 .theme-mellow-mint {
   --primary: #e0f7fa;
-  --sec: #b2dfdb;
+  --secondary: #b2dfdb;
   --thrid: #004d40;
+  --fourth: #002e28;
 }
 
 /* Theme - Midnight Sky */
 .theme-midnight-sky {
   --primary: #0c1b2b;
-  --sec: #f9b84b;
-  --thrid: #07eeff;
+  --secondary: #f9b84b;
+  --thrid: #00c8d8;
+  --fourth: #009da3;
 }
 
 /* Theme - Rosewood */
 .theme-rosewood {
-  --primary: #8b4f4f;
-  --sec: #f9c8d1;
-  --thrid: #f2a0a1;
+  --primary: #f9c8d1;
+  --secondary: #f2a0a1;
+  --thrid: #8b4f4f;
+  --fourth: #5e3333;
 }
 
 /* Theme - Tropical Breeze */
 .theme-tropical-breeze {
   --primary: #f0e68c;
-  --sec: #ff6347;
-  --thrid: #ff4500;
+  --secondary: #ffdb58;
+  --thrid: #ff6347;
+  --fourth: #e23d32;
 }
 
 /* Theme - Urban Jungle */
 .theme-urban-jungle {
-  --primary: #2d4739;
-  --sec: #9dbe8b;
+  --primary: #9dbe8b;
+  --secondary: #7fae70;
   --thrid: #468f6f;
+  --fourth: #2e6d55;
 }
 
 /* Theme - Lime Crush */
 .theme-lime-crush {
   --primary: #a9e34b;
-  --sec: #ff4c00;
-  --thrid: #1d4ed8;
+  --secondary: #ffcc5c;
+  --thrid: #ff4c00;
+  --fourth: #e03600;
 }
 
 /* Theme - Cherry Blossom */
 .theme-cherry-blossom {
-  --primary: #ff9b9b;
-  --sec: #a5c9d3;
-  --thrid: #f16d91;
+  --primary: #f9e2e2;
+  --secondary: #f3c1c6;
+  --thrid: #ff9b9b;
+  --fourth: #cc6e6e;
 }
 
 /* Theme - Neon Purple */
 .theme-neon-purple {
-  --primary: #2d1a8d;
-  --sec: #d500f9;
-  --thrid: #6200ea;
+  --primary: #c8a0ff;
+  --secondary: #9a6eff;
+  --thrid: #d500f9;
+  --fourth: #a300d3;
 }
 
 /* Theme - Golden Hour */
 .theme-golden-hour {
   --primary: #ffcc00;
-  --sec: #ff7800;
-  --thrid: #ff4500;
+  --secondary: #ffb600;
+  --thrid: #ff7800;
+  --fourth: #e86000;
 }
 
+/* Theme - Obsidian Night */
+.theme-obsidian-night {
+  --primary: #353535;
+  --secondary: #252525;
+  --thrid: #ffcc00;
+  --fourth: #b39200;
+}
+
+/* Theme - Midnight Noir */
+.theme-midnight-noir {
+  --primary: #333333;
+  --secondary: #484848;
+  --thrid: #f05454;
+  --fourth: #d13f3f;
+}
+
+/* Theme - Eclipse */
+.theme-eclipse {
+  --primary: #4e4e4e;
+  --secondary: #3a3a3a;
+  --thrid: #ff4500;
+  --fourth: #cc3700;
+}
+
+/* Theme - Shadow Realm */
+.theme-shadow-realm {
+  --primary: #1e1e1e;
+  --secondary: #3a3a3a;
+  --thrid: #58a6ff;
+  --fourth: #387bb5;
+}
+
+/* Theme - Dark Nebula */
+.theme-dark-nebula {
+  --primary: #301d5f;
+  --secondary: #6b3fb0;
+  --thrid: #9400d3;
+  --fourth: #6600a3;
+}
+
+/* Theme - Red Black */
+.theme-red-black {
+  --primary: #ff0000;
+  --secondary: #8c0000;
+  --thrid: #9d0000;
+  --fourth: #520202;
+}

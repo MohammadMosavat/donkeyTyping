@@ -56,8 +56,6 @@ const WpmRecords = ({ username }: { username: string }) => {
         console.log(data);
         if (response.ok) {
           setBestOf(data[0]);
-        } else {
-          toast.error(data.message || "Failed to fetch user data.");
         }
       } catch (error) {
         toast.error("An error occurred while fetching user data.");
@@ -154,6 +152,7 @@ const WpmRecords = ({ username }: { username: string }) => {
                   Incorrect Chars
                 </th>
                 <th className="px-6 py-4 font-JetBrainsMono">Date</th>
+                <th className="px-6 py-4 font-JetBrainsMono">Time</th>
                 <th className="px-6 py-4 font-JetBrainsMono">Language</th>
               </tr>
             </thead>
@@ -180,6 +179,9 @@ const WpmRecords = ({ username }: { username: string }) => {
                     month: "long",
                     day: "numeric",
                   })}
+                </td>
+                <td className="px-6 py-4 font-JetBrainsMono">
+                  {bestOf.time || "—"}
                 </td>
                 <td className="px-6 py-4  font-JetBrainsMono">
                   {bestOf.language || "—"}
@@ -237,6 +239,9 @@ const WpmRecords = ({ username }: { username: string }) => {
                       month: "long",
                       day: "numeric",
                     })}
+                  </td>
+                  <td className="px-6 py-4 text-primary font-JetBrainsMono">
+                    {record.time || "—"}
                   </td>
                   <td className="px-6 py-4 font-JetBrainsMono">
                     {record.language || "—"}
