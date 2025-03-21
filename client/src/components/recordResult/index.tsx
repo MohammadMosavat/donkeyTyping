@@ -93,7 +93,7 @@ const RecordResult = ({
       animate={{ opacity: 1 }}
       initial={{ opacity: 0 }}
       transition={{ duration: 0.3 }}
-      className="flex w-full gap-10 text-white p-4 sm:p-8 md:p-10"
+      className="flex w-full gap-10 text-white p-4 !pb-0 sm:p-8 md:p-10"
     >
       {/* <img
         className="fixed top-0 left-0 right-0 blur-lg bottom-0 -z-30 scale-110 w-full h-screen"
@@ -101,8 +101,8 @@ const RecordResult = ({
         alt="Background"
       /> */}
       <div className="w-full grid grid-cols-4 mx-auto h-min gap-10 ">
-        <section className="col-span-1 flex flex-col justify-between gap-4 sm:gap-6">
-          <section className="flex flex-col items-start gap-4 sm:gap-6">
+        <section className="col-span-full flex flex-col items-center justify-between gap-4 sm:gap-6">
+          <section className="flex justify-between items-start gap-4 sm:gap-6">
             <p className="font-JetBrainsMono text-primary text-center sm:text-left">
               Words Per Minute: {wpm}wpm
             </p>
@@ -118,12 +118,22 @@ const RecordResult = ({
               Incorrect Characters: {inChar}
             </p>
           </section>
-          <Link href={`/yourhall/${localStorage.getItem("username")}`} className="bg-thrid p-2
-          w-full text-center font-JetBrainsMono hover:tracking-[0.3em] transition-all duration-200 ease-in-out rounded-lg ">
-            Check Your Records
-          </Link>
+          <ul>
+            <li className="flex items-center gap-2">
+              <span className="text-fourth font-JetBrainsMono p-1 px-2 rounded-lg bg-thrid text-sm">
+                tab
+              </span>
+              <span className="font-JetBrainsMono text-thrid">+</span>
+              <span className="text-fourth font-JetBrainsMono p-1 px-2 rounded-lg bg-thrid text-sm">
+                enter
+              </span>
+              <span className="font-JetBrainsMono text-thrid">
+                restart test
+              </span>
+            </li>
+          </ul>
         </section>
-        <div className="col-span-3 flex flex-col gap-3">
+        {/* <div className="col-span-3 flex flex-col gap-3">
           <section className="flex items-center gap-2">
             <ReactSVG
               src="/svgs/chart.svg"
@@ -134,7 +144,7 @@ const RecordResult = ({
             </h1>
           </section>
           {lastFiveRecordsChart}
-        </div>
+        </div> */}
 
         {/* <button
           title="Next"

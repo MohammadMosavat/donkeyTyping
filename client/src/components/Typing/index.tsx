@@ -8,19 +8,10 @@ import { ReactSVG } from "react-svg";
 interface TypingGameProps {
   data: string[];
   time: number;
-  showWpm: boolean;
-  bestOf: number;
   showTimer: boolean;
   resetTimer: any;
 }
-function TypingGame({
-  data,
-  time,
-  showWpm,
-  showTimer,
-  bestOf,
-  resetTimer,
-}: TypingGameProps) {
+function TypingGame({ data, time, showTimer, resetTimer }: TypingGameProps) {
   const [timer, setTimer] = useState(time);
   const [isFocused, setIsFocused] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -34,12 +25,9 @@ function TypingGame({
   const [gameOver, setGameOver] = useState(false);
   const [correctChars, setCorrectChars] = useState(0);
   const [incorrectChars, setIncorrectChars] = useState(0);
-  const [id, setID] = useState();
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const wordsToType = data;
-
-  // New state to track if the game has started
   const [hasStarted, setHasStarted] = useState(false);
+  const wordsToType = data;
 
   useEffect(() => {
     setTimeLeft(time);
@@ -55,10 +43,12 @@ function TypingGame({
   useEffect(() => {
     // Reset the timer to the initial value when resetTimer is triggered
     if (resetTimer) {
+      console.log("resert");
       setTimeLeft(time);
       setAccuracy(0);
       setWpm(0);
       setCurrentWordIndex(0);
+      setGameOver(false);
       setCorrectChars(0);
       setIncorrectChars(0);
       setCharCount(0);
@@ -68,32 +58,8 @@ function TypingGame({
     }
   }, [resetTimer, time]); // Dependency array to run whenever resetTimer or time changes
 
-  useEffect(() => {
-    // Fetch user data from the API
-    const fetchUserData = async () => {
-      try {
-        const response = await fetch(
-          `http://localhost:5000/user?username=${localStorage.getItem(
-            "username"
-          )}`
-        );
-        const data = await response.json();
-        if (response.ok) {
-          setID(data[0]._id);
-        }
-      } catch (error) {
-        console.log("An error occurred while fetching user data.");
-      }
-    };
-
-    fetchUserData();
-  }, []);
-
   const storeWPM = async () => {
     setLoading(true);
-    if (bestOf < wpm) {
-      toast.success(`New record ${bestOf}`);
-    }
 
     const submissionData = {
       username: localStorage.getItem("username"),
@@ -308,7 +274,7 @@ function TypingGame({
         className="rounded-full opacity-0 focus:outline-none h-0.5 w-0.5 font-JetBrainsMono bg-glass text-white"
         disabled={gameOver}
       />
-      {showWpm && gameOver && !loading && (
+      {gameOver && !loading && (
         <RecordResult
           isOver={gameOver}
           wpm={wpm}

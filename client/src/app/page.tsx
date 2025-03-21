@@ -17,7 +17,6 @@ const Home = () => {
   const [resetTimer, setResetTimer] = useState(false); // To trigger the reset of the timer in TypingGame
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [selectedWords, setSelectedWords] = useState<string[]>([]);
-  const [bestOf, setBestOf] = useState<WpmRecord>();
 
   useAuth();
 
@@ -47,28 +46,6 @@ const Home = () => {
     }
   }, [time]);
 
-  useEffect(() => {
-    const fetchBestRecordOfUserData = async () => {
-      console.log(localStorage.getItem('username'))
-      try {
-        const response = await fetch(
-          `http://localhost:5000/store_wpm?username=${localStorage.getItem(
-            "username"
-          )}&sort=highest`
-        );
-        const data = await response.json();
-        console.log(data);
-        if (response.ok) {
-          setBestOf(data[0]);
-          console.log(data);
-        }
-      } catch (error) {
-        toast.error("An error occurred while fetching user data.");
-      }
-    };
-    fetchBestRecordOfUserData();
-  }, []);
-
   const regenerateWords = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     genRandomWord();
@@ -82,12 +59,10 @@ const Home = () => {
         data={selectedWords} // Pass words to the child component
         time={time}
         resetTimer={resetTimer} // Pass the reset state
-        showWpm={true}
         showTimer={true}
-        bestOf={bestOf?.wpm ?? 0}
       />
     );
-  }, [selectedWords, time, resetTimer, bestOf]);
+  }, [selectedWords, time, resetTimer]);
 
   useEffect(() => {
     document.documentElement.className =
@@ -148,6 +123,7 @@ const Home = () => {
           {Typing()}
         </div>
         <button
+          tabIndex={0}
           onClick={regenerateWords}
           className=" hover:shadow-xl hover:drop-shadow-xl transition-all duration-200 ease-in-out !rounded-full"
         >
