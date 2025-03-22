@@ -8,11 +8,8 @@ import toast from "react-hot-toast";
 import LineChart from "../Charts";
 import PaginatedItems from "../PaginationItems";
 
-const WpmRecords = ({ username }: { username: string }) => {
-  const [records, setRecords] = useState<WpmRecord[]>([]);
+const WpmRecords = ({ records }: { records: WpmRecord[] }) => {
   const [bestOf, setBestOf] = useState<WpmRecord>();
-  const [loading, setLoading] = useState<boolean>(true);
-  const [error, setError] = useState<string | null>(null);
 
   const correctCharCounter = useMemo(() => {
     let count = 0;
@@ -30,44 +27,6 @@ const WpmRecords = ({ username }: { username: string }) => {
     return count;
   }, [records]);
 
-  useEffect(() => {
-    const fetchRecords = async () => {
-      try {
-        const response = await axios.get(
-          `http://localhost:5000/store_wpm?username=${username}`
-        );
-        setRecords(response.data);
-
-        setError(null); // Clear any previous errors
-      } catch (err) {
-        console.log("Failed to fetch records.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    const fetchBestRecordOfUserData = async () => {
-      setLoading(true);
-      try {
-        const response = await fetch(
-          `http://localhost:5000/store_wpm?username=${username}&sort=highest`
-        );
-        const data = await response.json();
-        console.log(data);
-        if (response.ok) {
-          setBestOf(data[0]);
-        }
-      } catch (error) {
-        toast.error("An error occurred while fetching user data.");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchRecords();
-    fetchBestRecordOfUserData();
-  }, []);
-
   const RecordChart = useMemo(() => {
     const lastFive = Array.isArray(records) && records?.slice(-5);
     console.log("lastFive", lastFive);
@@ -81,6 +40,7 @@ const WpmRecords = ({ username }: { username: string }) => {
       }
       return [];
     };
+
     const datasets = [
       {
         label: "WPM",
@@ -108,11 +68,11 @@ const WpmRecords = ({ username }: { username: string }) => {
         </p>
       </div>
     );
-  }, [records]);
+  }, []);
 
   return (
-    <div className=" h-fit">
-      {bestOf && (
+    <div className=" w-full h-fit">
+      {/* {bestOf && (
         <>
           <section className="flex items-center justify-between my-8 gap-4 w-full">
             <h1 className="text-xl font-JetBrainsMono text-primary ">
@@ -143,7 +103,6 @@ const WpmRecords = ({ username }: { username: string }) => {
             transition={{ duration: 0.4, ease: "easeOut" }}
             className="min-w-full overflow-hidden text-primary col-span-full rounded-xl"
           >
-            {/* Table Header */}
             <thead>
               <tr className="text-left text-primary uppercase text-sm tracking-wider">
                 <th className="px-6 py-4 font-JetBrainsMono">WPM</th>
@@ -157,7 +116,6 @@ const WpmRecords = ({ username }: { username: string }) => {
               </tr>
             </thead>
 
-            {/* Table Body */}
             <tbody>
               <motion.tr
                 initial={{ opacity: 0, y: 10 }}
@@ -190,101 +148,55 @@ const WpmRecords = ({ username }: { username: string }) => {
             </tbody>
           </motion.table>
         </>
-      )}
-      <h1 className="text-xl font-JetBrainsMono  text-primary my-8">
-        WPM Records
-      </h1>
-
-      {loading ? (
-        <Loading />
-      ) : error ? (
-        <p className="text-red-500 text-center font-JetBrainsMono">{error}</p>
-      ) : records.length === 0 ? (
-        <p className="text-primary text-center font-JetBrainsMono">
-          No records found.
-        </p>
-      ) : (
-        <div className="grid grid-cols-1 gap-6">
-          <motion.div
-            key={loading}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
-            className="min-w-full flex flex-col pb-10 gap-10 overflow-hidden text-primary col-span-full rounded-xl"
-          >
-            {/* Table Body */}
-            <PaginatedItems
-              items={records}
-              itemsPerPage={10}
-              renderItem={(record, index) => (
-                <motion.tr
-                  key={index}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: index * 0.05 }}
-                  className="hover:bg-thrid rounded-xl transition-colors"
-                >
-                  <td className="px-6 py-4 text-primary font-JetBrainsMono">
-                    {record.wpm || "—"}
-                  </td>
-                  <td className="px-6 py-4 text-primary font-JetBrainsMono">
-                    {record.correct_char || "—"}
-                  </td>
-                  <td className="px-6 py-4 text-primary font-JetBrainsMono">
-                    {record.incorrect_char || "—"}
-                  </td>
-                  <td className="px-6 py-4 text-primary font-JetBrainsMono">
-                    {new Date(record.date).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })}
-                  </td>
-                  <td className="px-6 py-4 text-primary font-JetBrainsMono">
-                    {record.time || "—"}
-                  </td>
-                  <td className="px-6 py-4 font-JetBrainsMono">
-                    {record.language || "—"}
-                  </td>
-                </motion.tr>
-              )}
-            />
-
-            {/* <tbody>
-              {records.reverse().map((record, index) => (
-                <motion.tr
-                  key={index}
-                  initial={{ opacity: 0, y: 10 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  transition={{ duration: 0.3, delay: index * 0.05 }}
-                  className="hover:bg-thrid rounded-xl transition-colors"
-                >
-                  <td className="px-6 py-4 font-JetBrainsMono">
-                    {record.wpm || "—"}
-                  </td>
-                  <td className="px-6 py-4 font-JetBrainsMono">
-                    {record.correct_char || "—"}
-                  </td>
-                  <td className="px-6 py-4 font-JetBrainsMono">
-                    {record.incorrect_char || "—"}
-                  </td>
-                  <td className="px-6 py-4 font-JetBrainsMono">
-                    {new Date(record.date).toLocaleDateString("en-US", {
-                      year: "numeric",
-                      month: "long",
-                      day: "numeric",
-                    })}
-                  </td>
-                  <td className="px-6 py-4 font-JetBrainsMono">
-                    {record.language || "—"}
-                  </td>
-                </motion.tr>
-              ))}
-            </tbody> */}
-          </motion.div>
-          {RecordChart}
-        </div>
-      )}
+      )} */}
+      <div className="grid grid-cols-1 gap-6">
+        <motion.div
+          key={records}
+          initial={{ opacity: 0, y: 10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
+          className="min-w-full flex flex-col pb-10 gap-10 overflow-hidden text-primary col-span-full rounded-xl"
+        >
+          {/* Table Body */}
+          <PaginatedItems
+            items={records}
+            itemsPerPage={10}
+            renderItem={(record, index) => (
+              <motion.tr
+                key={index}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.3, delay: index * 0.05 }}
+                className="hover:bg-thrid rounded-xl transition-colors"
+              >
+                <td className="px-6 py-4 text-primary font-JetBrainsMono">
+                  {record.wpm || "—"}
+                </td>
+                <td className="px-6 py-4 text-primary font-JetBrainsMono">
+                  {record.correct_char || "—"}
+                </td>
+                <td className="px-6 py-4 text-primary font-JetBrainsMono">
+                  {record.incorrect_char || "—"}
+                </td>
+                <td className="px-6 py-4 text-primary font-JetBrainsMono">
+                  {new Date(record.date).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
+                </td>
+                <td className="px-6 py-4 text-primary font-JetBrainsMono">
+                  {record.time || "—"}
+                </td>
+                <td className="px-6 py-4 font-JetBrainsMono">
+                  {record.language || "—"}
+                </td>
+              </motion.tr>
+            )}
+          />
+        </motion.div>
+        {/* {RecordChart} */}
+      </div>
     </div>
   );
 };

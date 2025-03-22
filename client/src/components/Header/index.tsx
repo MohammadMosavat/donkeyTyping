@@ -37,7 +37,7 @@ const Header = () => {
         </ul>
         <Link
           className="capitalize transition-all duration-200 ease-in-out text-primary bg-thrid rounded-full px-2.5 py-1 hover:shadow-xl hover:drop-shadow-xl font-JetBrainsMono"
-          href={`/yourhall/${username}`}
+          href={`/${username}`}
         >
           {username?.split("")[0]}
         </Link>

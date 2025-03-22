@@ -32,12 +32,12 @@ const PaginatedItems = <T,>({
       <table className="w-full border-collapse">
         <thead>
           <tr className="text-left text-white uppercase text-sm tracking-wider">
-            <th className="px-6 py-4 text-primary font-JetBrainsMono">WPM</th>
-            <th className="px-6 py-4 text-primary font-JetBrainsMono">Correct Chars</th>
-            <th className="px-6 py-4 text-primary font-JetBrainsMono">Incorrect Chars</th>
-            <th className="px-6 py-4 text-primary font-JetBrainsMono">Date</th>
-            <th className="px-6 py-4 text-primary font-JetBrainsMono">Time</th>
-            <th className="px-6 py-4 text-primary font-JetBrainsMono">Language</th>
+            <th className="px-6 py-4 text-primary bg-thrid font-JetBrainsMono">WPM</th>
+            <th className="px-6 py-4 text-primary bg-thrid font-JetBrainsMono">Correct Chars</th>
+            <th className="px-6 py-4 text-primary bg-thrid font-JetBrainsMono">Incorrect Chars</th>
+            <th className="px-6 py-4 text-primary bg-thrid font-JetBrainsMono">Date</th>
+            <th className="px-6 py-4 text-primary bg-thrid font-JetBrainsMono">Time</th>
+            <th className="px-6 py-4 text-primary bg-thrid font-JetBrainsMono">Language</th>
           </tr>
         </thead>
         <motion.tbody

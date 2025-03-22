@@ -286,3 +286,35 @@ body {
   --thrid: #9d0000;
   --fourth: #520202;
 }
+
+
+.tooltip-container {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip {
+  position: relative;
+  cursor: pointer;
+}
+
+.tooltip::after {
+  content: attr(data-tooltip);
+  width: max-content;
+  position: absolute;
+  bottom: 125%; /* Adjust as needed */
+  left: 50%;
+  transform: translateX(-50%);
+  background-color: rgba(0, 0, 0, 0.75);
+  color: white;
+  padding: 5px;
+  border-radius: 4px;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip:hover::after {
+  visibility: visible;
+  opacity: 1;
+}

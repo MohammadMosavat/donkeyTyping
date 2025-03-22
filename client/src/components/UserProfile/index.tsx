@@ -2,8 +2,8 @@
 import { useState, useEffect } from "react";
 import toast from "react-hot-toast";
 import Loading from "../loading";
-import WpmRecords from "../WpmRecord";
 import UserProfileCardProps from "@/types";
+import { ReactSVG } from "react-svg";
 
 export default function UserProfileCard({ username }: { username: string }) {
   const [loading, setLoading] = useState(true);
@@ -51,18 +51,29 @@ export default function UserProfileCard({ username }: { username: string }) {
               </p>
             </div>
             <div className="flex items-center gap-4">
-              <p className="text-sm font-JetBrainsMono text-primary">
-                Location: {data.location}
-              </p>
-              <p className="text-sm font-JetBrainsMono text-primary">
-                Joined At: {new Date(data.joinedAt).toLocaleDateString()}
-              </p>
+              <section data-tooltip="Location" className="!flex font-JetBrainsMono items-center tooltip gap-2">
+                <ReactSVG
+                  src="/svgs/location.svg"
+                  className="[&>div>svg]:size-6 [&_*]:stroke-primary"
+                />
+                <p className="font-JetBrainsMono capitalizetext text-primary">
+                  {data.location}
+                </p>
+              </section>
+              <section data-tooltip="joined At" className="!flex font-JetBrainsMono items-center gap-2 tooltip">
+                <ReactSVG
+                  src="/svgs/calendar.svg"
+                  className="[&>div>svg]:size-6  [&_*]:stroke-primary"
+                />
+                <p className="font-JetBrainsMono text-primary">
+                  {new Date(data.joinedAt).toLocaleDateString()}
+                </p>
+              </section>
             </div>
           </div>
         ) : (
           <Loading />
         )}
-        <WpmRecords username={username} />
       </div>
     )
   );
