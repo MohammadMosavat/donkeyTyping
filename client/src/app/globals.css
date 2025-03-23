@@ -18,8 +18,10 @@
 }
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  --primary: #ffffff;
+  --secondary: #6c6b6b;
+  --thrid: #4a4848;
+  --fourth: #0a0a0a;
 }
 
 body {
@@ -287,7 +289,6 @@ body {
   --fourth: #520202;
 }
 
-
 .tooltip-container {
   position: relative;
   display: inline-block;
@@ -308,7 +309,8 @@ body {
   background-color: rgba(0, 0, 0, 0.75);
   color: white;
   padding: 5px;
-  border-radius: 4px;
+  font-weight: 500 !important;
+  border-radius: 8px;
   visibility: hidden;
   opacity: 0;
   transition: opacity 0.3s;
@@ -317,4 +319,5 @@ body {
 .tooltip:hover::after {
   visibility: visible;
   opacity: 1;
+  z-index: 30;
 }

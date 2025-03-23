@@ -66,7 +66,11 @@ export default function UserProfileCard({ username }: { username: string }) {
                   className="[&>div>svg]:size-6  [&_*]:stroke-primary"
                 />
                 <p className="font-JetBrainsMono text-primary">
-                  {new Date(data.joinedAt).toLocaleDateString()}
+                  {new Date(data.joinedAt).toLocaleDateString("en-US", {
+                    year: "numeric",
+                    month: "long",
+                    day: "numeric",
+                  })}
                 </p>
               </section>
             </div>

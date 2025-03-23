@@ -85,7 +85,7 @@ export default function ThemeSwitcher() {
         initial={{ opacity: 0 }}
         transition={{ duration: 0.3 }}
       >
-        <Footer theme={document.documentElement.className} />
+        <Footer />
       </motion.footer>
     </div>
   );

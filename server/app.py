@@ -66,6 +66,7 @@ def store_wpm():
             'correct_char': data['correct_char'],
             'incorrect_char': data['incorrect_char'],
             'time': data['time'],
+            'word': data['word'],
             'date': date,  # Use the datetime object for MongoDB
             'language': data['language']
         }
@@ -143,6 +144,9 @@ def get_wpm_records():
         # Convert `_id` to string and parse dates
         for record in records:
             record["_id"] = str(record["_id"])
+
+            # Ensure 'word' is included in the response (if it exists)
+            record["word"] = record.get("word")  # Default to 0 if missing
 
             # Convert string date to datetime object
             if "date" in record and isinstance(record["date"], str):

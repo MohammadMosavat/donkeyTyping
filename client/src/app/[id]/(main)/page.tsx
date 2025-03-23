@@ -1,5 +1,6 @@
 "use client";
 import FilterLinks from "@/components/FiltersLink";
+import Loading from "@/components/loading";
 import WpmRecords from "@/components/WpmRecord";
 import { WpmRecord } from "@/types";
 import axios from "axios";
@@ -29,19 +30,29 @@ const MainPageProfile = () => {
     };
     fetchRecords();
   }, []);
-  return (
+  return !loading ? (
     <main className="w-full flex flex-col gap-6">
-      <h1 className="text-xl font-JetBrainsMono  text-primary my-8">
+      <h1 className="text-xl  font-JetBrainsMono  text-primary my-8">
         WPM Records
       </h1>
       <ul className="flex items-center gap-2">
         <FilterLinks filter={"newest"} />
         <FilterLinks filter={"oldest"} />
-        <FilterLinks filter={"highest"} />
-        <FilterLinks filter={"lowest"} />
+        <FilterLinks
+          data-tooltip="Base on WPM"
+          className="tooltip"
+          filter={"highest"}
+        />
+        <FilterLinks
+          data-tooltip="Base on WPM"
+          className="tooltip"
+          filter={"lowest"}
+        />
       </ul>
       <WpmRecords records={records} />;
     </main>
+  ) : (
+    <Loading />
   );
 };
 

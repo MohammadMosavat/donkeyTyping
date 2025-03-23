@@ -9,9 +9,16 @@ interface TypingGameProps {
   data: string[];
   time: number;
   showTimer: boolean;
+  word: number;
   resetTimer: any;
 }
-function TypingGame({ data, time, showTimer, resetTimer }: TypingGameProps) {
+function TypingGame({
+  data,
+  time,
+  showTimer,
+  resetTimer,
+  word,
+}: TypingGameProps) {
   const [timer, setTimer] = useState(time);
   const [isFocused, setIsFocused] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -68,6 +75,7 @@ function TypingGame({ data, time, showTimer, resetTimer }: TypingGameProps) {
       incorrect_char: incorrectChars,
       date: new Date().toISOString(),
       time: time,
+      word: word??0,
       language: "en",
     };
 

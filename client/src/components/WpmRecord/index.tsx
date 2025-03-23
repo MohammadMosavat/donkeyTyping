@@ -188,6 +188,9 @@ const WpmRecords = ({ records }: { records: WpmRecord[] }) => {
                 <td className="px-6 py-4 text-primary font-JetBrainsMono">
                   {record.time || "—"}
                 </td>
+                <td className="px-6 py-4 text-primary font-JetBrainsMono">
+                  {record.word || "—"}
+                </td>
                 <td className="px-6 py-4 font-JetBrainsMono">
                   {record.language || "—"}
                 </td>

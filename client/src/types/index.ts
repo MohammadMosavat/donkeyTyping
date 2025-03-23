@@ -8,6 +8,7 @@ export default interface UserProfileCardProps {
 export interface WpmRecord {
   username: string;
   time: number;
+  word: number;
   wpm: number;
   correct_char: number;
   incorrect_char: number;

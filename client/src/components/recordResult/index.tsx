@@ -120,11 +120,11 @@ const RecordResult = ({
           </section>
           <ul>
             <li className="flex items-center gap-2">
-              <span className="text-fourth font-JetBrainsMono p-1 px-2 rounded-lg bg-thrid text-sm">
+              <span className="text-fourth font-JetBrainsMono p-1 px-2 rounded-xl bg-thrid text-sm">
                 tab
               </span>
               <span className="font-JetBrainsMono text-thrid">+</span>
-              <span className="text-fourth font-JetBrainsMono p-1 px-2 rounded-lg bg-thrid text-sm">
+              <span className="text-fourth font-JetBrainsMono p-1 px-2 rounded-xl bg-thrid text-sm">
                 enter
               </span>
               <span className="font-JetBrainsMono text-thrid">

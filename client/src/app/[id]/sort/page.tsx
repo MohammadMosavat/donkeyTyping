@@ -1,4 +1,5 @@
 "use client";
+import Loading from "@/components/loading";
 import WpmRecords from "@/components/WpmRecord";
 import { WpmRecord } from "@/types";
 import axios from "axios";
@@ -40,13 +41,14 @@ const FilterRecordPage = () => {
     };
     fetchRecords();
   }, []);
-  return (
+  return !loading ? (
     <main className="w-full flex flex-col gap-6">
       <section className="flex items-center gap-4">
-        <Link href={`/${params.id}`}>
+        <Link className="group" href={`/${params.id}`}>
           <ReactSVG
             src="/svgs/arrow-left.svg"
-            className="[&>div>svg]:size-6 [&_*]:stroke-primary"
+            data-tooltip="Back"
+            className="[&>div>svg]:size-6 tooltip font-JetBrainsMono group-hover:[&_*]:stroke-2 [&_*]:stroke-primary"
           />
         </Link>
         <h1 className="text-xl capitalize font-JetBrainsMono  text-primary my-8">
@@ -56,19 +58,21 @@ const FilterRecordPage = () => {
       <ul className="flex items-center gap-2">
         {/* <Link
           href={{ pathname: `${params.id}/sort`, query: { filter: "highest" } }}
-          className="text-primary font-JetBrainsMono p-2 rounded-lg bg-thrid w-fit"
+          className="text-primary font-JetBrainsMono p-2 rounded-xl bg-thrid w-fit"
         >
           Highest
         </Link>
         <Link
           href={`${params.id}/sort/newest`}
-          className="text-primary font-JetBrainsMono p-2 rounded-lg bg-thrid w-fit"
+          className="text-primary font-JetBrainsMono p-2 rounded-xl bg-thrid w-fit"
         >
           Newest
         </Link> */}
       </ul>
       <WpmRecords records={records} />
     </main>
+  ) : (
+    <Loading />
   );
 };
 
