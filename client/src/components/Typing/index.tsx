@@ -67,7 +67,9 @@ function TypingGame({
 
   const storeWPM = async () => {
     setLoading(true);
-
+    if (wpm == 0) {
+      return;
+    }
     const submissionData = {
       username: localStorage.getItem("username"),
       wpm: wpm,
@@ -75,7 +77,7 @@ function TypingGame({
       incorrect_char: incorrectChars,
       date: new Date().toISOString(),
       time: time,
-      word: word??0,
+      word: word ?? 0,
       language: "en",
     };
 
