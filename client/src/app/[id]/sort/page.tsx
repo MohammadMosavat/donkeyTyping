@@ -1,4 +1,5 @@
 "use client";
+import FilterLinks from "@/components/FiltersLink";
 import Loading from "@/components/loading";
 import WpmRecords from "@/components/WpmRecord";
 import { WpmRecord } from "@/types";
@@ -40,34 +41,36 @@ const FilterRecordPage = () => {
       }
     };
     fetchRecords();
-  }, []);
+  }, [filter]);
   return !loading ? (
     <main className="w-full flex flex-col gap-6">
       <section className="flex items-center gap-4">
-        <Link className="group" href={`/${params.id}`}>
+        {/* <Link className="group" href={`/${params.id}`}>
           <ReactSVG
             src="/svgs/arrow-left.svg"
             data-tooltip="Back"
             className="[&>div>svg]:size-6 tooltip font-JetBrainsMono group-hover:[&_*]:stroke-2 [&_*]:stroke-primary"
           />
-        </Link>
+        </Link> */}
         <h1 className="text-xl capitalize font-JetBrainsMono  text-primary my-8">
           {filter} WPM Records
         </h1>
       </section>
       <ul className="flex items-center gap-2">
-        {/* <Link
-          href={{ pathname: `${params.id}/sort`, query: { filter: "highest" } }}
-          className="text-primary font-JetBrainsMono p-2 rounded-xl bg-thrid w-fit"
-        >
-          Highest
-        </Link>
-        <Link
-          href={`${params.id}/sort/newest`}
-          className="text-primary font-JetBrainsMono p-2 rounded-xl bg-thrid w-fit"
-        >
-          Newest
-        </Link> */}
+        <FilterLinks isActive={filter === "newest"} filter="newest" />
+        <FilterLinks isActive={filter === "oldest"} filter="oldest" />
+        <FilterLinks
+          isActive={filter === "highest"}
+          data-tooltip="Base on WPM"
+          className="tooltip"
+          filter="highest"
+        />
+        <FilterLinks
+          isActive={filter === "lowest"}
+          data-tooltip="Base on WPM"
+          className="tooltip"
+          filter="lowest"
+        />
       </ul>
       <WpmRecords records={records} />
     </main>
