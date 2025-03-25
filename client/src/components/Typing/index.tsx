@@ -11,6 +11,7 @@ interface TypingGameProps {
   showTimer: boolean;
   word: number;
   resetTimer: any;
+  regenerateWords: () => void;
 }
 function TypingGame({
   data,
@@ -18,6 +19,7 @@ function TypingGame({
   showTimer,
   resetTimer,
   word,
+  regenerateWords,
 }: TypingGameProps) {
   const [timer, setTimer] = useState(time);
   const [isFocused, setIsFocused] = useState(false);
@@ -35,7 +37,6 @@ function TypingGame({
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [hasStarted, setHasStarted] = useState(false);
   const wordsToType = data;
-
   useEffect(() => {
     setTimeLeft(time);
     setAccuracy(0);
@@ -50,20 +51,29 @@ function TypingGame({
   useEffect(() => {
     // Reset the timer to the initial value when resetTimer is triggered
     if (resetTimer) {
-      console.log("resert");
-      setTimeLeft(time);
-      setAccuracy(0);
-      setWpm(0);
-      setCurrentWordIndex(0);
-      setGameOver(false);
-      setCorrectChars(0);
-      setIncorrectChars(0);
-      setCharCount(0);
-      setInput("");
-      setTimer(time); // Reset to the original time value
-      setHasStarted(false); // Set hasStarted to false so the timer doesn't start
+      restartTest();
     }
   }, [resetTimer, time]); // Dependency array to run whenever resetTimer or time changes
+
+  const restartRound = () => {
+    setCurrentWordIndex(0);
+    setCharCount(0);
+    setInput("");
+  };
+
+  const restartTest = () => {
+    setTimeLeft(time);
+    setWpm(0);
+    setAccuracy(0);
+    setCorrectChars(0);
+    setIncorrectChars(0);
+    setGameOver(false);
+    setTimer(time); // Reset to the original time value
+    setHasStarted(false); // Set hasStarted to false so the timer doesn't start
+    setCurrentWordIndex(0);
+    setCharCount(0);
+    setInput("");
+  };
 
   const storeWPM = async () => {
     setLoading(true);
@@ -81,8 +91,6 @@ function TypingGame({
       language: "en",
     };
 
-    console.log("submissionData", submissionData);
-
     try {
       const response = await axios.post(
         "http://localhost:5000/store_wpm",
@@ -94,10 +102,8 @@ function TypingGame({
         }
       );
 
-      console.log(response.data);
       setLoading(false);
     } catch (error) {
-      console.error("Submission error:", error);
       setLoading(false); // Don't forget to stop loading in case of error
     }
   };
@@ -121,6 +127,7 @@ function TypingGame({
         setTimeLeft((prevTimeLeft) => prevTimeLeft - 1);
       }, 1000);
     } else if (timeLeft === 0) {
+      console.log("it is over");
       setGameOver(true);
       calculateResults();
     }
@@ -177,6 +184,12 @@ function TypingGame({
     setCharCount(charCount + 1);
 
     const currentWord = wordsToType[currentWordIndex];
+    if (
+      wordsToType.length - 1 == currentWordIndex &&
+      e.target.value.length == currentWord.length
+    ) {
+      console.log("should restart the test");
+    }
     const inputChar = newValue[newValue.length - 1];
 
     if (inputChar === currentWord[newValue.length - 1]) {
@@ -189,9 +202,16 @@ function TypingGame({
   const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === " ") {
       e.preventDefault();
-      setInput("");
-      setCharCount(charCount + 1);
-      setCurrentWordIndex((prevIndex) => prevIndex + 1);
+
+      // Check if all words are typed
+      if (currentWordIndex === wordsToType.length - 1) {
+        regenerateWords(); // Call the function from the parent
+        restartRound(); // Restart the test after regenerating words
+      } else {
+        setInput("");
+        setCharCount(charCount + 1);
+        setCurrentWordIndex((prevIndex) => prevIndex + 1);
+      }
     }
   };
 
@@ -202,6 +222,9 @@ function TypingGame({
   const getCharStyle = (char: string, index: number) => {
     if (index < input.length) {
       return char === input[index] ? "text-primary" : "text-red-600";
+    }
+    if (index === input.length) {
+      return "relative"; // Needed for absolute positioning of the border animation
     }
     return "";
   };
@@ -226,9 +249,17 @@ function TypingGame({
               key={charIndex}
               className={isCurrentWord ? getCharStyle(char, charIndex) : ""}
             >
+              {isCurrentWord && charIndex === input.length && (
+                <motion.span
+                  className="absolute w-full h-full border-r-2 border-primary"
+                  animate={{ opacity: [1, 0, 1] }}
+                  transition={{ duration: 1.2, repeat: Infinity }}
+                />
+              )}
               {char}
             </span>
           ))}
+
           {isCurrentWord && extraChars.length > 0 && (
             <span className="text-red-600">{extraChars}</span>
           )}
@@ -236,6 +267,16 @@ function TypingGame({
       );
     });
   }, [input, wordsToType, currentWordIndex]);
+
+  const timeCounter = useMemo(() => {
+    return (
+      showTimer && (
+        <div className="text-primary text-2xl font-JetBrainsMono">
+          {timeLeft}
+        </div>
+      )
+    );
+  }, [timeLeft]);
 
   return (
     <div className="flex flex-col w-full items-center mx-auto ">
@@ -255,11 +296,7 @@ function TypingGame({
           <p>Click here to focus</p>
         </motion.label>
         <section>
-          {showTimer && (
-            <div className="text-primary text-2xl font-JetBrainsMono">
-              {timeLeft}
-            </div>
-          )}
+          {timeCounter}
           <label
             htmlFor="test"
             className={` ${!isFocused &&
