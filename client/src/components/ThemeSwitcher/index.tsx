@@ -10,6 +10,7 @@ export default function ThemeSwitcher() {
   ); // Default theme
 
   useEffect(() => {
+    document.title = 'PlanetType | Themes'; 
     document.documentElement.className =
       localStorage.getItem("theme") ?? "theme-indigo-emerald";
   });
