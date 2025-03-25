@@ -37,7 +37,7 @@ const Header = () => {
         </ul>
         <Link
           className="capitalize bg-secondary transition-all duration-200 ease-in-out text-fourth rounded-full px-2.5 py-1 hover:shadow-lg hover:drop-shadow-lg font-JetBrainsMono"
-          href={`/${username}`}
+          href={`/${username}/sort?filter=newest`}
         >
           {username?.split("")[0]}
         </Link>
