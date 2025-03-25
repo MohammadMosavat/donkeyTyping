@@ -23,17 +23,6 @@ const Header = () => {
         <ul className="flex items-center justify-center gap-10 ">
           <NavLinks iconSrc="/svgs/home.svg" link="/" value="Home" />
           <NavLinks iconSrc="/svgs/theme.svg" link="/theme" value={`Theme`} />
-          {/* <NavLinks iconSrc="/svgs/quote.svg" link="/quote" value="Quotes" />
-          <NavLinks
-            iconSrc="/svgs/headphones.svg"
-            link="/listen-word"
-            value="Listen word"
-          /> */}
-          {/* <NavLinks
-            iconSrc="/svgs/cup.svg"
-            link={`/explore/typehall`}
-            value="Typehall"
-          /> */}
         </ul>
         <Link
           className="capitalize bg-secondary transition-all duration-200 ease-in-out text-fourth rounded-full px-2.5 py-1 hover:shadow-lg hover:drop-shadow-lg font-JetBrainsMono"

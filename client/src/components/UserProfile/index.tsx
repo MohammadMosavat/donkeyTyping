@@ -4,12 +4,15 @@ import toast from "react-hot-toast";
 import Loading from "../loading";
 import UserProfileCardProps from "@/types";
 import { ReactSVG } from "react-svg";
+import { useRouter } from "next/navigation";
 
 export default function UserProfileCard({ username }: { username: string }) {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<UserProfileCardProps>();
+  const router = useRouter();
+
   useEffect(() => {
-    document.title = username; 
+    document.title = username;
     // Fetch user data from the API
     document.documentElement.className =
       localStorage.getItem("theme") ?? "theme-indigo-emerald";
@@ -38,6 +41,12 @@ export default function UserProfileCard({ username }: { username: string }) {
     fetchUserData();
   }, []);
 
+  const handleLogout = () => {
+    localStorage.removeItem("username");
+    toast.success("Logged out successfully!");
+    router.push("/");
+  };
+
   return (
     data && (
       <div className="flex flex-col gap-10 w-full">
@@ -51,8 +60,11 @@ export default function UserProfileCard({ username }: { username: string }) {
                 {data.email}
               </p>
             </div>
-            <div className="flex items-center gap-4">
-              <section data-tooltip="Location" className="!flex font-JetBrainsMono items-center tooltip gap-2">
+            <div className="flex items-center gap-8">
+              <section
+                data-tooltip="Location"
+                className="!flex font-JetBrainsMono items-center tooltip gap-2"
+              >
                 <ReactSVG
                   src="/svgs/location.svg"
                   className="[&>div>svg]:size-6 [&_*]:stroke-primary"
@@ -61,7 +73,10 @@ export default function UserProfileCard({ username }: { username: string }) {
                   {data.location}
                 </p>
               </section>
-              <section data-tooltip="joined At" className="!flex font-JetBrainsMono items-center gap-2 tooltip">
+              <section
+                data-tooltip="joined At"
+                className="!flex font-JetBrainsMono items-center gap-2 tooltip"
+              >
                 <ReactSVG
                   src="/svgs/calendar.svg"
                   className="[&>div>svg]:size-6  [&_*]:stroke-primary"
@@ -74,6 +89,12 @@ export default function UserProfileCard({ username }: { username: string }) {
                   })}
                 </p>
               </section>
+              <button
+                onClick={handleLogout}
+                className="bg-red-500 hover:bg-red-600 text-white font-JetBrainsMono py-2 px-4 rounded"
+              >
+                Logout
+              </button>
             </div>
           </div>
         ) : (

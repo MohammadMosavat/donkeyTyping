@@ -50,7 +50,7 @@ const PaginatedItems = <T,>({
           {displayedItems.map(renderItem)}
         </motion.tbody>
       </table>
-      <p title="Number of records" className="px-6 py-4 font-JetBrainsMono">{"#" + items.length}</p>
+      <p data-tooltip="Number of records" className="px-6 tooltip  w-fit mx-auto font-JetBrainsMono tooltip">{"#" + items.length}</p>
 
       {/** Pagination should be OUTSIDE the table */}
       <div className="flex h-12 justify-center">

@@ -57,7 +57,7 @@ function TypingGame({
 
   const restartRound = () => {
     setCurrentWordIndex(0);
-    setCharCount(0);
+    // setCharCount(0);
     setInput("");
   };
 

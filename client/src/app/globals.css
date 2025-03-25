@@ -298,6 +298,10 @@ body {
   position: relative;
   cursor: pointer;
 }
+.tooltip:hover {
+  scale: 1.1;
+  transition: scale 0.2s ease-in-out;
+}
 
 .tooltip::after {
   content: attr(data-tooltip);
@@ -308,6 +312,7 @@ body {
   transform: translateX(-50%);
   background-color: rgba(0, 0, 0, 0.75);
   color: white;
+  font-size: 12px !important;
   padding: 5px;
   font-weight: 500 !important;
   border-radius: 8px;

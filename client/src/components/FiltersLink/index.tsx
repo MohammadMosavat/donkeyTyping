@@ -16,7 +16,7 @@ const FilterLinks = (props: FilterLinksProps) => {
       <Link
         {...rest}
         href={{ pathname: `sort`, query: { filter: props.filter } }}
-        className={`text-primary flex items-center transition-all duration-200 ease-in-out gap-2 capitalize font-JetBrainsMono p-2 rounded-xl bg-thrid w-fit hover:scale-105 hover:shadow-lg hover:shadow-primary/20 hover:bg-primary/10 ${
+        className={`text-primary flex items-center transition-all duration-200 ease-in-out gap-2 capitalize font-JetBrainsMono p-2 rounded-xl bg-thrid w-fit  hover:shadow-lg hover:shadow-primary/20 hover:bg-primary/10 ${
           isActive
             ? "border-2 border-primary bg-primary/5 font-medium"
             : "border border-transparent"

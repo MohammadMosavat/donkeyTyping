@@ -9,6 +9,7 @@ import Link from "next/link";
 import { ReactSVG } from "react-svg";
 import Footer from "@/components/footer";
 import { motion } from "framer-motion";
+import SettingBar from "@/components/settingBar";
 
 const Home = () => {
   const [time, setTime] = useState<number>(
@@ -20,6 +21,7 @@ const Home = () => {
   const [resetTimer, setResetTimer] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [selectedWords, setSelectedWords] = useState<string[]>([]);
+  const [isTyping, setIsTyping] = useState(false);
 
   useAuth();
 
@@ -54,6 +56,17 @@ const Home = () => {
     setTimeout(() => setResetTimer(false), 100);
   };
 
+  const handleKeyPress = useCallback((e: KeyboardEvent) => {
+    setIsTyping(true);
+  }, []);
+
+  useEffect(() => {
+    window.addEventListener('keydown', handleKeyPress);
+    return () => {
+      window.removeEventListener('keydown', handleKeyPress);
+    };
+  }, [handleKeyPress]);
+
   const Typing = useCallback(() => {
     return (
       <TypingGame
@@ -62,7 +75,7 @@ const Home = () => {
         word={words}
         resetTimer={resetTimer}
         showTimer={true}
-        regenerateWords={genRandomWord} // Pass the function
+        regenerateWords={genRandomWord}
       />
     );
   }, [selectedWords, time, resetTimer]);
@@ -73,146 +86,15 @@ const Home = () => {
   });
 
   return (
-    <main className="flex flex-col items-center justify-center h-screen">
-      <form className="flex flex-col mx-auto gap-8 w-10/12 items-center">
-        <section className="flex items-center gap-10 justify-self-center">
-          <div className="flex items-center gap-4">
-            <ReactSVG
-              data-tooltip="Timer"
-              src="/svgs/timer.svg"
-              className="[&>div>svg]:size-6 font-JetBrainsMono tooltip [&_*]:stroke-primary"
-            />
-            <ul className="w-fit justify-self-center rounded-xl flex items-center gap-10">
-              <li
-                onClick={() => {
-                  localStorage.setItem("words", "30");
-                  setTime(30); // Set to 30 seconds and reset
-                }}
-                className={`font-JetBrainsMono hover:text-primary text-thrid rounded-xl cursor-pointer transition-colors ${
-                  time === 30
-                    ? "!rounded-xl !text-primary"
-                    : "hover:!opacity-100"
-                }`}
-              >
-                30s
-              </li>
-              <li
-                onClick={() => {
-                  localStorage.setItem("words", "60");
-                  setTime(60); // Set to 60 seconds and reset
-                }}
-                className={`font-JetBrainsMono hover:text-primary text-thrid rounded-xl cursor-pointer transition-colors ${
-                  time === 60
-                    ? "!rounded-xl !text-primary"
-                    : "hover:!opacity-100"
-                }`}
-              >
-                60s
-              </li>
-              <li
-                onClick={() => {
-                  localStorage.setItem("words", "90");
-                  setTime(90); // Set to 90 seconds and reset
-                }}
-                className={`font-JetBrainsMono hover:text-primary text-thrid rounded-xl cursor-pointer transition-colors ${
-                  time === 90
-                    ? "!rounded-xl !text-primary"
-                    : "hover:!opacity-100"
-                }`}
-              >
-                90s
-              </li>
-              <li
-                onClick={() => {
-                  localStorage.setItem("words", "120");
-                  setTime(120); // Set to 120 seconds and reset
-                }}
-                className={`font-JetBrainsMono hover:text-primary text-thrid rounded-xl cursor-pointer transition-colors ${
-                  time === 120
-                    ? "!rounded-xl !text-primary"
-                    : "hover:!opacity-100"
-                }`}
-              >
-                120s
-              </li>
-            </ul>
-          </div>
-          <div className="flex items-center gap-4">
-            <ReactSVG
-              data-tooltip="Number of words"
-              src="/svgs/text.svg"
-              className="[&>div>svg]:size-6 font-JetBrainsMono tooltip [&_*]:stroke-primary"
-            />
-            <ul className="w-fit justify-self-center rounded-xl flex items-center gap-10">
-              <li
-                onClick={() => {
-                  localStorage.setItem("words", "10");
-                  setWords(10); // Set to 10 seconds and reset
-                }}
-                className={`font-JetBrainsMono hover:text-primary text-thrid rounded-xl cursor-pointer transition-colors ${
-                  words === 10
-                    ? "!rounded-xl !text-primary"
-                    : "hover:!opacity-100"
-                }`}
-              >
-                10
-              </li>
-              <li
-                onClick={() => {
-                  localStorage.setItem("words", "20");
-                  setWords(20); // Set to 20 seconds and reset
-                }}
-                className={`font-JetBrainsMono hover:text-primary text-thrid rounded-xl cursor-pointer transition-colors ${
-                  words === 20
-                    ? "!rounded-xl !text-primary"
-                    : "hover:!opacity-100"
-                }`}
-              >
-                20
-              </li>
-              <li
-                onClick={() => {
-                  localStorage.setItem("words", "30");
-                  setWords(30); // Set to 30 seconds and reset
-                }}
-                className={`font-JetBrainsMono hover:text-primary text-thrid rounded-xl cursor-pointer transition-colors ${
-                  words === 30
-                    ? "!rounded-xl !text-primary"
-                    : "hover:!opacity-100"
-                }`}
-              >
-                30
-              </li>
-              <li
-                onClick={() => {
-                  localStorage.setItem("words", "40");
-                  setWords(40); // Set to 40 seconds and reset
-                }}
-                className={`font-JetBrainsMono hover:text-primary text-thrid rounded-xl cursor-pointer transition-colors ${
-                  words === 40
-                    ? "!rounded-xl !text-primary"
-                    : "hover:!opacity-100"
-                }`}
-              >
-                40
-              </li>
-              <li
-                onClick={() => {
-                  localStorage.setItem("words", "80");
-                  setWords(80); // Set to 120 seconds and reset
-                }}
-                className={`font-JetBrainsMono hover:text-primary text-thrid rounded-xl cursor-pointer transition-colors ${
-                  words === 80
-                    ? "!rounded-xl !text-primary"
-                    : "hover:!opacity-100"
-                }`}
-              >
-                80
-              </li>
-            </ul>
-          </div>
+    <main className="flex flex-col items-center min-h-screen">
+      {!isTyping && (
+        <section className="flex items-center gap-10 justify-center w-full pt-8">
+          <SettingBar setState={setTime} num={[15, 30, 45, 60]} iconUrl="/svgs/timer.svg" title="Timer" />
+          <SettingBar setState={setWords} num={[10, 30, 60, 80]} iconUrl="/svgs/text.svg" title="Words" />
         </section>
+      )}
 
+      <form className="flex flex-col mx-auto gap-8 w-10/12 items-center flex-1 justify-center">
         <div className="flex flex-col gap-10 items-start justify-between w-full">
           {Typing()}
         </div>
@@ -227,13 +109,15 @@ const Home = () => {
             className="[&>div>svg]:size-6 tooltip font-JetBrainsMono [&_*]:fill-primary"
           />
         </button>
-        <motion.footer
-          animate={{ opacity: 1 }}
-          initial={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
-        >
-          <Footer />
-        </motion.footer>
+        {!isTyping && (
+          <motion.footer
+            animate={{ opacity: 1 }}
+            initial={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+          >
+            <Footer />
+          </motion.footer>
+        )}
       </form>
     </main>
   );

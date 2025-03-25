@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import toast from "react-hot-toast";
-import { useRouter } from "next/navigation"; // Import useRouter for navigation
+import { useRouter } from "next/navigation";
 import { hashUsername } from "@/utils/hashUsername";
 import Cookies from "js-cookie";
 
@@ -9,7 +9,7 @@ const SignUpForm = () => {
   const [username, setUsername] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [location, setLocation] = useState<string>("");
-  const [password, setPassword] = useState<string>(""); // New password state
+  const [password, setPassword] = useState<string>("");
   const router = useRouter();
 
   const validateFields = () => {
@@ -67,8 +67,9 @@ const SignUpForm = () => {
       return;
     }
     try {
-      localStorage.setItem("username", username);
       const joinedAt = new Date().toISOString();
+      
+      // Register user
       const response = await fetch("http://localhost:5000/user", {
         method: "POST",
         headers: {
@@ -78,18 +79,41 @@ const SignUpForm = () => {
       });
 
       const data = await response.json();
+      
       if (response.ok) {
-        toast.success(data.message);
+        // // Send welcome email
+        // const emailResponse = await fetch("http://localhost:5000/send-welcome-email", {
+        //   method: "POST",
+        //   headers: {
+        //     "Content-Type": "application/json",
+        //   },
+        //   body: JSON.stringify({
+        //     email,
+        //     username
+        //   }),
+        // });
+
+        // if (!emailResponse.ok) {
+        //   console.error("Failed to send welcome email");
+        // }
+
+        // Show welcome message
+        toast.success(`Welcome ${username}! Thanks for joining us.`);
+        
+        // Set username in localStorage after successful registration
         localStorage.setItem("username", username);
-        hashUsername(email).then((hashedUsername) => {
-          Cookies.set("hashedUsername", hashedUsername, { expires: 14 });
-          console.log("Hashed Username saved in cookie:", hashedUsername);
-        });
+        
+        // Hash username and set cookie
+        const hashedUsername = await hashUsername(email);
+        Cookies.set("hashedUsername", hashedUsername, { expires: 14 });
+        
         router.push("/");
       } else {
+        // Show specific error message from backend
         toast.error(data.message || "Failed to sign up.");
       }
     } catch (error) {
+      console.error("Registration error:", error);
       toast.error("An error occurred. Please try again.");
     }
   };

@@ -56,9 +56,19 @@ const FilterRecordPage = () => {
           {filter} WPM Records
         </h1>
       </section>
-      <ul className="flex items-center gap-2">
-        <FilterLinks isActive={filter === "newest"} filter="newest" />
-        <FilterLinks isActive={filter === "oldest"} filter="oldest" />
+      <ul className="flex items-center gap-3">
+        <FilterLinks
+          data-tooltip="Base on Date"
+          className="tooltip"
+          isActive={filter === "newest"}
+          filter="newest"
+        />
+        <FilterLinks
+          data-tooltip="Base on Date"
+          className="tooltip"
+          isActive={filter === "oldest"}
+          filter="oldest"
+        />
         <FilterLinks
           isActive={filter === "highest"}
           data-tooltip="Base on WPM"
