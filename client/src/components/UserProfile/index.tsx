@@ -9,6 +9,7 @@ export default function UserProfileCard({ username }: { username: string }) {
   const [loading, setLoading] = useState(true);
   const [data, setData] = useState<UserProfileCardProps>();
   useEffect(() => {
+    document.title = username; 
     // Fetch user data from the API
     document.documentElement.className =
       localStorage.getItem("theme") ?? "theme-indigo-emerald";
