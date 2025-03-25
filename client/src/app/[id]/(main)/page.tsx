@@ -49,7 +49,7 @@ const MainPageProfile = () => {
           filter={"lowest"}
         />
       </ul>
-      <WpmRecords records={records} />;
+      <WpmRecords records={records} />
     </main>
   ) : (
     <Loading />
