@@ -1,3 +1,4 @@
+import os
 from flask import Flask, request, jsonify
 import lyricsgenius
 from pymongo import MongoClient, errors,DESCENDING, ASCENDING
@@ -8,6 +9,9 @@ from bson import ObjectId
 from datetime import datetime
 import email.utils 
 import bcrypt
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
 
 app = Flask(__name__)
 CORS(app)  # Enable CORS for all routes
@@ -115,6 +119,58 @@ def login():
 
     except Exception as e:
         return jsonify({"message": f"An error occurred: {str(e)}"}), 500
+
+@app.route("/send-welcome-email", methods=["POST"])
+def send_welcome_email():
+    try:
+        data = request.json
+        recipient_email = data.get("email")
+        username = data.get("username")
+
+        if not recipient_email or not username:
+            return jsonify({"error": "Email and username are required"}), 400
+
+        # Create message
+        msg = MIMEMultipart()
+        msg['From'] = 'typeracer.app.2024@gmail.com'  # Sender email address
+        msg['To'] = recipient_email
+        msg['Subject'] = f"Welcome to TypeRacer, {username}!"
+
+        body = f"""
+        Hi {username},
+
+        Welcome to TypeRacer! We're excited to have you join our community.
+        Start practicing your typing skills and compete with others.
+
+        Happy Typing!
+        The TypeRacer Team
+        """
+        
+        msg.attach(MIMEText(body, 'plain'))
+
+        # Create SMTP session
+        server = smtplib.SMTP('smtp.gmail.com', 587)
+        server.starttls()
+        
+        # Login using environment variables for security
+        email = 'typeracer.app.2024@gmail.com'  # Fixed email address
+        password = 'qxwm rnxk yvxp rlzm'  # App password generated from Google Account
+        
+        if not password:
+            return jsonify({"error": "Failed to send welcome email: Email password not properly configured"}), 500
+            
+        server.login(email, password)
+        
+        # Send email
+        server.send_message(msg)
+        server.quit()
+
+        return jsonify({"message": "Welcome email sent successfully"}), 200
+
+    except Exception as e:
+        print(f"Email error: {str(e)}")
+        return jsonify({"error": f"Failed to send welcome email: {str(e)}"}), 500
+
 @app.route("/store_wpm", methods=["GET"])
 def get_wpm_records():
     try:
@@ -194,6 +250,16 @@ def signup():
             if not username or not email or not password or not location:
                 return jsonify({"message": "Username, email, password, and location are required."}), 400
 
+            # Check if username already exists
+            existing_username = collection_users.find_one({"username": username})
+            if existing_username:
+                return jsonify({"message": "Username already exists. Please choose another one."}), 409
+
+            # Check if email already exists  
+            existing_email = collection_users.find_one({"email": email})
+            if existing_email:
+                return jsonify({"message": "Email already exists. Please use another email address."}), 409
+
             # Hash the password before storing it
             hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
 
@@ -212,8 +278,6 @@ def signup():
 
             return jsonify({"message": "Sign up successful!", "user": user}), 201
 
-        except errors.DuplicateKeyError:
-            return jsonify({"message": "Username or email already exists. Please choose another one."}), 409
         except Exception as e:
             return jsonify({"message": f"An error occurred: {str(e)}"}), 500
 
@@ -259,6 +323,7 @@ def signup():
 
         except Exception as e:
             return jsonify({"message": f"An error occurred: {str(e)}"}), 500
+        
 @app.route('/songs', methods=['POST'])
 def run_python():
     data = request.json
