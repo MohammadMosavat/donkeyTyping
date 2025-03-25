@@ -26,14 +26,12 @@ const Home = () => {
   const genRandomWord = () => {
     const newWords: string[] = [];
 
-    // Pick random arrays and push words into newWords
     while (newWords.length < words) {
       const randomArray =
         commonWords[Math.floor(Math.random() * commonWords.length)];
       const randomWord =
         randomArray[Math.floor(Math.random() * randomArray.length)];
 
-      // Ensure no duplicates
       if (!newWords.includes(randomWord)) {
         newWords.push(randomWord);
       }
@@ -47,23 +45,24 @@ const Home = () => {
     if (inputRef.current) {
       inputRef.current.focus();
     }
-  }, [time , words]);
+  }, [time, words]);
 
   const regenerateWords = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     genRandomWord();
-    setResetTimer(true); // Trigger the reset of the timer
-    setTimeout(() => setResetTimer(false), 100); // Reset after a small delay to allow the timer to reset
+    setResetTimer(true);
+    setTimeout(() => setResetTimer(false), 100);
   };
 
   const Typing = useCallback(() => {
     return (
       <TypingGame
-        data={selectedWords} // Pass words to the child component
+        data={selectedWords}
         time={time}
         word={words}
-        resetTimer={resetTimer} // Pass the reset state
+        resetTimer={resetTimer}
         showTimer={true}
+        regenerateWords={genRandomWord} // Pass the function
       />
     );
   }, [selectedWords, time, resetTimer]);
