@@ -31,7 +31,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`bg-fourth antialiased`}
+        className={`bg-fourth md:h-[95vh] my-auto md:mx-4 grid md:grid-cols-[auto_1fr] grid-cols-1 gap-10 antialiased`}
       >
         <Header/>
         {children}

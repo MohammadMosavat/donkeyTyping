@@ -291,7 +291,7 @@ function TypingGame({
         >
           <ReactSVG
             src="/svgs/cursor.svg"
-            className="[&>div>svg]:size-6 [&_*]:stroke-primary"
+            className="[&>div>svg]:size-7 [&_*]:stroke-primary"
           />
           <p>Click here to focus</p>
         </motion.label>

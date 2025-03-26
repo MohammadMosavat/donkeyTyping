@@ -24,7 +24,7 @@ const FilterLinks = (props: FilterLinksProps) => {
       >
         <ReactSVG
           src={`/svgs/${props.filter}.svg`}
-          className={`[&>div>svg]:size-6 [&_*]:stroke-primary ${
+          className={`[&>div>svg]:size-7 [&_*]:stroke-primary ${
             isActive ? "[&_*]:stroke-[2.5]" : ""
           }`}
         />

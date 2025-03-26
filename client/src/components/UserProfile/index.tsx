@@ -49,27 +49,27 @@ export default function UserProfileCard({ username }: { username: string }) {
 
   return (
     data && (
-      <div className="flex flex-col gap-10 w-full">
+      <div className="flex flex-col gap-5 md:gap-10 w-full">
         {!loading ? (
-          <div className="flex items-center gap-4 justify-between">
-            <div className="flex gap-4 items-center">
-              <h2 className="text-xl font-JetBrainsMono  text-primary">
+          <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:justify-between">
+            <div className="flex flex-col md:flex-row gap-2 md:gap-4 items-start md:items-center">
+              <h2 className="text-lg md:text-xl font-JetBrainsMono text-primary">
                 @{data.username}
               </h2>
-              <p className="text-primary text-sm font-JetBrainsMono">
+              <p className="text-xs md:text-sm font-JetBrainsMono text-primary">
                 {data.email}
               </p>
             </div>
-            <div className="flex items-center gap-8">
+            <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:gap-8">
               <section
                 data-tooltip="Location"
                 className="!flex font-JetBrainsMono items-center tooltip gap-2"
               >
                 <ReactSVG
                   src="/svgs/location.svg"
-                  className="[&>div>svg]:size-6 [&_*]:stroke-primary"
+                  className="[&>div>svg]:size-5 md:[&>div>svg]:size-7 [&_*]:stroke-primary"
                 />
-                <p className="font-JetBrainsMono capitalizetext text-primary">
+                <p className="text-sm md:text-base font-JetBrainsMono capitalize text-primary">
                   {data.location}
                 </p>
               </section>
@@ -79,9 +79,9 @@ export default function UserProfileCard({ username }: { username: string }) {
               >
                 <ReactSVG
                   src="/svgs/calendar.svg"
-                  className="[&>div>svg]:size-6  [&_*]:stroke-primary"
+                  className="[&>div>svg]:size-5 md:[&>div>svg]:size-7 [&_*]:stroke-primary"
                 />
-                <p className="font-JetBrainsMono text-primary">
+                <p className="text-sm md:text-base font-JetBrainsMono text-primary">
                   {new Date(data.joinedAt).toLocaleDateString("en-US", {
                     year: "numeric",
                     month: "long",
@@ -91,9 +91,13 @@ export default function UserProfileCard({ username }: { username: string }) {
               </section>
               <button
                 onClick={handleLogout}
-                className="bg-red-500 hover:bg-red-600 text-white font-JetBrainsMono py-2 px-4 rounded"
+                className="bg-red-500 hover:bg-red-600 flex items-center gap-2 py-2 md:py-2.5 px-4 md:px-5 rounded-xl transition-all duration-200 ease-in-out hover:shadow-lg hover:scale-105"
               >
-                Logout
+                <ReactSVG
+                  src="/svgs/logout.svg"
+                  className="[&>div>svg]:size-5 md:[&>div>svg]:size-7 [&_*]:stroke-primary"
+                />
+                <p className="text-sm md:text-base font-JetBrainsMono text-primary">Logout</p>
               </button>
             </div>
           </div>

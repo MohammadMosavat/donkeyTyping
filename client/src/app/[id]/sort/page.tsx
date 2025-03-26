@@ -8,6 +8,8 @@ import Link from "next/link";
 import { useParams, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ReactSVG } from "react-svg";
+import { motion } from "framer-motion";
+import Footer from "@/components/footer";
 
 const FilterRecordPage = () => {
   const params = useParams();
@@ -43,46 +45,54 @@ const FilterRecordPage = () => {
     fetchRecords();
   }, [filter]);
   return !loading ? (
-    <main className="w-full flex flex-col gap-6">
-      <section className="flex items-center gap-4">
+    <main className="w-full flex flex-col gap-4 md:gap-6">
+      <section className="flex items-center gap-2 md:gap-4">
         {/* <Link className="group" href={`/${params.id}`}>
           <ReactSVG
             src="/svgs/arrow-left.svg"
             data-tooltip="Back"
-            className="[&>div>svg]:size-6 tooltip font-JetBrainsMono group-hover:[&_*]:stroke-2 [&_*]:stroke-primary"
+            className="[&>div>svg]:size-5 md:[&>div>svg]:size-7 tooltip font-JetBrainsMono group-hover:[&_*]:stroke-2 [&_*]:stroke-primary"
           />
         </Link> */}
-        <h1 className="text-xl capitalize font-JetBrainsMono  text-primary my-8">
+        <h1 className="text-lg md:text-xl capitalize font-JetBrainsMono text-primary my-4 md:my-8">
           {filter} WPM Records
         </h1>
       </section>
-      <ul className="flex items-center gap-3">
+      <ul className="flex flex-wrap items-center gap-2 md:gap-3">
         <FilterLinks
           data-tooltip="Base on Date"
-          className="tooltip"
+          className="tooltip text-sm md:text-base"
           isActive={filter === "newest"}
           filter="newest"
         />
         <FilterLinks
           data-tooltip="Base on Date"
-          className="tooltip"
+          className="tooltip text-sm md:text-base"
           isActive={filter === "oldest"}
           filter="oldest"
         />
         <FilterLinks
           isActive={filter === "highest"}
           data-tooltip="Base on WPM"
-          className="tooltip"
+          className="tooltip text-sm md:text-base"
           filter="highest"
         />
         <FilterLinks
           isActive={filter === "lowest"}
           data-tooltip="Base on WPM"
-          className="tooltip"
+          className="tooltip text-sm md:text-base"
           filter="lowest"
         />
       </ul>
       <WpmRecords records={records} />
+      <motion.footer
+        animate={{ opacity: 1 }}
+        initial={{ opacity: 0 }}
+        transition={{ duration: 0.3 }}
+        className="mt-4 md:mt-6"
+      >
+        <Footer />
+      </motion.footer>
     </main>
   ) : (
     <Loading />

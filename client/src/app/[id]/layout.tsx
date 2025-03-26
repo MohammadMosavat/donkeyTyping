@@ -9,7 +9,7 @@ interface Props {
 
 export default function UserPage({ children, params }: Props) {
   return (
-    <div className="flex pt-40 w-10/12 gap-10 mx-auto mb-20 flex-col items-center">
+    <div className="flex  w-10/12 gap-10 mx-auto md:my-8 my-20 flex-col items-center">
       <UserProfileCard username={params.id} />
       {children}
     </div>

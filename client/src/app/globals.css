@@ -299,7 +299,6 @@ body {
   cursor: pointer;
 }
 .tooltip:hover {
-  scale: 1.1;
   transition: scale 0.2s ease-in-out;
 }
 
@@ -325,4 +324,8 @@ body {
   visibility: visible;
   opacity: 1;
   z-index: 30;
+}
+
+nextjs-portal{
+  display: none;
 }

@@ -10,10 +10,11 @@ export default function ThemeSwitcher() {
   ); // Default theme
 
   useEffect(() => {
-    document.title = 'PlanetType | Themes'; 
+    document.title = 'PlanetType | Themes';
     document.documentElement.className =
       localStorage.getItem("theme") ?? "theme-indigo-emerald";
   });
+
   const changeTheme = (themeName: string) => {
     localStorage.setItem("theme", themeName);
     document.documentElement.className = themeName; // Apply theme to <html>
@@ -21,8 +22,8 @@ export default function ThemeSwitcher() {
   };
 
   return (
-    <div className=" w-10/12 mx-auto pt-28 text-secondary ">
-      <ul className="mt-4 grid grid-cols-3 gap-2">
+    <div className="md:my-8 my-20 md:w-11/12 lg:w-10/12 mx-auto min-h-screen w-full px-4 md:px-8 lg:px-12 text-secondary">
+      <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
         {themes.map((t) => {
           return (
             <button
@@ -30,18 +31,21 @@ export default function ThemeSwitcher() {
               onClick={() => {
                 changeTheme(t.class);
               }}
-              className={`${theme == t.class &&
-                "bg-thrid"} hover:bg-thrid !bg-opacity-50 cursor-pointer hover:font-bold transition-all duration-200 ease-in-out text-primary w-full flex items-center justify-between p-2 rounded-xl`}
+              className={`${
+                theme == t.class && "bg-thrid"
+              } hover:bg-thrid !bg-opacity-50 cursor-pointer hover:font-bold transition-all duration-200 ease-in-out text-primary w-full flex items-center gap-2 sm:gap-0 justify-between p-2 rounded-xl`}
             >
-              <p className="font-JetBrainsMono text-primary">{t.name}</p>
-              <section className="flex  bg-glass p-2 items-center rounded-full gap-2">
+              <p className="font-JetBrainsMono text-primary text-sm md:text-base">
+                {t.name}
+              </p>
+              <section className="flex bg-glass p-1.5 md:p-2 items-center rounded-full gap-1.5 md:gap-2">
                 <p
                   title={t.colors.primary}
                   style={{
                     backgroundColor: t.colors.primary,
                     color: t.colors.primary,
                   }}
-                  className={`px-2.5 rounded-full`}
+                  className="px-2 md:px-2.5 rounded-full"
                 >
                   .
                 </p>
@@ -51,7 +55,7 @@ export default function ThemeSwitcher() {
                     backgroundColor: t.colors.secondary,
                     color: t.colors.secondary,
                   }}
-                  className={`px-2.5 rounded-full `}
+                  className="px-2 md:px-2.5 rounded-full"
                 >
                   .
                 </p>
@@ -61,7 +65,7 @@ export default function ThemeSwitcher() {
                     backgroundColor: t.colors.third,
                     color: t.colors.third,
                   }}
-                  className={`px-2.5 rounded-full`}
+                  className="px-2 md:px-2.5 rounded-full"
                 >
                   .
                 </p>
@@ -71,7 +75,7 @@ export default function ThemeSwitcher() {
                     backgroundColor: t.colors.fourth,
                     color: t.colors.fourth,
                   }}
-                  className={`px-2.5 rounded-full`}
+                  className="px-2 md:px-2.5 rounded-full"
                 >
                   .
                 </p>
@@ -85,6 +89,7 @@ export default function ThemeSwitcher() {
         animate={{ opacity: 1 }}
         initial={{ opacity: 0 }}
         transition={{ duration: 0.3 }}
+        className="mt-4 md:mt-0"
       >
         <Footer />
       </motion.footer>

@@ -27,18 +27,17 @@ const PaginatedItems = <T,>({
     .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   return (
-    <>
-      {/** Ensure it only returns valid <table> structure */}
-      <table className="w-full border-collapse">
-        <thead>
-          <tr className="text-left text-white uppercase text-sm tracking-wider">
-            <th className="px-6 py-4 text-primary bg-thrid font-JetBrainsMono">WPM</th>
-            <th className="px-6 py-4 text-primary bg-thrid font-JetBrainsMono">Correct Chars</th>
-            <th className="px-6 py-4 text-primary bg-thrid font-JetBrainsMono">Incorrect Chars</th>
-            <th className="px-6 py-4 text-primary bg-thrid font-JetBrainsMono">Date</th>
-            <th className="px-6 py-4 text-primary bg-thrid font-JetBrainsMono">Time</th>
-            <th className="px-6 py-4 text-primary bg-thrid font-JetBrainsMono">Word</th>
-            <th className="px-6 py-4 text-primary bg-thrid font-JetBrainsMono">Language</th>
+    <div className="flex flex-col gap-4">
+      <table className="w-full border-collapse bg-opacity-50 rounded-2xl overflow-hidden">
+        <thead className="bg-secondary/20">
+          <tr className="text-left uppercase text-sm tracking-wider">
+            <th className="px-4 py-3 text-primary font-JetBrainsMono">WPM</th>
+            <th className="hidden md:table-cell px-4 py-3 text-primary font-JetBrainsMono">Correct Chars</th>
+            <th className="hidden md:table-cell px-4 py-3 text-primary font-JetBrainsMono">Incorrect Chars</th>
+            <th className="hidden md:table-cell px-4 py-3 text-primary font-JetBrainsMono">Date</th>
+            <th className="px-4 py-3 text-primary font-JetBrainsMono">Time</th>
+            <th className="px-4 py-3 text-primary font-JetBrainsMono">Word</th>
+            <th className="hidden md:table-cell px-4 py-3 text-primary font-JetBrainsMono">Language</th>
           </tr>
         </thead>
         <motion.tbody
@@ -46,27 +45,33 @@ const PaginatedItems = <T,>({
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, ease: "easeOut" }}
+          className="divide-y divide-secondary/10"
         >
           {displayedItems.map(renderItem)}
         </motion.tbody>
       </table>
-      <p data-tooltip="Number of records" className="px-6 tooltip  w-fit mx-auto font-JetBrainsMono tooltip">{"#" + items.length}</p>
 
-      {/** Pagination should be OUTSIDE the table */}
-      <div className="flex h-12 justify-center">
+      <p 
+        data-tooltip="Number of records" 
+        className="px-6 py-2.5 tooltip w-fit mx-auto font-JetBrainsMono text-sm bg-secondary/10 rounded-xl hover:bg-secondary/20 transition-all duration-200 ease-in-out shadow-sm"
+      >
+        {"#" + items.length}
+      </p>
+
+      <div className="flex justify-center mt-2">
         <Pagination
           total={pageCount}
           current={currentPage}
           onPageChange={handlePageChange}
           previousLabel="Previous"
           nextLabel="Next"
-          className="flex justify-center gap-3 items-center"
-          activeItemClassName="font-bold underline underline-offset-2"
-          disabledItemClassName="opacity-50"
-          pageLinkClassName="px-4 py-2  hover:font-bold font-JetBrainsMono rounded-md transition-colors"
+          className="flex gap-2 items-center"
+          activeItemClassName="font-bold bg-secondary/30 rounded-lg shadow-sm"
+          disabledItemClassName="opacity-40 cursor-not-allowed"
+          pageLinkClassName="px-4 py-2.5 hover:bg-secondary/15 font-JetBrainsMono rounded-lg transition-all duration-200 ease-in-out hover:shadow-sm"
         />
       </div>
-    </>
+    </div>
   );
 };
 

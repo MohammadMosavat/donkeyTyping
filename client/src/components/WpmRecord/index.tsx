@@ -63,7 +63,7 @@ const WpmRecords = ({ records }: { records: WpmRecord[] }) => {
     return (
       <div className="flex flex-col gap-4">
         <LineChart labels={labels} datasets={datasets} title={title} />
-        <p className="font-JetBrainsMono text-sm text-center text-primary">
+        <p className="font-JetBrainsMono text-xs md:text-sm text-center text-primary">
           R1 : Record Number 1
         </p>
       </div>
@@ -71,134 +71,65 @@ const WpmRecords = ({ records }: { records: WpmRecord[] }) => {
   }, []);
 
   return (
-    <div className=" w-full h-fit">
-      {/* {bestOf && (
-        <>
-          <section className="flex items-center justify-between my-8 gap-4 w-full">
-            <h1 className="text-xl font-JetBrainsMono text-primary ">
-              Best of {username}
-            </h1>
-            <ul className="flex items-center gap-4">
-              <li className="p-2 rounded-xl w-fit mb-8 flex gap-2 items-end">
-                <p className="text-primary text-3xl font-JetBrainsMono ">
-                  {correctCharCounter}
-                </p>
-                <span className="text-primary font-JetBrainsMono">
-                  Total correct characters
-                </span>
-              </li>
-              <li className="p-2 rounded-xl w-fit mb-8 flex gap-2 items-end">
-                <p className="text-primary text-3xl font-JetBrainsMono ">
-                  {incorrectCharCounter}
-                </p>
-                <span className="text-primary font-JetBrainsMono">
-                  Total incorrect characters
-                </span>
-              </li>
-            </ul>
-          </section>
-          <motion.table
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.4, ease: "easeOut" }}
-            className="min-w-full overflow-hidden text-primary col-span-full rounded-xl"
-          >
-            <thead>
-              <tr className="text-left text-primary uppercase text-sm tracking-wider">
-                <th className="px-6 py-4 font-JetBrainsMono">WPM</th>
-                <th className="px-6 py-4 font-JetBrainsMono">Correct Chars</th>
-                <th className="px-6 py-4 font-JetBrainsMono">
-                  Incorrect Chars
-                </th>
-                <th className="px-6 py-4 font-JetBrainsMono">Date</th>
-                <th className="px-6 py-4 font-JetBrainsMono">Time</th>
-                <th className="px-6 py-4 font-JetBrainsMono">Language</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              <motion.tr
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                className="hover:bg-thrid rounded-xl transition-colors"
-              >
-                <td className="px-6 py-4 font-JetBrainsMono">
-                  {bestOf.wpm || "—"}
-                </td>
-                <td className="px-6 py-4 font-JetBrainsMono">
-                  {bestOf.correct_char || "—"}
-                </td>
-                <td className="px-6 py-4 font-JetBrainsMono">
-                  {bestOf.incorrect_char || "—"}
-                </td>
-                <td className="px-6 py-4 font-JetBrainsMono">
-                  {new Date(bestOf.date).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })}
-                </td>
-                <td className="px-6 py-4 font-JetBrainsMono">
-                  {bestOf.time || "—"}
-                </td>
-                <td className="px-6 py-4  font-JetBrainsMono">
-                  {bestOf.language || "—"}
-                </td>
-              </motion.tr>
-            </tbody>
-          </motion.table>
-        </>
-      )} */}
-      <div className="grid grid-cols-1 gap-6">
+    <div className="w-full h-fit">
+      <div className="grid grid-cols-1 gap-4 md:gap-6">
         <motion.div
-          key={records}
+          key={records.length}
           initial={{ opacity: 0, y: 10 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.4, ease: "easeOut" }}
-          className="min-w-full flex flex-col pb-10 gap-10 overflow-hidden text-primary col-span-full rounded-xl"
+          className="w-full overflow-x-auto"
         >
-          {/* Table Body */}
-          <PaginatedItems
-            items={records}
-            itemsPerPage={10}
-            renderItem={(record, index) => (
-              <motion.tr
-                key={index}
-                initial={{ opacity: 0, y: 10 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.3, delay: index * 0.05 }}
-                className="hover:bg-thrid rounded-xl transition-colors"
-              >
-                <td className="px-6 py-4 text-primary font-JetBrainsMono">
-                  {record.wpm || "—"}
-                </td>
-                <td className="px-6 py-4 text-primary font-JetBrainsMono">
-                  {record.correct_char || "—"}
-                </td>
-                <td className="px-6 py-4 text-primary font-JetBrainsMono">
-                  {record.incorrect_char || "—"}
-                </td>
-                <td className="px-6 py-4 text-primary font-JetBrainsMono">
-                  {new Date(record.date).toLocaleDateString("en-US", {
-                    year: "numeric",
-                    month: "long",
-                    day: "numeric",
-                  })}
-                </td>
-                <td className="px-6 py-4 text-primary font-JetBrainsMono">
-                  {record.time || "—"}
-                </td>
-                <td className="px-6 py-4 text-primary font-JetBrainsMono">
-                  {record.word || "—"}
-                </td>
-                <td className="px-6 py-4 font-JetBrainsMono">
-                  {record.language || "—"}
-                </td>
-              </motion.tr>
-            )}
-          />
+          <div className="min-w-full flex flex-col pb-6 md:pb-10 gap-6 md:gap-10 text-primary rounded-xl">
+            <div className="">
+              <table className="min-w-full">
+              
+                <tbody>
+                  <PaginatedItems
+                    items={records}
+                    itemsPerPage={10}
+                    renderItem={(record, index) => (
+                      <motion.tr
+                        key={index}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ duration: 0.3, delay: index * 0.05 }}
+                        className="hover:bg-thrid/20 border-b border-secondary/10 transition-all duration-200 ease-in-out text-xs md:text-sm"
+                      >
+                        <td className="px-4 md:px-6 py-3 md:py-4 text-primary font-JetBrainsMono whitespace-nowrap">
+                          {record.wpm || "—"}
+                        </td>
+                        <td className="hidden md:table-cell px-4 md:px-6 py-3 md:py-4 text-primary font-JetBrainsMono whitespace-nowrap">
+                          {record.correct_char || "—"}
+                        </td>
+                        <td className="hidden md:table-cell px-4 md:px-6 py-3 md:py-4 text-primary font-JetBrainsMono whitespace-nowrap">
+                          {record.incorrect_char || "—"}
+                        </td>
+                        <td className="hidden md:table-cell px-4 md:px-6 py-3 md:py-4 text-primary font-JetBrainsMono whitespace-nowrap">
+                          {new Date(record.date).toLocaleDateString("en-US", {
+                            year: "numeric",
+                            month: "long", 
+                            day: "numeric",
+                          })}
+                        </td>
+                        <td className="px-4 md:px-6 py-3 md:py-4 text-primary font-JetBrainsMono whitespace-nowrap">
+                          {record.time || "—"}
+                        </td>
+                        <td className="px-4 md:px-6 py-3 md:py-4 text-primary font-JetBrainsMono whitespace-nowrap">
+                          {record.word || "—"}
+                        </td>
+                        <td className="hidden md:table-cell px-4 md:px-6 py-3 md:py-4 font-JetBrainsMono whitespace-nowrap">
+                          {record.language || "—"}
+                        </td>
+                      </motion.tr>
+                    )}
+                  />
+                </tbody>
+              </table>
+            </div>
+          </div>
         </motion.div>
-        {/* {RecordChart} */}
+        
       </div>
     </div>
   );
