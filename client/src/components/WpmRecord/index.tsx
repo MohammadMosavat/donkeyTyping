@@ -1,15 +1,20 @@
 "use client";
 import { useState, useEffect, useMemo } from "react";
 import axios from "axios";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Loading from "../loading";
 import { WpmRecord } from "@/types";
 import toast from "react-hot-toast";
 import LineChart from "../Charts";
 import PaginatedItems from "../PaginationItems";
+import Button from "../MainButton";
+import { ReactSVG } from "react-svg";
 
 const WpmRecords = ({ records }: { records: WpmRecord[] }) => {
   const [bestOf, setBestOf] = useState<WpmRecord>();
+  const [selectedDate, setSelectedDate] = useState<string | null>(null);
+  const [isFiltering, setIsFiltering] = useState(false);
+  const [showDateDropdown, setShowDateDropdown] = useState(false);
 
   const correctCharCounter = useMemo(() => {
     let count = 0;
@@ -27,9 +32,21 @@ const WpmRecords = ({ records }: { records: WpmRecord[] }) => {
     return count;
   }, [records]);
 
+  const availableDates = useMemo(() => {
+    const dates = new Set(
+      records.map((record) =>
+        new Date(record.date).toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "numeric",
+        })
+      )
+    );
+    return Array.from(dates);
+  }, [records]);
+
   const RecordChart = useMemo(() => {
     const lastFive = Array.isArray(records) && records?.slice(-5);
-    console.log("lastFive", lastFive);
     const LastFiveRecordFilter = (label: string): number[] => {
       if (Array.isArray(lastFive)) {
         if (label == "wpm") return lastFive.map((rec: WpmRecord) => rec.wpm);
@@ -70,67 +87,142 @@ const WpmRecords = ({ records }: { records: WpmRecord[] }) => {
     );
   }, []);
 
+  const filteredRecords = useMemo(() => {
+    if (!selectedDate) return records;
+    return records.filter((record) => {
+      const recordDate = new Date(record.date).toLocaleDateString("en-US", {
+        year: "numeric",
+        month: "long",
+        day: "numeric",
+      });
+      return recordDate === selectedDate;
+    });
+  }, [records, selectedDate]);
+
+  const handleDateClick = (date: string) => {
+    setIsFiltering(true);
+    if (selectedDate === date) {
+      setSelectedDate(null);
+    } else {
+      setSelectedDate(date);
+    }
+    setShowDateDropdown(false);
+    setTimeout(() => setIsFiltering(false), 300);
+  };
+
   return (
-    <div className="w-full h-fit">
-      <div className="grid grid-cols-1 gap-4 md:gap-6">
-        <motion.div
-          key={records.length}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, ease: "easeOut" }}
-          className="w-full overflow-x-auto"
+    <div className="w-full flex flex-col gap-4 h-fit">
+      <AnimatePresence>
+        {selectedDate && (
+          <motion.div
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            className="flex justify-between items-center bg-secondary/10 rounded-xl shadow-sm backdrop-blur-sm p-4"
+          >
+            <span className="font-JetBrainsMono text-sm md:text-base text-primary">
+              Showing records for: {selectedDate}
+            </span>
+            <Button
+              variant="ghost"
+              onClick={() => handleDateClick(selectedDate)}
+              className="text-sm px-4 py-2 rounded-lg font-JetBrainsMono text-primary hover:text-primary hover:bg-thrid transition-all duration-200 ease-in-out"
+            >
+              Clear filter
+            </Button>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      <div className="flex items-center justify-end gap-2 mb-4">
+        <Button
+          variant="ghost"
+          onClick={() => setShowDateDropdown(!showDateDropdown)}
+          className="relative flex items-center gap-2"
         >
-          <div className="min-w-full flex flex-col pb-6 md:pb-10 gap-6 md:gap-10 text-primary rounded-xl">
-            <div className="">
-              <table className="min-w-full">
-              
-                <tbody>
-                  <PaginatedItems
-                    items={records}
-                    itemsPerPage={10}
-                    renderItem={(record, index) => (
-                      <motion.tr
-                        key={index}
-                        initial={{ opacity: 0, y: 10 }}
-                        animate={{ opacity: 1, y: 0 }}
-                        transition={{ duration: 0.3, delay: index * 0.05 }}
-                        className="hover:bg-thrid/20 border-b border-secondary/10 transition-all duration-200 ease-in-out text-xs md:text-sm"
-                      >
-                        <td className="px-4 md:px-6 py-3 md:py-4 text-primary font-JetBrainsMono whitespace-nowrap">
-                          {record.wpm || "—"}
-                        </td>
-                        <td className="hidden md:table-cell px-4 md:px-6 py-3 md:py-4 text-primary font-JetBrainsMono whitespace-nowrap">
-                          {record.correct_char || "—"}
-                        </td>
-                        <td className="hidden md:table-cell px-4 md:px-6 py-3 md:py-4 text-primary font-JetBrainsMono whitespace-nowrap">
-                          {record.incorrect_char || "—"}
-                        </td>
-                        <td className="hidden md:table-cell px-4 md:px-6 py-3 md:py-4 text-primary font-JetBrainsMono whitespace-nowrap">
-                          {new Date(record.date).toLocaleDateString("en-US", {
-                            year: "numeric",
-                            month: "long", 
-                            day: "numeric",
-                          })}
-                        </td>
-                        <td className="px-4 md:px-6 py-3 md:py-4 text-primary font-JetBrainsMono whitespace-nowrap">
-                          {record.time || "—"}
-                        </td>
-                        <td className="px-4 md:px-6 py-3 md:py-4 text-primary font-JetBrainsMono whitespace-nowrap">
-                          {record.word || "—"}
-                        </td>
-                        <td className="hidden md:table-cell px-4 md:px-6 py-3 md:py-4 font-JetBrainsMono whitespace-nowrap">
-                          {record.language || "—"}
-                        </td>
-                      </motion.tr>
-                    )}
-                  />
-                </tbody>
-              </table>
+          <span>Filter by Date</span>
+          <ReactSVG
+            src="/svgs/arrow-down.svg"
+            className={`[&>div>svg]:size-4 [&_*]:fill-primary transition-transform duration-200 ${
+              showDateDropdown ? "rotate-180" : ""
+            }`}
+          />
+          {showDateDropdown && (
+            <div className="absolute top-full right-0 mt-2 p-2 bg-glass rounded-xl shadow-lg backdrop-blur-sm z-10">
+              {availableDates.map((date, index) => (
+                <div
+                  key={index}
+                  className="px-4 py-2 rounded-xl hover:bg-thrid transition-all duration-200 ease-in-out cursor-pointer text-primary"
+                  onClick={() => handleDateClick(date)}
+                >
+                  {date}
+                </div>
+              ))}
             </div>
-          </div>
-        </motion.div>
-        
+          )}
+        </Button>
       </div>
+
+      <PaginatedItems
+        items={filteredRecords}
+        itemsPerPage={10}
+        renderItem={(record, index) => (
+          <motion.div
+            key={index}
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{
+              duration: 0.3,
+              delay: index * 0.05,
+              ease: "easeOut",
+            }}
+            className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 rounded-xl p-4 mb-4 hover:bg-thrid transition-all duration-300 ease-in-out ${
+              isFiltering ? "opacity-50" : ""
+            }`}
+          >
+            
+            <div className="flex flex-col">
+              <span className="text-xs font-JetBrainsMono text-primary">
+                WPM
+              </span>
+              <span className="font-JetBrainsMono text-primary">
+                {record.wpm || "—"}
+              </span>
+            </div>
+
+            <div className="flex flex-col">
+              <span className="text-xs font-JetBrainsMono text-primary">
+                Time / Words
+              </span>
+              <span className="font-JetBrainsMono text-primary">
+                {record.time || "—"} / {record.word || "—"}
+              </span>
+            </div>
+
+            <div className="flex flex-col">
+              <span className="text-xs font-JetBrainsMono text-primary">
+                Correct / Incorrect
+              </span>
+              <span className="font-JetBrainsMono text-primary">
+                {record.correct_char || "—"} / {record.incorrect_char || "—"}
+              </span>
+            </div>
+
+            <div className="flex flex-col">
+              <span className="text-xs font-JetBrainsMono text-primary">
+                Date
+              </span>
+              <span className="font-JetBrainsMono text-primary">
+                {new Date(record.date).toLocaleDateString("en-US", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
+                })}
+              </span>
+            </div>
+          </motion.div>
+        )}
+      />
     </div>
   );
 };

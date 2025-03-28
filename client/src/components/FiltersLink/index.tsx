@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { ReactSVG } from "react-svg";
+import Button from "../MainButton";
 
 interface FilterLinksProps
   extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
@@ -13,22 +14,16 @@ const FilterLinks = (props: FilterLinksProps) => {
 
   return (
     username && (
-      <Link
-        {...rest}
-        href={{ pathname: `sort`, query: { filter: props.filter } }}
-        className={`text-primary flex items-center transition-all duration-200 ease-in-out gap-2 capitalize font-JetBrainsMono p-2 rounded-xl bg-thrid w-fit  hover:shadow-lg hover:shadow-primary/20 hover:bg-primary/10 ${
-          isActive
-            ? "border-2 border-primary bg-primary/5 font-medium"
-            : "border border-transparent"
-        } ${props.className}`}
-      >
-        <ReactSVG
-          src={`/svgs/${props.filter}.svg`}
-          className={`[&>div>svg]:size-7 [&_*]:stroke-primary ${
-            isActive ? "[&_*]:stroke-[2.5]" : ""
-          }`}
-        />
-        {props.filter}
+      <Link {...rest} href={{ pathname: `sort`, query: { filter: props.filter } }}>
+        <Button
+          variant={isActive ? "outline" : "secondary"}
+          size="sm"
+          icon={`/svgs/${props.filter}.svg`}
+          iconPosition="left"
+          className={props.className}
+        >
+          {props.filter}
+        </Button>
       </Link>
     )
   );

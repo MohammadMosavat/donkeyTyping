@@ -4,12 +4,8 @@ import Loading from "@/components/loading";
 import WpmRecords from "@/components/WpmRecord";
 import { WpmRecord } from "@/types";
 import axios from "axios";
-import Link from "next/link";
 import { useParams, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
-import { ReactSVG } from "react-svg";
-import { motion } from "framer-motion";
-import Footer from "@/components/footer";
 
 const FilterRecordPage = () => {
   const params = useParams();
@@ -46,53 +42,48 @@ const FilterRecordPage = () => {
   }, [filter]);
   return !loading ? (
     <main className="w-full flex flex-col gap-4 md:gap-6">
-      <section className="flex items-center gap-2 md:gap-4">
-        {/* <Link className="group" href={`/${params.id}`}>
-          <ReactSVG
-            src="/svgs/arrow-left.svg"
-            data-tooltip="Back"
-            className="[&>div>svg]:size-5 md:[&>div>svg]:size-7 tooltip font-JetBrainsMono group-hover:[&_*]:stroke-2 [&_*]:stroke-primary"
-          />
-        </Link> */}
-        <h1 className="text-lg md:text-xl capitalize font-JetBrainsMono text-primary my-4 md:my-8">
+      <section className="flex items-center gap-2 ">
+        <h1 className="text-lg md:text-xl capitalize font-JetBrainsMono text-primary">
           {filter} WPM Records
         </h1>
       </section>
-      <ul className="flex flex-wrap items-center gap-2 md:gap-3">
-        <FilterLinks
-          data-tooltip="Base on Date"
-          className="tooltip text-sm md:text-base"
-          isActive={filter === "newest"}
-          filter="newest"
-        />
-        <FilterLinks
-          data-tooltip="Base on Date"
-          className="tooltip text-sm md:text-base"
-          isActive={filter === "oldest"}
-          filter="oldest"
-        />
-        <FilterLinks
-          isActive={filter === "highest"}
-          data-tooltip="Base on WPM"
-          className="tooltip text-sm md:text-base"
-          filter="highest"
-        />
-        <FilterLinks
-          isActive={filter === "lowest"}
-          data-tooltip="Base on WPM"
-          className="tooltip text-sm md:text-base"
-          filter="lowest"
-        />
-      </ul>
+      <div className="flex items-center gap-4">
+        <ul className="flex flex-wrap items-center gap-2 md:gap-3">
+          <FilterLinks
+            data-tooltip="Base on Date"
+            className="tooltip text-sm md:text-base"
+            isActive={filter === "newest"}
+            filter="newest"
+          />
+          <FilterLinks
+            data-tooltip="Base on Date"
+            className="tooltip text-sm md:text-base"
+            isActive={filter === "oldest"}
+            filter="oldest"
+          />
+          <FilterLinks
+            isActive={filter === "highest"}
+            data-tooltip="Base on WPM"
+            className="tooltip text-sm md:text-base"
+            filter="highest"
+          />
+          <FilterLinks
+            isActive={filter === "lowest"}
+            data-tooltip="Base on WPM"
+            className="tooltip text-sm md:text-base"
+            filter="lowest"
+          />
+        </ul>
+      </div>
       <WpmRecords records={records} />
-      <motion.footer
+      {/* <motion.footer
         animate={{ opacity: 1 }}
         initial={{ opacity: 0 }}
         transition={{ duration: 0.3 }}
         className="mt-4 md:mt-6"
       >
         <Footer />
-      </motion.footer>
+      </motion.footer> */}
     </main>
   ) : (
     <Loading />

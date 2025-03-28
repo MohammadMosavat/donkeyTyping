@@ -22,15 +22,23 @@ const Header = () => {
     <>
       <motion.header
         key={isOpen ? "open" : "closed"}
-        initial={{ opacity: 0, x: -100 }}
-        animate={{ opacity: 1, x: 0 }}
+        initial={{ 
+          opacity: 0,
+          x: window?.innerWidth >= 768 ? -100 : 0,
+          y: window?.innerWidth < 768 ? -100 : 0
+        }}
+        animate={{ 
+          opacity: 1,
+          x: 0,
+          y: 0
+        }}
         transition={{ duration: 0.2 }}
         className={`z-50 md:w-20 bg-thrid w-full flex fixed md:static top-0 left-0 ${
-          isOpen ? "h-screen !items-start !flex-col" : "h-fit self-center"
-        }  md:flex-col gap-4 items-center p-2 md:py-8 md:rounded-2xl transition-all duration-300`}
+          isOpen ? "h-screen !items-start !flex-col" : "h-fit self-start"
+        }  md:flex-col gap-4 items-center p-2 md:p-4 md:rounded-2xl transition-all duration-300`}
       >
-        <section className="flex items-center max-md:gap-4 justify-between w-full">
-          <button className="md:hidden left-4 top-4 z-20" onClick={toggleMenu}>
+        <section className="flex md:hidden  items-center max-md:gap-4 justify-between w-full">
+          <button className="left-4 top-4 z-20" onClick={toggleMenu}>
             <ReactSVG
               src="/svgs/menu.svg"
               className="[&>div>svg]:size-7 [&_*]:stroke-primary"
@@ -38,7 +46,7 @@ const Header = () => {
           </button>
           <Link
             onClick={() => close()}
-            className="capitalize md:hidden bg-secondary transition-all duration-200 ease-in-out text-fourth rounded-full w-10 h-10 flex items-center justify-center hover:shadow-lg hover:scale-110 font-JetBrainsMono"
+            className="capitalize bg-secondary transition-all duration-200 ease-in-out text-fourth rounded-full w-10 h-10 flex items-center justify-center hover:shadow-lg hover:scale-110 font-JetBrainsMono"
             href={`/${username}/sort?filter=newest`}
           >
             {username?.split("")[0]}
@@ -49,12 +57,12 @@ const Header = () => {
             isOpen ? "flex flex-col !items-start" : "hidden items-center"
           }`}
         >
-          <li className="w-full md:w-auto">
+          <li className="w-full  md:w-auto">
             <NavLinks
               onClick={() => close()}
               data-tooltip="Home"
               className={`group tooltip w-full md:w-auto ${
-                isOpen ? "rounded-xl" : "rounded-full"
+                isOpen ? "!rounded-xl" : "!rounded-full"
               } p-2 hover:bg-fourth ${
                 pathname === "/" ? "!bg-fourth [&_*]:stroke-2" : ""
               }`}
@@ -72,7 +80,7 @@ const Header = () => {
               onClick={() => close()}
               data-tooltip="Theme"
               className={`group tooltip w-full md:w-auto ${
-                isOpen ? "rounded-xl" : "rounded-full"
+                isOpen ? "!rounded-xl" : "!rounded-full"
               } p-2 hover:bg-fourth ${
                 pathname === "/theme" ? "!bg-fourth [&_*]:stroke-2" : ""
               }`}

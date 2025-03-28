@@ -31,10 +31,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`bg-fourth md:h-[95vh] my-auto md:mx-4 grid md:grid-cols-[auto_1fr] grid-cols-1 gap-10 antialiased`}
+        className={`bg-fourth px-4 md:p-8 md:h-screen my-auto grid md:grid-cols-[auto_1fr] grid-cols-1 gap-10 antialiased`}
       >
         <Header/>
+        <div className="md:my-0 my-20 w-full">
         {children}
+        </div>
         <Toaster position={"bottom-center"} toastOptions={{
             className: 'font-JetBrainsMono text-secondary',
             style: {

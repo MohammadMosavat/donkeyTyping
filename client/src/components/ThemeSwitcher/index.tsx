@@ -22,7 +22,7 @@ export default function ThemeSwitcher() {
   };
 
   return (
-    <div className="md:my-8 my-20 md:w-11/12 lg:w-10/12 mx-auto min-h-screen w-full px-4 md:px-8 lg:px-12 text-secondary">
+    <div className="md:w-full mx-auto min-h-screen w-full  text-secondary">
       <ul className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
         {themes.map((t) => {
           return (
@@ -84,7 +84,7 @@ export default function ThemeSwitcher() {
           );
         })}
       </ul>
-      <motion.footer
+      {/* <motion.footer
         key={theme}
         animate={{ opacity: 1 }}
         initial={{ opacity: 0 }}
@@ -92,7 +92,7 @@ export default function ThemeSwitcher() {
         className="mt-4 md:mt-0"
       >
         <Footer />
-      </motion.footer>
+      </motion.footer> */}
     </div>
   );
 }

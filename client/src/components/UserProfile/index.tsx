@@ -5,6 +5,7 @@ import Loading from "../loading";
 import UserProfileCardProps from "@/types";
 import { ReactSVG } from "react-svg";
 import { useRouter } from "next/navigation";
+import Button from "../MainButton";
 
 export default function UserProfileCard({ username }: { username: string }) {
   const [loading, setLoading] = useState(true);
@@ -67,7 +68,7 @@ export default function UserProfileCard({ username }: { username: string }) {
               >
                 <ReactSVG
                   src="/svgs/location.svg"
-                  className="[&>div>svg]:size-5 md:[&>div>svg]:size-7 [&_*]:stroke-primary"
+                  className="[&>div>svg]:size-6 md:[&>div>svg]:size-6 [&_*]:stroke-primary"
                 />
                 <p className="text-sm md:text-base font-JetBrainsMono capitalize text-primary">
                   {data.location}
@@ -79,7 +80,7 @@ export default function UserProfileCard({ username }: { username: string }) {
               >
                 <ReactSVG
                   src="/svgs/calendar.svg"
-                  className="[&>div>svg]:size-5 md:[&>div>svg]:size-7 [&_*]:stroke-primary"
+                  className="[&>div>svg]:size-6 md:[&>div>svg]:size-6 [&_*]:stroke-primary"
                 />
                 <p className="text-sm md:text-base font-JetBrainsMono text-primary">
                   {new Date(data.joinedAt).toLocaleDateString("en-US", {
@@ -89,16 +90,16 @@ export default function UserProfileCard({ username }: { username: string }) {
                   })}
                 </p>
               </section>
-              <button
+              <Button
                 onClick={handleLogout}
-                className="bg-red-500 hover:bg-red-600 flex items-center gap-2 py-2 md:py-2.5 px-4 md:px-5 rounded-xl transition-all duration-200 ease-in-out hover:shadow-lg hover:scale-105"
+                variant="ghost"
+                size="md"
+                icon="/svgs/logout.svg"
+                iconPosition="left"
+                className="!text-red-500 hover:!bg-red-500/10"
               >
-                <ReactSVG
-                  src="/svgs/logout.svg"
-                  className="[&>div>svg]:size-5 md:[&>div>svg]:size-7 [&_*]:stroke-primary"
-                />
-                <p className="text-sm md:text-base font-JetBrainsMono text-primary">Logout</p>
-              </button>
+                Logout
+              </Button>
             </div>
           </div>
         ) : (

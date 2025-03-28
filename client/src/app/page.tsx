@@ -87,7 +87,7 @@ const Home = () => {
   });
 
   return (
-    <main className="flex flex-col items-center md:my-8 my-20 min-h-screen w-full px-4 md:px-8 lg:px-12">
+    <main className="flex flex-col items-center min-h-screen w-full">
       <section
         className={`flex md:w-3/12 flex-col items-center gap-6 md:gap-10 justify-center w-full ${
           !isTyping ? "visible" : "opacity-0 pointer-events-none"
@@ -101,7 +101,7 @@ const Home = () => {
         />
       </section>
 
-      <form className="flex flex-col mx-auto gap-6 md:gap-8 w-full md:w-11/12 lg:w-10/12 items-center flex-1 justify-center">
+      <form className="flex flex-col mx-auto gap-6 md:gap-8 w-full  items-center flex-1 justify-center">
         <div className="flex flex-col gap-6 md:gap-10 items-start justify-between w-full">
           {Typing()}
         </div>
@@ -113,11 +113,11 @@ const Home = () => {
           <ReactSVG
             data-tooltip="Restart Test"
             src="/svgs/refresh.svg"
-            className="[&>div>svg]:size-6 md:[&>div>svg]:size-7 tooltip font-JetBrainsMono [&_*]:fill-primary"
+            className="[&>div>svg]:size-6 outline-none md:[&>div>svg]:size-7 tooltip font-JetBrainsMono [&_*]:fill-primary"
           />
         </button>
 
-        <motion.footer
+        {/* <motion.footer
           animate={{ opacity: 1 }}
           initial={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
@@ -126,7 +126,7 @@ const Home = () => {
           }`}
         >
           <Footer />
-        </motion.footer>
+        </motion.footer> */}
       </form>
     </main>
   );

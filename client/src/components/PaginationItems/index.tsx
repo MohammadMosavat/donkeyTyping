@@ -27,51 +27,38 @@ const PaginatedItems = <T,>({
     .slice((currentPage - 1) * itemsPerPage, currentPage * itemsPerPage);
 
   return (
-    <div className="flex flex-col gap-4">
-      <table className="w-full border-collapse bg-opacity-50 rounded-2xl overflow-hidden">
-        <thead className="bg-secondary/20">
-          <tr className="text-left uppercase text-sm tracking-wider">
-            <th className="px-4 py-3 text-primary font-JetBrainsMono">WPM</th>
-            <th className="hidden md:table-cell px-4 py-3 text-primary font-JetBrainsMono">Correct Chars</th>
-            <th className="hidden md:table-cell px-4 py-3 text-primary font-JetBrainsMono">Incorrect Chars</th>
-            <th className="hidden md:table-cell px-4 py-3 text-primary font-JetBrainsMono">Date</th>
-            <th className="px-4 py-3 text-primary font-JetBrainsMono">Time</th>
-            <th className="px-4 py-3 text-primary font-JetBrainsMono">Word</th>
-            <th className="hidden md:table-cell px-4 py-3 text-primary font-JetBrainsMono">Language</th>
-          </tr>
-        </thead>
-        <motion.tbody
-          key={currentPage}
-          initial={{ opacity: 0, y: 10 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.4, ease: "easeOut" }}
-          className="divide-y divide-secondary/10"
-        >
-          {displayedItems.map(renderItem)}
-        </motion.tbody>
-      </table>
-
-      <p 
-        data-tooltip="Number of records" 
-        className="px-6 py-2.5 tooltip w-fit mx-auto font-JetBrainsMono text-sm bg-secondary/10 rounded-xl hover:bg-secondary/20 transition-all duration-200 ease-in-out shadow-sm"
+    <>
+      <motion.div
+        key={currentPage}
+        initial={{ opacity: 0, y: 10 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.4, ease: "easeOut" }}
       >
-        {"#" + items.length}
-      </p>
+        {displayedItems.map(renderItem)}
+      </motion.div>
+      <div className="flex flex-col items-center justify-center w-full">
+        <p
+          data-tooltip="Number of records"
+          className="px-4 md:px-6 py-2.5 tooltip font-JetBrainsMono text-sm text-primary rounded-xl transition-all duration-200 ease-in-out"
+        >
+          {"#" + items.length}
+        </p>
 
-      <div className="flex justify-center mt-2">
-        <Pagination
-          total={pageCount}
-          current={currentPage}
-          onPageChange={handlePageChange}
-          previousLabel="Previous"
-          nextLabel="Next"
-          className="flex gap-2 items-center"
-          activeItemClassName="font-bold bg-secondary/30 rounded-lg shadow-sm"
-          disabledItemClassName="opacity-40 cursor-not-allowed"
-          pageLinkClassName="px-4 py-2.5 hover:bg-secondary/15 font-JetBrainsMono rounded-lg transition-all duration-200 ease-in-out hover:shadow-sm"
-        />
+        <div className="flex justify-center items-center w-full mt-2">
+          <Pagination
+            total={pageCount}
+            current={currentPage}
+            onPageChange={handlePageChange}
+            previousLabel="Previous"
+            nextLabel="Next"
+            className="flex gap-2 items-center justify-center text-primary"
+            activeItemClassName="p-2 font-bold rounded-lg"
+            disabledItemClassName="opacity-40 cursor-not-allowed"
+            pageLinkClassName="p-2 font-JetBrainsMono rounded-lg transition-all duration-200 ease-in-out text-primary"
+          />
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
