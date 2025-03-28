@@ -1,9 +1,11 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { hashUsername } from "@/utils/hashUsername";
 import Cookies from "js-cookie";
+import Link from "next/link";
+import Button from "@/components/MainButton";
 
 const SignUpForm = () => {
   const [username, setUsername] = useState<string>("");
@@ -11,6 +13,11 @@ const SignUpForm = () => {
   const [location, setLocation] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const router = useRouter();
+
+  useEffect(() => {
+    document.documentElement.className =
+      localStorage.getItem("theme") ?? "theme-indigo-emerald";
+  });
 
   const validateFields = () => {
     let isValid = true;
@@ -68,7 +75,7 @@ const SignUpForm = () => {
     }
     try {
       const joinedAt = new Date().toISOString();
-      
+
       // Register user
       const response = await fetch("http://localhost:5000/user", {
         method: "POST",
@@ -79,7 +86,7 @@ const SignUpForm = () => {
       });
 
       const data = await response.json();
-      
+
       if (response.ok) {
         // // Send welcome email
         // const emailResponse = await fetch("http://localhost:5000/send-welcome-email", {
@@ -99,14 +106,14 @@ const SignUpForm = () => {
 
         // Show welcome message
         toast.success(`Welcome ${username}! Thanks for joining us.`);
-        
+
         // Set username in localStorage after successful registration
         localStorage.setItem("username", username);
-        
+
         // Hash username and set cookie
         const hashedUsername = await hashUsername(email);
         Cookies.set("hashedUsername", hashedUsername, { expires: 14 });
-        
+
         router.push("/");
       } else {
         // Show specific error message from backend
@@ -119,90 +126,98 @@ const SignUpForm = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen">
-      <form onSubmit={handleSubmit} className="rounded-xl shadow-lg w-96">
-        <h2 className="text-2xl font-semibold text-white mb-4 font-JetBrainsMono text-center">
+    <div className="flex justify-center items-center w-full h-[94vh]">
+      <form
+        onSubmit={handleSubmit}
+        className="rounded-xl flex flex-col gap-6 w-96"
+      >
+        <h2 className="text-2xl font-semibold text-white  font-JetBrainsMono text-center">
           Sign Up
         </h2>
+        <section className="flex flex-col gap-4">
+          <div className="flex flex-col gap-2">
+            <label
+              htmlFor="username"
+              className="block text-sm font-JetBrainsMono font-medium text-white"
+            >
+              Username
+            </label>
+            <input
+              type="text"
+              id="username"
+              value={username}
+              onChange={(e) => setUsername(e.target.value)}
+              className="w-full p-3 mt-1 outline-none bg-glass font-JetBrainsMono text-white rounded-md"
+              placeholder="Enter your username"
+              required
+            />
+          </div>
 
-        <div className="mb-4">
-          <label
-            htmlFor="username"
-            className="block text-sm font-JetBrainsMono font-medium text-white"
-          >
-            Username
-          </label>
-          <input
-            type="text"
-            id="username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            className="w-full p-3 mt-1 outline-none bg-glass font-JetBrainsMono text-white rounded-md"
-            placeholder="Enter your username"
-            required
-          />
-        </div>
+          <div className="flex flex-col gap-2">
+            <label
+              htmlFor="email"
+              className="block text-sm font-medium font-JetBrainsMono text-white"
+            >
+              Email
+            </label>
+            <input
+              type="email"
+              id="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              className="w-full p-3 mt-1 outline-none bg-glass font-JetBrainsMono text-white rounded-md"
+              placeholder="Enter your email"
+              required
+            />
+          </div>
 
-        <div className="mb-4">
-          <label
-            htmlFor="email"
-            className="block text-sm font-medium font-JetBrainsMono text-white"
-          >
-            Email
-          </label>
-          <input
-            type="email"
-            id="email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className="w-full p-3 mt-1 outline-none bg-glass font-JetBrainsMono text-white rounded-md"
-            placeholder="Enter your email"
-            required
-          />
-        </div>
+          <div className="flex flex-col gap-2">
+            <label
+              htmlFor="location"
+              className="block text-sm font-medium font-JetBrainsMono text-white"
+            >
+              Location
+            </label>
+            <input
+              type="text"
+              id="location"
+              value={location}
+              onChange={(e) => setLocation(e.target.value)}
+              className="w-full p-3 mt-1 outline-none bg-glass font-JetBrainsMono text-white rounded-md"
+              placeholder="Enter your location"
+              required
+            />
+          </div>
 
-        <div className="mb-4">
-          <label
-            htmlFor="location"
-            className="block text-sm font-medium font-JetBrainsMono text-white"
-          >
-            Location
-          </label>
-          <input
-            type="text"
-            id="location"
-            value={location}
-            onChange={(e) => setLocation(e.target.value)}
-            className="w-full p-3 mt-1 outline-none bg-glass font-JetBrainsMono text-white rounded-md"
-            placeholder="Enter your location"
-            required
-          />
-        </div>
-
-        <div className="mb-4">
-          <label
-            htmlFor="password"
-            className="block text-sm font-medium font-JetBrainsMono text-white"
-          >
-            Password
-          </label>
-          <input
-            type="password"
-            id="password"
-            value={password}
-            onChange={(e) => setPassword(e.target.value)}
-            className="w-full p-3 mt-1 outline-none bg-glass font-JetBrainsMono text-white rounded-md"
-            placeholder="Enter your password"
-            required
-          />
-        </div>
-
-        <button
-          type="submit"
-          className="w-full bg-glass text-white font-JetBrainsMono py-3 rounded-md mt-4"
-        >
+          <div className="flex flex-col gap-2">
+            <label
+              htmlFor="password"
+              className="block text-sm font-medium font-JetBrainsMono text-white"
+            >
+              Password
+            </label>
+            <input
+              type="password"
+              id="password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              className="w-full p-3 mt-1 outline-none bg-glass font-JetBrainsMono text-white rounded-md"
+              placeholder="Enter your password"
+              required
+            />
+          </div>
+        </section>
+        <Button variant="outline" type="submit" className="w-full text-primary">
           Sign Up
-        </button>
+        </Button>
+        <p className="text-center ">
+          <Link
+            className="text-primary hover:underline font-JetBrainsMono text-center"
+            href="/register/login"
+          >
+            Already have an account? Login
+          </Link>
+        </p>
       </form>
     </div>
   );

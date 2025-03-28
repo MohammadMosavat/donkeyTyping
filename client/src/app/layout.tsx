@@ -34,20 +34,16 @@ export default function RootLayout({
         className={`bg-fourth px-4 md:p-8 md:h-screen my-auto grid md:grid-cols-[auto_1fr] grid-cols-1 gap-10 antialiased`}
       >
         <Header/>
-        <div className="md:my-0 my-20 w-full">
+        <div className="md:my-4 flex flex-col items-center my-20 w-full">
         {children}
         </div>
         <Toaster position={"bottom-center"} toastOptions={{
             className: 'font-JetBrainsMono text-secondary',
             style: {
               width:'fit-content',
-              color:"white",
-              background:'#ffffff21',
+              color:"var(--primary)",
+              backgroundColor:'var(--third)',
               borderRadius: '16px',
-              boxShadow:'0 4px 30px rgba(0, 0, 0, 0.1)',
-              backdropFilter:'blur(5px)',
-              WebkitBackdropFilter:'blur(5px)',
-              border:'1px solid rgba(255, 255, 255, 0.02)'
             },
   }}
 />

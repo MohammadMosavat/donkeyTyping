@@ -50,9 +50,9 @@ export default function UserProfileCard({ username }: { username: string }) {
 
   return (
     data && (
-      <div className="flex flex-col gap-5 md:gap-10 w-full">
+      <>
         {!loading ? (
-          <div className="flex flex-col md:flex-row items-start md:items-center gap-4 md:justify-between">
+          <div className="flex w-full flex-col md:flex-row items-start md:items-center gap-4 md:justify-between">
             <div className="flex flex-col md:flex-row gap-2 md:gap-4 items-start md:items-center">
               <h2 className="text-lg md:text-xl font-JetBrainsMono text-primary">
                 @{data.username}
@@ -68,7 +68,7 @@ export default function UserProfileCard({ username }: { username: string }) {
               >
                 <ReactSVG
                   src="/svgs/location.svg"
-                  className="[&>div>svg]:size-6 md:[&>div>svg]:size-6 [&_*]:stroke-primary"
+                  className="[&>div>svg]:max-md:size-5  [&>div>svg]:size-6 md:[&>div>svg]:max-md:size-5  [&>div>svg]:size-6 [&_*]:stroke-primary"
                 />
                 <p className="text-sm md:text-base font-JetBrainsMono capitalize text-primary">
                   {data.location}
@@ -80,7 +80,7 @@ export default function UserProfileCard({ username }: { username: string }) {
               >
                 <ReactSVG
                   src="/svgs/calendar.svg"
-                  className="[&>div>svg]:size-6 md:[&>div>svg]:size-6 [&_*]:stroke-primary"
+                  className="[&>div>svg]:max-md:size-5  [&>div>svg]:size-6 md:[&>div>svg]:max-md:size-5  [&>div>svg]:size-6 [&_*]:stroke-primary"
                 />
                 <p className="text-sm md:text-base font-JetBrainsMono text-primary">
                   {new Date(data.joinedAt).toLocaleDateString("en-US", {
@@ -105,7 +105,7 @@ export default function UserProfileCard({ username }: { username: string }) {
         ) : (
           <Loading />
         )}
-      </div>
+      </>
     )
   );
 }

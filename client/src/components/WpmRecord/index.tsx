@@ -34,7 +34,7 @@ const WpmRecords = ({ records }: { records: WpmRecord[] }) => {
 
   const availableDates = useMemo(() => {
     const dates = new Set(
-      records.map((record) =>
+      records.reverse().map((record) =>
         new Date(record.date).toLocaleDateString("en-US", {
           year: "numeric",
           month: "long",
@@ -111,14 +111,14 @@ const WpmRecords = ({ records }: { records: WpmRecord[] }) => {
   };
 
   return (
-    <div className="w-full flex flex-col gap-4 h-fit">
+    <div className="w-full flex flex-col gap-10 h-fit">
       <AnimatePresence>
         {selectedDate && (
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="flex max-md:flex-col justify-between md:items-center bg-secondary/10 rounded-xl shadow-sm backdrop-blur-sm p-4"
+            className="flex max-md:flex-col justify-between md:items-center border-b border-thrid p-4"
           >
             <span className="font-JetBrainsMono text-sm md:text-base text-primary">
               {selectedDate}
@@ -134,34 +134,38 @@ const WpmRecords = ({ records }: { records: WpmRecord[] }) => {
         )}
       </AnimatePresence>
 
-      <div className="flex items-center md:justify-end gap-2 mb-4">
-        <Button
-          variant="ghost"
-          onClick={() => setShowDateDropdown(!showDateDropdown)}
-          className="relative flex items-center gap-2"
-        >
-          <span>Filter by Date</span>
+      <Button
+        variant="ghost"
+        onClick={() => setShowDateDropdown(!showDateDropdown)}
+        className="relative flex !p-0 items-center gap-6"
+      >
+        <section className="flex items-center gap-2">
           <ReactSVG
-            src="/svgs/arrow-down.svg"
-            className={`[&>div>svg]:size-4 [&_*]:fill-primary transition-transform duration-200 ${
-              showDateDropdown ? "rotate-180" : ""
-            }`}
+            src="/svgs/filters.svg"
+            className="[&_*]:max-md:size-5 [&_*]:size-6 [&_*]:stroke-primary"
           />
-          {showDateDropdown && (
-            <div className="absolute top-full right-0 mt-2 p-2 bg-glass rounded-xl shadow-lg backdrop-blur-sm z-10">
-              {availableDates.map((date, index) => (
-                <div
-                  key={index}
-                  className="px-4 py-2 rounded-xl hover:bg-thrid transition-all duration-200 ease-in-out cursor-pointer text-primary"
-                  onClick={() => handleDateClick(date)}
-                >
-                  {date}
-                </div>
-              ))}
-            </div>
-          )}
-        </Button>
-      </div>
+          <span>Filter by Date</span>
+        </section>
+        <ReactSVG
+          src="/svgs/arrow-down.svg"
+          className={`[&>div>svg]:max-md:size-5  [&>div>svg]:size-6 [&_*]:stroke-primary transition-transform duration-200 ${
+            showDateDropdown ? "rotate-180" : ""
+          }`}
+        />
+        {showDateDropdown && (
+          <div className="absolute top-full left-0 right-0 mt-2 p-2 bg-glass rounded-xl shadow-lg backdrop-blur-sm z-10">
+            {availableDates.map((date, index) => (
+              <div
+                key={index}
+                className="px-4 py-2 rounded-xl hover:bg-thrid transition-all duration-200 ease-in-out cursor-pointer text-primary"
+                onClick={() => handleDateClick(date)}
+              >
+                {date}
+              </div>
+            ))}
+          </div>
+        )}
+      </Button>
 
       <PaginatedItems
         items={filteredRecords}
@@ -219,7 +223,6 @@ const WpmRecords = ({ records }: { records: WpmRecord[] }) => {
                 })}
               </span>
             </div>
-            
           </motion.div>
         )}
       />

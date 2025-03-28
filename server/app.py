@@ -233,47 +233,37 @@ def get_wpm_records():
     except Exception as e:
         return jsonify({"error": f"Error fetching records: {str(e)}"}), 500
 
-
-@app.route("/user", methods=["POST", "GET"])
-def signup():
+@app.route("/user", methods=["POST", "GET", "DELETE"])
+def user_operations():
     if request.method == "POST":
         try:
-            # Parse JSON data from request
             data = request.json
             username = data.get("username")
             email = data.get("email")
-            password = data.get("password")  # Get the password field
+            password = data.get("password")
             location = data.get("location")
             joinedAt = data.get("joinedAt")
 
-            # Validate input
             if not username or not email or not password or not location:
                 return jsonify({"message": "Username, email, password, and location are required."}), 400
 
-            # Check if username already exists
             existing_username = collection_users.find_one({"username": username})
             if existing_username:
                 return jsonify({"message": "Username already exists. Please choose another one."}), 409
 
-            # Check if email already exists  
             existing_email = collection_users.find_one({"email": email})
             if existing_email:
                 return jsonify({"message": "Email already exists. Please use another email address."}), 409
 
-            # Hash the password before storing it
             hashed_password = bcrypt.hashpw(password.encode('utf-8'), bcrypt.gensalt())
-
-            # Insert user into the database with hashed password
             user = {
                 "username": username,
                 "email": email,
-                "password": hashed_password.decode('utf-8'),  # Store as string
+                "password": hashed_password.decode('utf-8'),
                 "location": location,
                 "joinedAt": joinedAt
             }
             result = collection_users.insert_one(user)
-
-            # Convert `_id` to a string for the response
             user["_id"] = str(result.inserted_id)
 
             return jsonify({"message": "Sign up successful!", "user": user}), 201
@@ -283,18 +273,15 @@ def signup():
 
     elif request.method == "GET":
         try:
-            # Get query parameters for filtering
-            user_id = request.args.get("id")  # Optional: Filter by _id
-            username = request.args.get("username")  # Optional: Filter by username
-            start_date = request.args.get("start_date")  # Optional: Filter by start date
-            end_date = request.args.get("end_date")  # Optional: Filter by end date
+            user_id = request.args.get("id")
+            username = request.args.get("username")
+            start_date = request.args.get("start_date")
+            end_date = request.args.get("end_date")
 
-            # Build the query
             query = {}
-
             if user_id:
                 try:
-                    query["_id"] = ObjectId(user_id)  # If _id is provided, query by _id
+                    query["_id"] = ObjectId(user_id)
                 except Exception as e:
                     return jsonify({"message": f"Invalid _id format: {e}"}), 400
 
@@ -304,22 +291,39 @@ def signup():
             if start_date or end_date:
                 query["joinedAt"] = {}
                 if start_date:
-                    query["joinedAt"]["$gte"] = datetime.strptime(start_date, "%Y-%m-%d")  # Start date filter
+                    query["joinedAt"]["$gte"] = datetime.strptime(start_date, "%Y-%m-%d")
                 if end_date:
-                    query["joinedAt"]["$lte"] = datetime.strptime(end_date, "%Y-%m-%d")  # End date filter
+                    query["joinedAt"]["$lte"] = datetime.strptime(end_date, "%Y-%m-%d")
 
-            # Retrieve users from the database with the query
             users = list(collection_users.find(query))
-
-            # Convert ObjectId to string for JSON serialization
             for user in users:
-                user["_id"] = str(user["_id"])  # Convert ObjectId to string
+                user["_id"] = str(user["_id"])
 
-            # If no users found, return a message
             if not users:
                 return jsonify({"message": "No users found matching the criteria."}), 404
 
             return jsonify(users), 200
+
+        except Exception as e:
+            return jsonify({"message": f"An error occurred: {str(e)}"}), 500
+
+    elif request.method == "DELETE":
+        try:
+            data = request.json
+            user_id = data.get("id")
+
+            if not user_id:
+                return jsonify({"message": "User ID is required."}), 400
+
+            try:
+                result = collection_users.delete_one({"_id": ObjectId(user_id)})
+            except Exception as e:
+                return jsonify({"message": f"Invalid _id format: {e}"}), 400
+
+            if result.deleted_count == 0:
+                return jsonify({"message": "User not found."}), 404
+
+            return jsonify({"message": "User deleted successfully."}), 200
 
         except Exception as e:
             return jsonify({"message": f"An error occurred: {str(e)}"}), 500

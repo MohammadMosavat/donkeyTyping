@@ -1,4 +1,5 @@
 export default interface UserProfileCardProps {
+  _id: string;
   username: string;
   email: string;
   location: string;

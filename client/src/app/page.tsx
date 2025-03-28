@@ -113,7 +113,7 @@ const Home = () => {
           <ReactSVG
             data-tooltip="Restart Test"
             src="/svgs/refresh.svg"
-            className="[&>div>svg]:size-6 outline-none md:[&>div>svg]:size-7 tooltip font-JetBrainsMono [&_*]:fill-primary"
+            className="[&>div>svg]:max-md:size-5  [&>div>svg]:size-6 outline-none md:[&>div>svg]:size-7 tooltip font-JetBrainsMono [&_*]:fill-primary"
           />
         </button>
 

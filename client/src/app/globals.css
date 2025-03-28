@@ -309,10 +309,11 @@ body {
   bottom: 125%; /* Adjust as needed */
   left: 50%;
   transform: translateX(-50%);
-  background-color: rgba(0, 0, 0, 0.75);
+  background-color: var(--thrid);
   color: white;
-  font-size: 12px !important;
-  padding: 5px;
+  font-size: 14px !important;
+  padding: 8px;
+  font-family: "JetBrainsMono-Regular";
   font-weight: 500 !important;
   border-radius: 8px;
   visibility: hidden;

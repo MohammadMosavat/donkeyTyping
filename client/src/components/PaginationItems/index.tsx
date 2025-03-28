@@ -36,15 +36,15 @@ const PaginatedItems = <T,>({
       >
         {displayedItems.map(renderItem)}
       </motion.div>
-      <div className="flex flex-col items-center justify-center w-full">
+      <div className="flex flex-col gap-2 items-center justify-center w-full">
         <p
           data-tooltip="Number of records"
-          className="px-4 md:px-6 py-2.5 tooltip font-JetBrainsMono text-sm text-primary rounded-xl transition-all duration-200 ease-in-out"
+          className=" tooltip font-JetBrainsMono text-sm text-primary rounded-xl transition-all duration-200 ease-in-out"
         >
           {"#" + items.length}
         </p>
 
-        <div className="flex justify-center items-center w-full mt-2">
+        <div className="">
           <Pagination
             total={pageCount}
             current={currentPage}

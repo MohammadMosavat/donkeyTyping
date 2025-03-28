@@ -23,7 +23,7 @@ const NavLinks: React.FC<NavLinksProps> = ({
         size="md"
         icon={iconSrc}
         iconPosition="left"
-        className={`${className} !justify-start !p-2 md:aspect-square rounded-full [&>svg]:size-8 [&>div>svg]:size-8`}
+        className={`${className} !justify-start !p-2 md:aspect-square rounded-full`}
       >
         <p className="inline-block md:hidden">{value}</p>
       </Button>

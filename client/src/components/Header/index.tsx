@@ -5,6 +5,7 @@ import NavLinks from "../NavLinks";
 import { ReactSVG } from "react-svg";
 import { usePathname } from "next/navigation";
 import { useState } from "react";
+import Button from "../MainButton";
 
 const Header = () => {
   const username = localStorage.getItem("username");
@@ -22,18 +23,18 @@ const Header = () => {
     <>
       <motion.header
         key={isOpen ? "open" : "closed"}
-        initial={{ 
+        initial={{
           opacity: 0,
           x: window?.innerWidth >= 768 ? -100 : 0,
-          y: window?.innerWidth < 768 ? -100 : 0
+          y: window?.innerWidth < 768 ? -100 : 0,
         }}
-        animate={{ 
+        animate={{
           opacity: 1,
           x: 0,
-          y: 0
+          y: 0,
         }}
         transition={{ duration: 0.2 }}
-        className={`z-50 md:w-20 bg-thrid w-full flex fixed md:static top-0 left-0 ${
+        className={`z-50 md:w-20 bg-thrid w-full flex fixed md:static top-0 md:mt-4 left-0 ${
           isOpen ? "h-screen !items-start !flex-col" : "h-fit self-start"
         }  md:flex-col gap-4 items-center p-2 md:p-4 md:rounded-2xl transition-all duration-300`}
       >
@@ -44,13 +45,15 @@ const Header = () => {
               className="[&>div>svg]:size-7 [&_*]:stroke-primary"
             />
           </button>
-          <Link
-            onClick={() => close()}
-            className="capitalize bg-secondary transition-all duration-200 ease-in-out text-fourth rounded-full w-10 h-10 flex items-center justify-center hover:shadow-lg hover:scale-110 font-JetBrainsMono"
-            href={`/${username}/sort?filter=newest`}
-          >
-            {username?.split("")[0]}
-          </Link>
+          {username && (
+            <Link
+              onClick={() => close()}
+              className="capitalize bg-secondary transition-all duration-200 ease-in-out text-fourth rounded-full w-10 h-10 flex items-center justify-center hover:shadow-lg hover:scale-110 font-JetBrainsMono"
+              href={`/${username}/sort?filter=newest`}
+            >
+              {username?.split("")[0]}
+            </Link>
+          )}
         </section>
         <ul
           className={`md:flex md:flex-col justify-start md:flex-grow gap-4 w-full ${
@@ -95,12 +98,33 @@ const Header = () => {
           </li>
         </ul>
 
-        <Link
-          className="capitalize max-md:hidden bg-secondary transition-all duration-200 ease-in-out text-fourth rounded-full w-10 h-10 flex items-center justify-center hover:shadow-lg hover:scale-110 font-JetBrainsMono"
-          href={`/${username}/sort?filter=newest`}
-        >
-          {username?.split("")[0]}
-        </Link>
+        {username ? (
+          <Link
+            className="capitalize max-md:hidden bg-secondary transition-all duration-200 ease-in-out text-fourth rounded-full w-10 h-10 flex items-center justify-center hover:shadow-lg hover:scale-110 font-JetBrainsMono"
+            href={`/${username}/sort?filter=newest`}
+          >
+            {username?.split("")[0]}
+          </Link>
+        ) : (
+          <NavLinks
+            onClick={() => close()}
+            data-tooltip="Sign up"
+            className={`group tooltip w-full md:w-auto ${
+              isOpen ? "!rounded-xl" : "!rounded-full"
+            } p-2 [&>button>p]:hidden hover:bg-fourth ${
+              pathname === "/register/signup" || pathname === "/register/login"
+                ? "!bg-fourth [&_*]:stroke-2"
+                : ""
+            }`}
+            iconSrc="/svgs/user.svg"
+            link="/register/signup"
+            value={
+              isOpen && !window.matchMedia("(min-width: 768px)").matches
+                ? "Sign up"
+                : undefined
+            }
+          />
+        )}
       </motion.header>
     </>
   );

@@ -2,12 +2,15 @@
 import FilterLinks from "@/components/FiltersLink";
 import Loading from "@/components/loading";
 import WpmRecords from "@/components/WpmRecord";
+import useAuth from "@/hooks/useAuth";
 import { WpmRecord } from "@/types";
 import axios from "axios";
 import { useParams, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
+import { ReactSVG } from "react-svg";
 
 const FilterRecordPage = () => {
+  useAuth()
   const params = useParams();
   const searchParams = useSearchParams();
   const filter = searchParams.get("filter");
@@ -41,12 +44,10 @@ const FilterRecordPage = () => {
     fetchRecords();
   }, [filter]);
   return !loading ? (
-    <main className="w-full flex flex-col gap-4 md:gap-6">
-      <section className="flex items-center gap-2 ">
-        <h1 className="text-lg md:text-xl capitalize font-JetBrainsMono text-primary">
-          {filter} WPM Records
-        </h1>
-      </section>
+    <main className="w-full flex flex-col gap-4 md:gap-10">
+      <h1 className="text-lg md:text-xl capitalize font-JetBrainsMono text-primary">
+        {filter} WPM Records
+      </h1>
       <div className="flex items-center gap-4">
         <ul className="flex flex-wrap items-center gap-2 md:gap-3">
           <FilterLinks
