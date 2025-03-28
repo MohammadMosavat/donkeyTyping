@@ -118,10 +118,10 @@ const WpmRecords = ({ records }: { records: WpmRecord[] }) => {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="flex justify-between items-center bg-secondary/10 rounded-xl shadow-sm backdrop-blur-sm p-4"
+            className="flex max-md:flex-col justify-between md:items-center bg-secondary/10 rounded-xl shadow-sm backdrop-blur-sm p-4"
           >
             <span className="font-JetBrainsMono text-sm md:text-base text-primary">
-              Showing records for: {selectedDate}
+              {selectedDate}
             </span>
             <Button
               variant="ghost"
@@ -134,7 +134,7 @@ const WpmRecords = ({ records }: { records: WpmRecord[] }) => {
         )}
       </AnimatePresence>
 
-      <div className="flex items-center justify-end gap-2 mb-4">
+      <div className="flex items-center md:justify-end gap-2 mb-4">
         <Button
           variant="ghost"
           onClick={() => setShowDateDropdown(!showDateDropdown)}
@@ -176,11 +176,10 @@ const WpmRecords = ({ records }: { records: WpmRecord[] }) => {
               delay: index * 0.05,
               ease: "easeOut",
             }}
-            className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 rounded-xl p-4 mb-4 hover:bg-thrid transition-all duration-300 ease-in-out ${
+            className={`grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-4 gap-4 rounded-xl p-4 mb-4 border border-thrid hover:bg-thrid transition-all duration-300 ease-in-out ${
               isFiltering ? "opacity-50" : ""
             }`}
           >
-            
             <div className="flex flex-col">
               <span className="text-xs font-JetBrainsMono text-primary">
                 WPM
@@ -220,6 +219,7 @@ const WpmRecords = ({ records }: { records: WpmRecord[] }) => {
                 })}
               </span>
             </div>
+            
           </motion.div>
         )}
       />
