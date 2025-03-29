@@ -1,21 +1,19 @@
 "use client";
-import Link from "next/link";
-import { ReactSVG } from "react-svg";
+import { useSelector } from "react-redux";
 import NavLinks from "../NavLinks";
+import { RootState } from "@/store";
 
 const Footer = () => {
-  const removeThemePrefix = (theme: string): string => {
-    return theme.replace(/^theme-/, "");
-  };
+  const theme = useSelector((state: RootState) => state.theme.value);
 
   return (
-    <ul className="fixed bottom-4 left-1/2 -translate-x-1/2 w-full max-w-xs px-4">
+    <ul className="fixed [&>a>button>p]:inline-block bottom-4 left-1/2 -translate-x-1/2 w-fit max-w-xs px-4">
       <NavLinks
         data-tooltip="Theme"
         className="tooltip hover:bg-thrid text-sm font-JetBrainsMono hover:shadow-lg hover:shadow-primary/20 rounded-xl p-2 w-full flex justify-center items-center"
         iconSrc="/svgs/theme.svg"
         link="/theme"
-        value={removeThemePrefix(localStorage.getItem("theme") ?? "")}
+        value={theme}
       />
     </ul>
   );

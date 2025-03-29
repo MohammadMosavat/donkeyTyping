@@ -2,10 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "react-hot-toast";
-import Link from "next/link";
 import Header from "@/components/Header";
-import { motion } from "framer-motion";
-import Footer from "@/components/footer";
+import ReduxProvider from "@/providers/ReduxProviders";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -33,10 +31,11 @@ export default function RootLayout({
       <body
         className={`bg-fourth px-4 md:p-8 md:h-screen my-auto grid md:grid-cols-[auto_1fr] grid-cols-1 gap-10 antialiased`}
       >
-        <Header/>
-        <div className="md:my-4 flex flex-col items-center my-20 w-full">
-        {children}
-        </div>
+        <ReduxProvider>
+          <Header />
+          <div className="md:my-4 flex flex-col items-center my-20 w-full">
+            {children}
+          </div>
         <Toaster position={"bottom-center"} toastOptions={{
             className: 'font-JetBrainsMono text-secondary',
             style: {
@@ -45,8 +44,9 @@ export default function RootLayout({
               backgroundColor:'var(--third)',
               borderRadius: '16px',
             },
-  }}
+          }}
 />
+          </ReduxProvider>
       </body>
     </html>
   );

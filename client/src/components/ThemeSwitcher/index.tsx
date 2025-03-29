@@ -3,11 +3,12 @@ import themes from "@/data/theme";
 import { useEffect, useState } from "react";
 import Footer from "../footer";
 import { motion } from "framer-motion";
-
+import { RootState } from "@/store";
+import { useSelector, useDispatch } from 'react-redux'
+import { toggleTheme } from "@/features/theme/themeSlice";
 export default function ThemeSwitcher() {
-  const [theme, setTheme] = useState(
-    localStorage.getItem("theme") ?? "theme-indigo-emerald"
-  ); // Default theme
+  const theme = useSelector((state: RootState) => state.theme.value)
+  const dispatch = useDispatch()
 
   useEffect(() => {
     document.title = 'PlanetType | Themes';
@@ -18,7 +19,7 @@ export default function ThemeSwitcher() {
   const changeTheme = (themeName: string) => {
     localStorage.setItem("theme", themeName);
     document.documentElement.className = themeName; // Apply theme to <html>
-    setTheme(themeName);
+    dispatch(toggleTheme(themeName));
   };
 
   return (
@@ -84,7 +85,7 @@ export default function ThemeSwitcher() {
           );
         })}
       </ul>
-      {/* <motion.footer
+      <motion.footer
         key={theme}
         animate={{ opacity: 1 }}
         initial={{ opacity: 0 }}
@@ -92,7 +93,7 @@ export default function ThemeSwitcher() {
         className="mt-4 md:mt-0"
       >
         <Footer />
-      </motion.footer> */}
+      </motion.footer>
     </div>
   );
 }
