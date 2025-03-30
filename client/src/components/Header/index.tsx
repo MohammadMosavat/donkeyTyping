@@ -64,7 +64,7 @@ const Header = () => {
             <NavLinks
               onClick={() => close()}
               data-tooltip="Home"
-              className={`group tooltip w-full md:w-auto ${
+              className={`group tooltip !p-2 w-full md:w-auto ${
                 isOpen ? "!rounded-xl" : "!rounded-full"
               } p-2 hover:bg-fourth ${
                 pathname === "/" ? "!bg-fourth [&_*]:stroke-2" : ""
@@ -82,7 +82,7 @@ const Header = () => {
             <NavLinks
               onClick={() => close()}
               data-tooltip="Theme"
-              className={`group tooltip w-full md:w-auto ${
+              className={`group tooltip !p-2 w-full md:w-auto ${
                 isOpen ? "!rounded-xl" : "!rounded-full"
               } p-2 hover:bg-fourth ${
                 pathname === "/theme" ? "!bg-fourth [&_*]:stroke-2" : ""
@@ -100,7 +100,7 @@ const Header = () => {
             <NavLinks
               onClick={() => close()}
               data-tooltip="Settings"
-              className={`group tooltip w-full md:w-auto ${
+              className={`group tooltip !p-2 w-full md:w-auto ${
                 isOpen ? "!rounded-xl" : "!rounded-full"
               } p-2 hover:bg-fourth ${
                 pathname === "/settings" ? "!bg-fourth [&_*]:stroke-2" : ""

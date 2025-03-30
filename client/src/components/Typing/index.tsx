@@ -39,6 +39,9 @@ function TypingGame({
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [hasStarted, setHasStarted] = useState(false);
   const focusMode = useSelector((state: RootState) => state.focusMode.value);
+  const hideExtraElements = useSelector(
+    (state: RootState) => state.hideExtraElements.value
+  );
   const wordsToType = data;
   useEffect(() => {
     setTimeLeft(time);
@@ -225,7 +228,7 @@ function TypingGame({
   const getCharStyle = (char: string, index: number) => {
     if (index < input.length) {
       if (focusMode === "on") {
-        return "text-primary" ;
+        return "text-primary";
       }
       return char === input[index] ? "text-primary" : "text-red-600";
     }
@@ -266,9 +269,11 @@ function TypingGame({
             </span>
           ))}
 
-          {isCurrentWord && extraChars.length > 0 && (
-            <span className="text-red-600">{extraChars}</span>
-          )}
+          {isCurrentWord &&
+            extraChars.length > 0 &&
+            hideExtraElements == "off" && (
+              <span className="text-red-600">{extraChars}</span>
+            )}
         </motion.span>
       );
     });

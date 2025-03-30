@@ -14,10 +14,13 @@ const FilterLinks = (props: FilterLinksProps) => {
 
   return (
     username && (
-      <Link {...rest} href={{ pathname: `sort`, query: { filter: props.filter } }}>
+      <Link
+        {...rest}
+        href={{ pathname: `sort`, query: { filter: props.filter } }}
+      >
         <Button
           variant={isActive ? "outline" : "secondary"}
-          size="sm"
+          size="md"
           icon={`/svgs/${props.filter}.svg`}
           iconPosition="left"
           className={props.className}

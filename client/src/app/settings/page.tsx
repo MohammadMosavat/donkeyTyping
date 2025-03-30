@@ -3,11 +3,6 @@
 import { useState, useEffect } from "react";
 import { ReactSVG } from "react-svg";
 import Behavior from "@/components/Settings/Behavior";
-import Sound from "@/components/Settings/Sound";
-import Appearance from "@/components/Settings/Appearance";
-import Theme from "../theme/page";
-import HideElements from "@/components/Settings/HideElements";
-import DangerZone from "@/components/Settings/DangerZone";
 const tabs = [
   { name: "Behavior", content: <Behavior /> },
   // { name: "Sound", content: <Sound /> },
@@ -15,7 +10,7 @@ const tabs = [
   // { name: "Theme", content: <Theme /> },
   // {
   //   name: "Hide Elements",
-  //   content: <HideElements />,
+  //   content: <hideExtraElements />,
   // },
   // {
   //   name: "Danger Zone",
@@ -51,7 +46,7 @@ const SettingsPage = () => {
       </div>
 
       {/* Content */}
-      <div className="w-full text-primary font-JetBrainsMono">
+      <div className="w-full mt-4 text-primary font-JetBrainsMono">
         {tabs.find((t) => t.name === activeTab)?.content}
       </div>
     </div>

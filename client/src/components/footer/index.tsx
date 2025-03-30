@@ -10,7 +10,7 @@ const Footer = () => {
     <ul className="fixed [&>a>button>p]:inline-block bottom-4 left-1/2 -translate-x-1/2 w-fit max-w-xs px-4">
       <NavLinks
         data-tooltip="Theme"
-        className="tooltip hover:bg-thrid text-sm font-JetBrainsMono hover:shadow-lg hover:shadow-primary/20 rounded-xl p-2 w-full flex justify-center items-center"
+        className="tooltip hover:bg-thrid font-JetBrainsMono hover:shadow-lg hover:shadow-primary/20 rounded-xl w-full flex justify-center items-center"
         iconSrc="/svgs/theme.svg"
         link="/theme"
         value={theme}

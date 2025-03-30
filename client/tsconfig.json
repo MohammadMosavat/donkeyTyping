@@ -27,7 +27,8 @@
     "**/*.ts",
     "**/*.tsx",
     "svgr.d.ts",
-    ".next/types/**/*.ts"
+    ".next/types/**/*.ts",
+    "src/features/hideExtraElements"
   ],
   "exclude": ["node_modules"]
 }
