@@ -4,6 +4,8 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import RecordResult from "../recordResult";
 import { ReactSVG } from "react-svg";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
 
 interface TypingGameProps {
   data: string[];
@@ -36,6 +38,7 @@ function TypingGame({
   const [incorrectChars, setIncorrectChars] = useState(0);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [hasStarted, setHasStarted] = useState(false);
+  const focusMode = useSelector((state: RootState) => state.focusMode.value);
   const wordsToType = data;
   useEffect(() => {
     setTimeLeft(time);
@@ -221,6 +224,9 @@ function TypingGame({
 
   const getCharStyle = (char: string, index: number) => {
     if (index < input.length) {
+      if (focusMode === "on") {
+        return "text-primary" ;
+      }
       return char === input[index] ? "text-primary" : "text-red-600";
     }
     if (index === input.length) {

@@ -96,6 +96,24 @@ const Header = () => {
               }
             />
           </li>
+          <li className="w-full md:w-auto">
+            <NavLinks
+              onClick={() => close()}
+              data-tooltip="Settings"
+              className={`group tooltip w-full md:w-auto ${
+                isOpen ? "!rounded-xl" : "!rounded-full"
+              } p-2 hover:bg-fourth ${
+                pathname === "/settings" ? "!bg-fourth [&_*]:stroke-2" : ""
+              }`}
+              iconSrc="/svgs/settings.svg"
+              link="/settings"
+              value={
+                isOpen && !window.matchMedia("(min-width: 768px)").matches
+                  ? "Settings"
+                  : undefined
+              }
+            />
+          </li>
         </ul>
 
         {username ? (

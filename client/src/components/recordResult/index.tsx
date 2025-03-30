@@ -118,20 +118,7 @@ const RecordResult = ({
               Incorrect Characters: {inChar}
             </p>
           </section>
-          <ul>
-            <li className="flex items-center gap-2">
-              <span className="text-fourth font-JetBrainsMono p-1 px-2 rounded-xl bg-thrid text-sm">
-                tab
-              </span>
-              <span className="font-JetBrainsMono text-thrid">+</span>
-              <span className="text-fourth font-JetBrainsMono p-1 px-2 rounded-xl bg-thrid text-sm">
-                enter
-              </span>
-              <span className="font-JetBrainsMono text-thrid">
-                restart test
-              </span>
-            </li>
-          </ul>
+          
         </section>
         {/* <div className="col-span-3 flex flex-col gap-3">
           <section className="flex items-center gap-2">

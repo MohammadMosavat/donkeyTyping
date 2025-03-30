@@ -33,7 +33,7 @@ const Button = ({
     secondary:
       "bg-thrid text-primary hover:bg-thrid/90 hover:shadow-lg hover:shadow-thrid/20",
     outline: "border-2 border-primary text-primary hover:bg-primary/10",
-    ghost: "text-primary hover:bg-primary/50",
+    ghost: "text-primary bg-glass hover:bg-primary/50",
   };
 
   const sizes = {

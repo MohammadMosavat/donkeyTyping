@@ -1,5 +1,5 @@
 "use client";
-import { useEffect, useState, useRef, useCallback } from "react";
+import { useEffect, useState, useRef, useCallback, useMemo } from "react";
 import toast from "react-hot-toast";
 import useAuth from "@/hooks/useAuth";
 import TypingGame from "@/components/Typing";
@@ -10,13 +10,16 @@ import { ReactSVG } from "react-svg";
 import Footer from "@/components/footer";
 import { motion } from "framer-motion";
 import SettingBar from "@/components/settingBar";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store";
 
 const Home = () => {
+  const quickStart = useSelector((state: RootState) => state.quickStart.value);
   const [time, setTime] = useState<number>(
-    Number(localStorage.getItem("time")) ?? 30
+    Number(localStorage.getItem("time") ?? 30)
   );
   const [words, setWords] = useState<number>(
-    Number(localStorage.getItem("words")) ?? 30
+    Number(localStorage.getItem("words") ?? 30)
   );
   const [resetTimer, setResetTimer] = useState(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
@@ -27,7 +30,7 @@ const Home = () => {
 
   const genRandomWord = () => {
     const newWords: string[] = [];
-
+    console.log(words);
     while (newWords.length < words) {
       const randomArray =
         commonWords[Math.floor(Math.random() * commonWords.length)];
@@ -49,7 +52,9 @@ const Home = () => {
     }
   }, [time, words]);
 
-  const regenerateWords = (e: React.MouseEvent<HTMLButtonElement>) => {
+  const regenerateWords = (
+    e: React.MouseEvent<HTMLButtonElement> | KeyboardEvent
+  ) => {
     e.preventDefault();
     genRandomWord();
     setResetTimer(true);
@@ -58,7 +63,9 @@ const Home = () => {
   };
 
   const handleKeyPress = useCallback((e: KeyboardEvent) => {
-    setIsTyping(true);
+    if (e.key !== "Escape") {
+      setIsTyping(true);
+    }
   }, []);
 
   useEffect(() => {
@@ -67,6 +74,17 @@ const Home = () => {
       window.removeEventListener("keydown", handleKeyPress);
     };
   }, [handleKeyPress]);
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && quickStart == "esc") {
+        regenerateWords(event);
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [regenerateWords, quickStart]);
 
   const Typing = useCallback(() => {
     return (
@@ -85,6 +103,36 @@ const Home = () => {
     document.documentElement.className =
       localStorage.getItem("theme") ?? "theme-indigo-emerald";
   });
+
+  const refreshShortCut = useMemo(() => {
+    return (
+      !isTyping &&
+      quickStart !== "off" && (
+        <ul>
+          <li className="flex items-center gap-2">
+            {quickStart == "default" ? (
+              <>
+                <span className="text-fourth font-JetBrainsMono p-1 px-2 rounded-xl bg-thrid text-sm">
+                  tab
+                </span>
+                <span className="font-JetBrainsMono text-thrid">+</span>
+                <span className="text-fourth font-JetBrainsMono p-1 px-2 rounded-xl bg-thrid text-sm">
+                  enter
+                </span>
+              </>
+            ) : (
+              quickStart == "esc" && (
+                <span className="text-fourth font-JetBrainsMono p-1 px-2 rounded-xl bg-thrid text-sm">
+                  esc
+                </span>
+              )
+            )}
+            <span className="font-JetBrainsMono text-thrid">restart test</span>
+          </li>
+        </ul>
+      )
+    );
+  }, [quickStart]);
 
   return (
     <main className="flex flex-col items-center min-h-screen w-full">
@@ -106,9 +154,9 @@ const Home = () => {
           {Typing()}
         </div>
         <button
-          tabIndex={0}
           onClick={regenerateWords}
           className="hover:shadow-xl hover:drop-shadow-xl transition-all duration-200 ease-in-out !rounded-full p-2 md:p-3"
+          tabIndex={quickStart === "esc" || quickStart === "off" ? -1 : 0}
         >
           <ReactSVG
             data-tooltip="Restart Test"
@@ -116,7 +164,7 @@ const Home = () => {
             className="[&>div>svg]:max-md:size-5  [&>div>svg]:size-6 outline-none md:[&>div>svg]:size-7 tooltip font-JetBrainsMono [&_*]:fill-primary"
           />
         </button>
-
+        {refreshShortCut}
         {/* <motion.footer
           animate={{ opacity: 1 }}
           initial={{ opacity: 0 }}

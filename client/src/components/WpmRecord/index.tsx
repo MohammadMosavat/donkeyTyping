@@ -137,7 +137,7 @@ const WpmRecords = ({ records }: { records: WpmRecord[] }) => {
       <Button
         variant="ghost"
         onClick={() => setShowDateDropdown(!showDateDropdown)}
-        className="relative flex !p-0 items-center gap-6"
+        className="relative flex !rounded-xl  items-center gap-6"
       >
         <section className="flex items-center gap-2">
           <ReactSVG

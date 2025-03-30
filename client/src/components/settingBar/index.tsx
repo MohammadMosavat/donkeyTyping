@@ -18,12 +18,12 @@ const SettingBar = ({
   const [activeTimeNumber, setActiveTimeNumber] = useState<number>(
     localStorage.getItem("time")
       ? parseInt(localStorage.getItem("time")!)
-      : timeNumbers[0]
+      : 30
   );
   const [activeWordNumber, setActiveWordNumber] = useState<number>(
     localStorage.getItem("words")
       ? parseInt(localStorage.getItem("words")!)
-      : wordNumbers[0]
+      : 30
   );
 
   const handleItemClick = (num: number) => {
