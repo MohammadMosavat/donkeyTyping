@@ -50,13 +50,10 @@ const Sound = () => {
   return (
     <li className="flex items-center justify-between w-full gap-10">
       <section className="flex flex-col w-2/3 gap-2">
-        <p className="text-2xl font-bold">Quick Start</p>
+        <p className="text-2xl font-bold">Sound</p>
         <p className="text-justify">
-          When a user is in the middle of a typing test or has completed a
-          session, they can press the Tab key followed by the Enter key to
-          immediately restart the test. This eliminates the need to move their
-          hands away from the keyboard to use a mouse or trackpad, keeping their
-          focus entirely on typing.
+          Each time the user presses a key, a short
+          sound effect plays.
         </p>
       </section>
       <ul className="grid grid-cols-3 gap-2 w-1/3">
@@ -65,7 +62,7 @@ const Sound = () => {
             key={option.state}
             className="!rounded-xl w-full"
             onClick={() => handleSoundChange(option.state)}
-            variant={sound === option.state ? "secondary" : "ghost"}
+            variant={sound === option.state ? "secondary" : undefined}
             size="md"
           >
             {option.value}

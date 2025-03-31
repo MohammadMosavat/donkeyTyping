@@ -4,21 +4,21 @@ import { useEffect, useState } from "react";
 import Footer from "../footer";
 import { motion } from "framer-motion";
 import { RootState } from "@/store";
-import { useSelector, useDispatch } from 'react-redux'
+import { useSelector, useDispatch } from "react-redux";
 import { toggleTheme } from "@/features/theme/themeSlice";
 export default function ThemeSwitcher() {
-  const theme = useSelector((state: RootState) => state.theme.value)
-  const dispatch = useDispatch()
+  const theme = useSelector((state: RootState) => state.theme.value);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    document.title = 'PlanetType | Themes';
+    document.title = "PlanetType | Themes";
     document.documentElement.className =
       localStorage.getItem("theme") ?? "theme-indigo-emerald";
   });
 
   const changeTheme = (themeName: string) => {
     localStorage.setItem("theme", themeName);
-    document.documentElement.className = themeName; // Apply theme to <html>
+    document.documentElement.className = themeName;
     dispatch(toggleTheme(themeName));
   };
 
@@ -32,9 +32,8 @@ export default function ThemeSwitcher() {
               onClick={() => {
                 changeTheme(t.class);
               }}
-              className={`${
-                theme == t.class && "bg-thrid"
-              } hover:bg-thrid !bg-opacity-50 cursor-pointer hover:font-bold transition-all duration-200 ease-in-out text-primary w-full flex items-center gap-2 sm:gap-0 justify-between p-2 rounded-xl`}
+              className={`${"theme-" + theme == t.class &&
+                "!bg-thrid"} hover:bg-thrid !bg-opacity-50 cursor-pointer hover:font-bold transition-all duration-200 ease-in-out text-primary w-full flex items-center gap-2 sm:gap-0 justify-between p-2 rounded-xl`}
             >
               <p className="font-JetBrainsMono text-primary text-sm md:text-base">
                 {t.name}

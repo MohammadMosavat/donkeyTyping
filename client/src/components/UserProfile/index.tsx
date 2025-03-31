@@ -96,7 +96,7 @@ export default function UserProfileCard({ username }: { username: string }) {
                 size="md"
                 icon="/svgs/logout.svg"
                 iconPosition="left"
-                className="!text-red-500 hover:!bg-red-500/10"
+                className="!bg-red-600 !text-white hover:!bg-red-800"
               >
                 Logout
               </Button>

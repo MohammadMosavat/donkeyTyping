@@ -65,7 +65,9 @@ const Behavior = () => {
                     localStorage.setItem("quickStart", option.state);
                     dispatch(toggleQuickStart(option.state));
                   }}
-                  variant={quickStart === option.state ? "secondary" : "ghost"}
+                  variant={
+                    quickStart === option.state ? "secondary" : undefined
+                  }
                   size="md"
                 >
                   {option.value}
@@ -97,7 +99,7 @@ const Behavior = () => {
                     localStorage.setItem("focusMode", option.state);
                     dispatch(toggleFocusMode(option.state));
                   }}
-                  variant={focusMode === option.state ? "secondary" : "ghost"}
+                  variant={focusMode === option.state ? "secondary" : undefined}
                   size="md"
                 >
                   {option.value}
@@ -129,7 +131,7 @@ const Behavior = () => {
                   dispatch(togglehideExtraElements(option.state));
                 }}
                 variant={
-                  hideExtraElements === option.state ? "secondary" : "ghost"
+                  hideExtraElements === option.state ? "secondary" : undefined
                 }
                 size="md"
               >
@@ -159,7 +161,9 @@ const Behavior = () => {
                   localStorage.setItem("hideCapsLock", option.state);
                   dispatch(toggleHideCapsLock(option.state));
                 }}
-                variant={hideCapsLock === option.state ? "secondary" : "ghost"}
+                variant={
+                  hideCapsLock === option.state ? "secondary" : undefined
+                }
                 size="md"
               >
                 {option.value}

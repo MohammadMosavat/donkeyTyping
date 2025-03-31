@@ -73,7 +73,7 @@ const SettingsPage = () => {
           size="md"
           icon="/svgs/logout.svg"
           iconPosition="left"
-          className=" !bg-red-600 hover:!bg-red-800"
+          className=" !bg-red-600 !text-white hover:!bg-red-800"
         >
           Reset Settings
         </Button>

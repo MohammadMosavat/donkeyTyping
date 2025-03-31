@@ -14,7 +14,7 @@ interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
 
 const Button = ({
   children,
-  variant = "primary",
+  variant,
   size = "md",
   icon,
   iconPosition = "left",
