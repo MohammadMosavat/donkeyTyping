@@ -7,7 +7,7 @@ const Footer = () => {
   const theme = useSelector((state: RootState) => state.theme.value);
 
   return (
-    <ul className="fixed [&>a>button>p]:inline-block bottom-4 left-1/2 -translate-x-1/2 w-fit max-w-xs px-4">
+    <ul className="fixed [&>a>button>p]:inline-block bottom-4 left-4 w-fit max-w-xs px-4">
       <NavLinks
         data-tooltip="Theme"
         className="tooltip hover:bg-thrid font-JetBrainsMono hover:shadow-lg hover:shadow-primary/20 rounded-xl w-full flex justify-center items-center"

@@ -46,7 +46,7 @@ const SettingBar = ({
           onClick={() => setActiveTab("timer")}
           className={`flex w-1/2 justify-center items-center gap-2 p-2 rounded-lg transition-all duration-200 ${
             activeTab === "timer"
-              ? "bg-primary/10 shadow-md"
+              ? "bg-fourth shadow-md"
               : "hover:bg-primary/5"
           }`}
         >

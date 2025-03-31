@@ -25,7 +25,6 @@ const Home = () => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [selectedWords, setSelectedWords] = useState<string[]>([]);
   const [isTyping, setIsTyping] = useState(false);
-
   useAuth();
 
   const genRandomWord = () => {
@@ -135,7 +134,7 @@ const Home = () => {
   }, [quickStart]);
 
   return (
-    <main className="flex flex-col items-center min-h-screen w-full">
+    <main className="flex flex-col overflow-x-hidden items-center min-h-screen w-full">
       <section
         className={`flex md:w-3/12 flex-col items-center gap-6 md:gap-10 justify-center w-full ${
           !isTyping ? "visible" : "opacity-0 pointer-events-none"
@@ -165,16 +164,18 @@ const Home = () => {
           />
         </button>
         {refreshShortCut}
-        {/* <motion.footer
-          animate={{ opacity: 1 }}
-          initial={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
-          className={`w-full ${
-            !isTyping ? "visible" : "[&_*]:opacity-0 pointer-events-none"
-          }`}
-        >
-          <Footer />
-        </motion.footer> */}
+        {!isTyping && (
+          <motion.footer
+            animate={{ opacity: 1 }}
+            initial={{ opacity: 0 }}
+            transition={{ duration: 0.3 }}
+            className={`w-full ${
+              !isTyping ? "visible" : "[&_*]:opacity-0 pointer-events-none"
+            }`}
+          >
+            <Footer />
+          </motion.footer>
+        )}
       </form>
     </main>
   );

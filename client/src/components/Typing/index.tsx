@@ -42,6 +42,11 @@ function TypingGame({
   const hideExtraElements = useSelector(
     (state: RootState) => state.hideExtraElements.value
   );
+  const sound = useSelector((state: RootState) => state.sound.value);
+  const hideCapsLock = useSelector(
+    (state: RootState) => state.hideCapsLock.value
+  );
+  const audioRef = useRef<HTMLAudioElement | null>(null);
   const wordsToType = data;
   useEffect(() => {
     setTimeLeft(time);
@@ -174,6 +179,13 @@ function TypingGame({
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const newValue = e.target.value;
+    if (sound !== "off") {
+      audioRef.current = new Audio(`/sounds/${sound}.mp3`);
+      audioRef.current.currentTime = 0;
+      audioRef.current.play();
+    } else {
+      audioRef.current = null;
+    }
 
     if (!startTime) {
       setStartTime(Date.now());
@@ -205,7 +217,18 @@ function TypingGame({
     }
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleKeyDown = (
+    e: React.KeyboardEvent<HTMLInputElement> | KeyboardEvent
+  ) => {
+    console.log(e);
+    if (hideCapsLock == "on" && e.key === "CapsLock") {
+      if (e.getModifierState("CapsLock")) {
+        toast("Caps Lock is OFF");
+      } else {
+        toast("Caps Lock is ACTIVE");
+      }
+    }
+
     if (e.key === " ") {
       e.preventDefault();
 

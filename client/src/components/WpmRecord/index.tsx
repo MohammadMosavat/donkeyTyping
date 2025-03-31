@@ -153,11 +153,11 @@ const WpmRecords = ({ records }: { records: WpmRecord[] }) => {
           }`}
         />
         {showDateDropdown && (
-          <div className="absolute top-full left-0 right-0 mt-2 p-2 bg-glass rounded-xl shadow-lg backdrop-blur-sm z-10">
+          <div className="absolute top-full left-0 flex flex-col gap-2 right-0 mt-2 p-2 bg-glass rounded-xl shadow-lg backdrop-blur-sm z-10">
             {availableDates.map((date, index) => (
               <div
                 key={index}
-                className="px-4 py-2 rounded-xl hover:bg-thrid transition-all duration-200 ease-in-out cursor-pointer text-primary"
+                className="px-4 py-2 rounded-xl bg-fourth hover:bg-thrid transition-all duration-200 ease-in-out cursor-pointer text-primary"
                 onClick={() => handleDateClick(date)}
               >
                 {date}

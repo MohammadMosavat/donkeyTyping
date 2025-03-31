@@ -4,12 +4,18 @@ import { toggleQuickStart } from "@/features/quickStart/quickStartSlice";
 import { RootState } from "@/store";
 import { toggleFocusMode } from "@/features/focusMode/focusMode";
 import { togglehideExtraElements } from "@/features/hideExtraElements/hideExtraElements";
+import hideCapsLock, {
+  toggleHideCapsLock,
+} from "@/features/hideCapsLock/hideCapsLock";
 const Behavior = () => {
   const dispatch = useDispatch();
   const quickStart = useSelector((state: RootState) => state.quickStart.value);
   const focusMode = useSelector((state: RootState) => state.focusMode.value);
   const hideExtraElements = useSelector(
     (state: RootState) => state.hideExtraElements.value
+  );
+  const hideCapsLock = useSelector(
+    (state: RootState) => state.hideCapsLock.value
   );
   console.log(quickStart);
   const localQuickStart = localStorage.getItem("quickStart");
@@ -31,8 +37,13 @@ const Behavior = () => {
     { value: "on", state: "on" },
   ];
 
+  const hideCapsLockOptions = [
+    { value: "off", state: "off" },
+    { value: "on", state: "on" },
+  ];
+
   return (
-    <ul className="flex flex-col gap-10">
+    <>
       <li className="flex items-center justify-between w-full gap-10">
         <section className="flex flex-col w-2/3 gap-2">
           <p className="text-2xl font-bold">Quick Start</p>
@@ -44,7 +55,7 @@ const Behavior = () => {
             their focus entirely on typing.
           </p>
         </section>
-        <ul className="flex flex-col gap-2 w-1/3">
+        <ul className="grid grid-cols-3 gap-2 w-1/3">
           {QuickStartOptions.map((option) => {
             return (
               <div key={option.value} className="w-full">
@@ -76,7 +87,7 @@ const Behavior = () => {
             complete, errors, accuracy, and WPM are displayed for review.
           </p>
         </section>
-        <ul className="flex flex-col gap-2 w-1/3">
+        <ul className="grid grid-cols-2 gap-2 w-1/3">
           {FocusModeOptions.map((option) => {
             return (
               <div key={option.value} className="w-full">
@@ -98,39 +109,66 @@ const Behavior = () => {
       </li>
       <li className="flex items-center justify-between w-full gap-10">
         <section className="flex flex-col w-2/3 gap-2">
-          <p className="text-2xl font-bold">Hide Extra Elements</p>
+          <p className="text-2xl font-bold">Hide Extra Letters</p>
           <p className="text-justify">
-            Hides error feedback while you type, allowing for a distraction-free
-            experience. Unlike regular mode, mistakes aren’t highlighted
-            immediately; instead, they are revealed only after the test ends.
-            This helps improve speed, muscle memory, and confidence by
-            encouraging natural typing without interruptions. Once the test is
-            complete, errors, accuracy, and WPM are displayed for review.
+            The Hide Extra Letters feature improves the readability of your
+            typing speed test by removing unnecessary letters, specifically
+            extra error letters. When you type an incorrect letter that doesn’t
+            match the expected text, it is normally displayed to show your
+            mistake. However, enabling this feature hides those extra error
+            letters, allowing you to focus on the correct input.
           </p>
         </section>
-        <ul className="flex flex-col gap-2 w-1/3">
+        <ul className="grid grid-cols-2 gap-2 w-1/3">
           {hideExtraElementsOptions.map((option) => {
             return (
-              <div key={option.value} className="w-full">
-                <Button
-                  className="!rounded-xl w-full"
-                  onClick={() => {
-                    localStorage.setItem("hideExtraElements", option.state);
-                    dispatch(togglehideExtraElements(option.state));
-                  }}
-                  variant={
-                    hideExtraElements === option.state ? "secondary" : "ghost"
-                  }
-                  size="md"
-                >
-                  {option.value}
-                </Button>
-              </div>
+              <Button
+                className="!rounded-xl w-full"
+                onClick={() => {
+                  localStorage.setItem("hideExtraElements", option.state);
+                  dispatch(togglehideExtraElements(option.state));
+                }}
+                variant={
+                  hideExtraElements === option.state ? "secondary" : "ghost"
+                }
+                size="md"
+              >
+                {option.value}
+              </Button>
             );
           })}
         </ul>
       </li>
-    </ul>
+      <li className="flex items-center justify-between w-full gap-10">
+        <section className="flex flex-col w-2/3 gap-2">
+          <p className="text-2xl font-bold">Hide Caps Lock</p>
+          <p className="text-justify">
+            The Caps Lock indicator will be hidden during the typing test. This
+            prevents users from relying on visual cues and encourages them to
+            focus on their typing instead of checking whether Caps Lock is on.
+            It helps improve awareness of key presses and builds better muscle
+            memory for capitalization.
+          </p>
+        </section>
+        <ul className="grid grid-cols-2 gap-2 w-1/3">
+          {hideCapsLockOptions.map((option) => {
+            return (
+              <Button
+                className="!rounded-xl w-full"
+                onClick={() => {
+                  localStorage.setItem("hideCapsLock", option.state);
+                  dispatch(toggleHideCapsLock(option.state));
+                }}
+                variant={hideCapsLock === option.state ? "secondary" : "ghost"}
+                size="md"
+              >
+                {option.value}
+              </Button>
+            );
+          })}
+        </ul>
+      </li>
+    </>
   );
 };
 
