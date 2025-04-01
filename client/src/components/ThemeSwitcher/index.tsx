@@ -84,15 +84,6 @@ export default function ThemeSwitcher() {
           );
         })}
       </ul>
-      <motion.footer
-        key={theme}
-        animate={{ opacity: 1 }}
-        initial={{ opacity: 0 }}
-        transition={{ duration: 0.3 }}
-        className="mt-4 md:mt-0"
-      >
-        <Footer />
-      </motion.footer>
     </div>
   );
 }

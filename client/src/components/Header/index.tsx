@@ -118,7 +118,9 @@ const Header = () => {
 
         {username ? (
           <Link
-            className="capitalize max-md:hidden bg-secondary transition-all duration-200 ease-in-out text-fourth rounded-full w-10 h-10 flex items-center justify-center hover:shadow-lg hover:scale-110 font-JetBrainsMono"
+            className={`capitalize max-md:hidden bg-secondary transition-all duration-200 ease-in-out text-fourth rounded-full w-10 h-10 flex items-center justify-center hover:shadow-lg hover:scale-110 font-JetBrainsMono  ${
+              pathname === `/${username}/sort` ? "!bg-fourth text-primary [&_*]:stroke-2" : ""
+            }`}
             href={`/${username}/sort?filter=newest`}
           >
             {username?.split("")[0]}

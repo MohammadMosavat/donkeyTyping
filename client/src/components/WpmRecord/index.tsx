@@ -157,7 +157,7 @@ const WpmRecords = ({ records }: { records: WpmRecord[] }) => {
             {availableDates.map((date, index) => (
               <div
                 key={index}
-                className="px-4 py-2 rounded-xl bg-fourth hover:bg-thrid transition-all duration-200 ease-in-out cursor-pointer text-primary"
+                className="px-4 py-2 rounded-xl hover:bg-thrid transition-all duration-200 ease-in-out cursor-pointer text-primary"
                 onClick={() => handleDateClick(date)}
               >
                 {date}

@@ -24,7 +24,7 @@ const Behavior = () => {
   const QuickStartOptions = [
     { value: "off", state: "off" },
     { value: "esc", state: "esc" },
-    { value: "tab + enter", state: "default" },
+    { value: "enter", state: "default" },
   ];
 
   const FocusModeOptions = [

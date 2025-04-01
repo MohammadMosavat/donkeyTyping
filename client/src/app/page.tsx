@@ -62,7 +62,7 @@ const Home = () => {
   };
 
   const handleKeyPress = useCallback((e: KeyboardEvent) => {
-    if (e.key !== "Escape") {
+    if (e.key !== "Escape" && e.key !== "Enter") {
       setIsTyping(true);
     }
   }, []);
@@ -76,7 +76,18 @@ const Home = () => {
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key == "Enter" && quickStart == "default") {
+        event.preventDefault();
+        regenerateWords(event);
+      }
+      if (event.key === "Tab") {
+        event.preventDefault();
+      }
+      if (event.key === "Enter" && quickStart == "esc") {
+        event.preventDefault();
+      }
       if (event.key === "Escape" && quickStart == "esc") {
+        event.preventDefault();
         regenerateWords(event);
       }
     };
@@ -112,10 +123,6 @@ const Home = () => {
             {quickStart == "default" ? (
               <>
                 <span className="text-fourth font-JetBrainsMono p-1 px-2 rounded-xl bg-thrid text-sm">
-                  tab
-                </span>
-                <span className="font-JetBrainsMono text-thrid">+</span>
-                <span className="text-fourth font-JetBrainsMono p-1 px-2 rounded-xl bg-thrid text-sm">
                   enter
                 </span>
               </>
@@ -131,10 +138,10 @@ const Home = () => {
         </ul>
       )
     );
-  }, [quickStart]);
+  }, [quickStart , isTyping]);
 
   return (
-    <main className="flex flex-col overflow-x-hidden items-center min-h-screen w-full">
+    <main className="flex flex-col overflow-x-hidden items-center gap-40 w-full">
       <section
         className={`flex md:w-3/12 flex-col items-center gap-6 md:gap-10 justify-center w-full ${
           !isTyping ? "visible" : "opacity-0 pointer-events-none"
@@ -148,34 +155,22 @@ const Home = () => {
         />
       </section>
 
-      <form className="flex flex-col mx-auto gap-6 md:gap-8 w-full  items-center flex-1 justify-center">
+      <form className="flex flex-col mx-auto gap-6 md:gap-8 w-full  items-center justify-center">
         <div className="flex flex-col gap-6 md:gap-10 items-start justify-between w-full">
           {Typing()}
         </div>
-        <button
+        {/* <button
           onClick={regenerateWords}
-          className="hover:shadow-xl hover:drop-shadow-xl transition-all duration-200 ease-in-out !rounded-full p-2 md:p-3"
+          className="hover:bg-thrid outline-none focus:bg-thrid transition-all duration-200 ease-in-out !rounded-full p-1 "
           tabIndex={quickStart === "esc" || quickStart === "off" ? -1 : 0}
         >
           <ReactSVG
             data-tooltip="Restart Test"
             src="/svgs/refresh.svg"
-            className="[&>div>svg]:max-md:size-5  [&>div>svg]:size-6 outline-none md:[&>div>svg]:size-7 tooltip font-JetBrainsMono [&_*]:fill-primary"
+            className="[&>div>svg]:max-md:size-5 [&>div>svg]:size-6 outline-none md:[&>div>svg]:size-7 tooltip font-JetBrainsMono [&_*]:fill-primary"
           />
-        </button>
+        </button> */}
         {refreshShortCut}
-        {!isTyping && (
-          <motion.footer
-            animate={{ opacity: 1 }}
-            initial={{ opacity: 0 }}
-            transition={{ duration: 0.3 }}
-            className={`w-full ${
-              !isTyping ? "visible" : "[&_*]:opacity-0 pointer-events-none"
-            }`}
-          >
-            <Footer />
-          </motion.footer>
-        )}
       </form>
     </main>
   );

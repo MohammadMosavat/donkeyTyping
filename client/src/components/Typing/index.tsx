@@ -225,7 +225,7 @@ function TypingGame({
       if (e.getModifierState("CapsLock")) {
         toast("Caps Lock is OFF");
       } else {
-        toast("Caps Lock is ACTIVE");
+        toast("Caps Lock is ON");
       }
     }
 
