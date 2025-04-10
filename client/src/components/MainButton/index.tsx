@@ -29,10 +29,10 @@ const Button = ({
 
   const variants = {
     primary:
-      "bg-primary text-white hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20",
+      "bg-primary text-fourth hover:bg-primary/90 hover:shadow-lg hover:shadow-primary/20",
     secondary:
       "bg-thrid text-primary hover:bg-thrid/90 hover:shadow-lg hover:shadow-thrid/20",
-    outline: "border-2 border-primary text-primary hover:bg-primary/10",
+    outline: "border border-primary text-primary hover:bg-thirth/10",
     ghost: "text-primary  bg-thrid hover:bg-primary/50",
   };
 

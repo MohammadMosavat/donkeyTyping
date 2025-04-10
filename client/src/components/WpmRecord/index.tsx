@@ -204,10 +204,10 @@ const WpmRecords = ({ records }: { records: WpmRecord[] }) => {
 
             <div className="flex flex-col">
               <span className="text-xs font-JetBrainsMono text-primary">
-                Correct / Incorrect
+                Incorrect
               </span>
               <span className="font-JetBrainsMono text-primary">
-                {record.correct_char || "—"} / {record.incorrect_char || "—"}
+                {record.incorrect_char || "—"}
               </span>
             </div>
 

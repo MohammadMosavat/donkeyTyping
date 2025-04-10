@@ -6,6 +6,7 @@ import focusModeSlice from "@/features/focusMode/focusMode";
 import hideExtraElementsReducer from "@/features/hideExtraElements/hideExtraElements";
 import soundReducer from "@/features/sound/sound";
 import hideCapsLockReducer from "@/features/hideCapsLock/hideCapsLock";
+import paceCaretStyleReducer from "@/features/paceCaretStyle/paceCaretStyle";
 export const store = configureStore({
   reducer: {
     theme: themeReducer,
@@ -14,6 +15,7 @@ export const store = configureStore({
     hideExtraElements: hideExtraElementsReducer,
     sound: soundReducer,
     hideCapsLock: hideCapsLockReducer,
+    paceCaretStyle: paceCaretStyleReducer,
   },
 });
 

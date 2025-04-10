@@ -25,7 +25,7 @@ const Home = () => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [selectedWords, setSelectedWords] = useState<string[]>([]);
   const [isTyping, setIsTyping] = useState(false);
-  useAuth();
+  // useAuth();
 
   const genRandomWord = () => {
     const newWords: string[] = [];
@@ -35,7 +35,7 @@ const Home = () => {
         commonWords[Math.floor(Math.random() * commonWords.length)];
       const randomWord =
         randomArray[Math.floor(Math.random() * randomArray.length)];
-
+      const randomNumber = Math.floor(Math.random() * 100);
       if (!newWords.includes(randomWord)) {
         newWords.push(randomWord);
       }
@@ -138,7 +138,7 @@ const Home = () => {
         </ul>
       )
     );
-  }, [quickStart , isTyping]);
+  }, [quickStart, isTyping]);
 
   return (
     <main className="flex flex-col overflow-x-hidden items-center gap-40 w-full">

@@ -46,6 +46,9 @@ function TypingGame({
   const hideCapsLock = useSelector(
     (state: RootState) => state.hideCapsLock.value
   );
+  const paceCaretStyle = useSelector(
+    (state: RootState) => state.paceCaretStyle.value
+  );
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const wordsToType = data;
   useEffect(() => {
@@ -283,7 +286,11 @@ function TypingGame({
             >
               {isCurrentWord && charIndex === input.length && (
                 <motion.span
-                  className="absolute w-full h-full border-r-2 border-primary"
+                  className={`absolute w-full h-full ${paceCaretStyle !=
+                    "off" &&
+                    (paceCaretStyle == "underline"
+                      ? "border-b-2 border-primary"
+                      : "border-r-2 border-primary")}`}
                   animate={{ opacity: [1, 0, 1] }}
                   transition={{ duration: 1.2, repeat: Infinity }}
                 />

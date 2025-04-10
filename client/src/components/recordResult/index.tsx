@@ -111,9 +111,9 @@ const RecordResult = ({
             </p>
 
             {/* Display correct and incorrect characters */}
-            <p className="font-JetBrainsMono text-primary text-center sm:text-left">
+            {/* <p className="font-JetBrainsMono text-primary text-center sm:text-left">
               Correct Characters: {corChar}
-            </p>
+            </p> */}
             <p className="font-JetBrainsMono text-primary text-center sm:text-left">
               Incorrect Characters: {inChar}
             </p>

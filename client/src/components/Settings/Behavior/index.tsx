@@ -7,6 +7,7 @@ import { togglehideExtraElements } from "@/features/hideExtraElements/hideExtraE
 import hideCapsLock, {
   toggleHideCapsLock,
 } from "@/features/hideCapsLock/hideCapsLock";
+import { togglePaceCaretStyle } from "@/features/paceCaretStyle/paceCaretStyle";
 const Behavior = () => {
   const dispatch = useDispatch();
   const quickStart = useSelector((state: RootState) => state.quickStart.value);
@@ -17,6 +18,8 @@ const Behavior = () => {
   const hideCapsLock = useSelector(
     (state: RootState) => state.hideCapsLock.value
   );
+  const paceCaretStyle = useSelector((state: RootState) => state.paceCaretStyle.value);
+
   console.log(quickStart);
   const localQuickStart = localStorage.getItem("quickStart");
   console.log(localQuickStart);
@@ -40,6 +43,12 @@ const Behavior = () => {
   const hideCapsLockOptions = [
     { value: "off", state: "off" },
     { value: "on", state: "on" },
+  ];
+
+  const paceCaretStyleOptions = [
+    { value: "off", state: "off" },
+    { value: "underline", state: "underline" },
+    { value: "rightline", state: "rightline" },
   ];
 
   return (
@@ -66,7 +75,7 @@ const Behavior = () => {
                     dispatch(toggleQuickStart(option.state));
                   }}
                   variant={
-                    quickStart === option.state ? "secondary" : undefined
+                    quickStart === option.state ? "secondary" : "outline"
                   }
                   size="md"
                 >
@@ -99,7 +108,7 @@ const Behavior = () => {
                     localStorage.setItem("focusMode", option.state);
                     dispatch(toggleFocusMode(option.state));
                   }}
-                  variant={focusMode === option.state ? "secondary" : undefined}
+                  variant={focusMode === option.state ? "secondary" : "outline"}
                   size="md"
                 >
                   {option.value}
@@ -131,7 +140,7 @@ const Behavior = () => {
                   dispatch(togglehideExtraElements(option.state));
                 }}
                 variant={
-                  hideExtraElements === option.state ? "secondary" : undefined
+                  hideExtraElements === option.state ? "secondary" : "outline"
                 }
                 size="md"
               >
@@ -162,7 +171,34 @@ const Behavior = () => {
                   dispatch(toggleHideCapsLock(option.state));
                 }}
                 variant={
-                  hideCapsLock === option.state ? "secondary" : undefined
+                  hideCapsLock === option.state ? "secondary" : "outline"
+                }
+                size="md"
+              >
+                {option.value}
+              </Button>
+            );
+          })}
+        </ul>
+      </li>
+      <li className="flex items-center justify-between w-full gap-10">
+        <section className="flex flex-col w-2/3 gap-2">
+          <p className="text-2xl capitalize font-bold">pace caret style</p>
+          <p className="text-justify">
+            Change the style of the pace caret during the test.
+          </p>
+        </section>
+        <ul className="grid grid-cols-3 gap-2 w-1/3">
+          {paceCaretStyleOptions.map((option) => {
+            return (
+              <Button
+                className="!rounded-xl w-full"
+                onClick={() => {
+                  localStorage.setItem("paceCaretStyle", option.state);
+                  dispatch(togglePaceCaretStyle(option.state));
+                }}
+                variant={
+                  paceCaretStyle === option.state ? "secondary" : "outline"
                 }
                 size="md"
               >
