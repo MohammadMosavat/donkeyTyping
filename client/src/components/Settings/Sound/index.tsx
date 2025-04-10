@@ -62,7 +62,7 @@ const Sound = () => {
             key={option.state}
             className="!rounded-xl w-full"
             onClick={() => handleSoundChange(option.state)}
-            variant={sound === option.state ? "secondary" : undefined}
+            variant={sound === option.state ? "secondary" : "outline"}
             size="md"
           >
             {option.value}
