@@ -7,6 +7,7 @@ import hideExtraElementsReducer from "@/features/hideExtraElements/hideExtraElem
 import soundReducer from "@/features/sound/sound";
 import hideCapsLockReducer from "@/features/hideCapsLock/hideCapsLock";
 import paceCaretStyleReducer from "@/features/paceCaretStyle/paceCaretStyle";
+import isTypingReducer from "@/features/isTyping/isTyping";
 export const store = configureStore({
   reducer: {
     theme: themeReducer,
@@ -16,6 +17,7 @@ export const store = configureStore({
     sound: soundReducer,
     hideCapsLock: hideCapsLockReducer,
     paceCaretStyle: paceCaretStyleReducer,
+    isTyping: isTypingReducer,
   },
 });
 

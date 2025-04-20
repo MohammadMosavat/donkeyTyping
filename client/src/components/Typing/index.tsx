@@ -4,8 +4,9 @@ import axios from "axios";
 import toast from "react-hot-toast";
 import RecordResult from "../recordResult";
 import { ReactSVG } from "react-svg";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
+import { toggleIsTyping } from "@/features/isTyping/isTyping";
 
 interface TypingGameProps {
   data: string[];
@@ -38,7 +39,9 @@ function TypingGame({
   const [incorrectChars, setIncorrectChars] = useState(0);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [hasStarted, setHasStarted] = useState(false);
+  const dispatch = useDispatch();
   const focusMode = useSelector((state: RootState) => state.focusMode.value);
+  const isTyping = useSelector((state: RootState) => state.isTyping.value);
   const hideExtraElements = useSelector(
     (state: RootState) => state.hideExtraElements.value
   );
@@ -86,6 +89,7 @@ function TypingGame({
     setHasStarted(false); // Set hasStarted to false so the timer doesn't start
     setCurrentWordIndex(0);
     setCharCount(0);
+    dispatch(toggleIsTyping("off"));
     setInput("");
   };
 
@@ -140,6 +144,7 @@ function TypingGame({
       timerInterval = setInterval(() => {
         setTimeLeft((prevTimeLeft) => prevTimeLeft - 1);
       }, 1000);
+      dispatch(toggleIsTyping("on"));
     } else if (timeLeft === 0) {
       console.log("it is over");
       setGameOver(true);
@@ -311,7 +316,8 @@ function TypingGame({
 
   const timeCounter = useMemo(() => {
     return (
-      showTimer && (
+      showTimer &&
+      focusMode == "off" && (
         <div className="text-primary text-2xl font-JetBrainsMono">
           {timeLeft}
         </div>
@@ -320,7 +326,11 @@ function TypingGame({
   }, [timeLeft]);
 
   return (
-    <div className="flex flex-col w-full items-center mx-auto ">
+    <div
+      className={`flex flex-col ${
+        isTyping == "off" ? "w-11/12" : "w-9/12"
+      } items-center mx-auto `}
+    >
       <main className="relative w-full mx-auto">
         <motion.label
           htmlFor="test"

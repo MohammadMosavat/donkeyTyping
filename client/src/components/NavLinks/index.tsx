@@ -7,6 +7,7 @@ interface NavLinksProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
   value?: string;
   iconSrc: string;
   className?: string;
+  tooltip?: string;
 }
 
 const NavLinks: React.FC<NavLinksProps> = ({
@@ -14,16 +15,18 @@ const NavLinks: React.FC<NavLinksProps> = ({
   value,
   iconSrc,
   className,
+  tooltip,
   ...rest
 }) => {
   return (
     <Link href={link} {...rest}>
       <Button
         variant="ghost"
+        data-tooltip={tooltip}
         size="md"
         icon={iconSrc}
         iconPosition="left"
-        className={`${className} !justify-start rounded-full`}
+        className={`${className} ${tooltip && 'tooltip'} !justify-start rounded-full`}
       >
         <p className="inline-block capitalize md:hidden">{value}</p>
       </Button>
