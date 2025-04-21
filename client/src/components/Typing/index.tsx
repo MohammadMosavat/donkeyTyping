@@ -327,9 +327,7 @@ function TypingGame({
 
   return (
     <div
-      className={`flex flex-col ${
-        isTyping == "off" ? "w-11/12" : "w-9/12"
-      } items-center mx-auto `}
+      className={`flex flex-col w-9/12 items-center mx-auto `}
     >
       <main className="relative w-full mx-auto">
         <motion.label

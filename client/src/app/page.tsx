@@ -159,17 +159,6 @@ const Home = () => {
         <div className="flex flex-col gap-6 md:gap-10 items-start justify-between w-full">
           {Typing()}
         </div>
-        {/* <button
-          onClick={regenerateWords}
-          className="hover:bg-thrid outline-none focus:bg-thrid transition-all duration-200 ease-in-out !rounded-full p-1 "
-          tabIndex={quickStart === "esc" || quickStart === "off" ? -1 : 0}
-        >
-          <ReactSVG
-            data-tooltip="Restart Test"
-            src="/svgs/refresh.svg"
-            className="[&>div>svg]:max-md:size-5 [&>div>svg]:size-6 outline-none md:[&>div>svg]:size-7 tooltip font-JetBrainsMono [&_*]:fill-primary"
-          />
-        </button> */}
         {refreshShortCut}
       </form>
     </main>

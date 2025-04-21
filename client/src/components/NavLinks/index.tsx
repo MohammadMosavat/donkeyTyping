@@ -5,7 +5,7 @@ import Button from "../MainButton";
 interface NavLinksProps extends React.AnchorHTMLAttributes<HTMLAnchorElement> {
   link: string;
   value?: string;
-  iconSrc: string;
+  iconSrc?: string;
   className?: string;
   tooltip?: string;
 }
@@ -28,7 +28,7 @@ const NavLinks: React.FC<NavLinksProps> = ({
         iconPosition="left"
         className={`${className} ${tooltip && 'tooltip'} !justify-start rounded-full`}
       >
-        <p className="inline-block capitalize md:hidden">{value}</p>
+        <p className="inline-block capitalize">{value}</p>
       </Button>
     </Link>
   );

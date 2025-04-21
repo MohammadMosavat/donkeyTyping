@@ -48,15 +48,14 @@ const Sound = () => {
   };
 
   return (
-    <li className="flex items-center justify-between w-full gap-10">
-      <section className="flex flex-col w-2/3 gap-2">
+    <li className="flex flex-col w-full gap-10">
+      <section className="flex flex-col  gap-2">
         <p className="text-2xl font-bold">Sound</p>
         <p className="text-justify">
-          Each time the user presses a key, a short
-          sound effect plays.
+          Each time you presses a key, a short sound effect plays.
         </p>
       </section>
-      <ul className="grid grid-cols-3 gap-2 w-1/3">
+      <ul className="grid grid-cols-6 gap-2 ">
         {soundOptions.map((option) => (
           <Button
             key={option.state}

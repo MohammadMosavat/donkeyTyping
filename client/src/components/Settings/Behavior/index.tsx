@@ -25,7 +25,7 @@ const Behavior = () => {
   console.log(localQuickStart);
 
   const QuickStartOptions = [
-    { value: "off", state: "off" },
+    // { value: "off", state: "off" },
     { value: "esc", state: "esc" },
     { value: "enter", state: "default" },
   ];
@@ -57,14 +57,14 @@ const Behavior = () => {
         <section className="flex flex-col w-2/3 gap-2">
           <p className="text-2xl font-bold">Quick Start</p>
           <p className="text-justify">
-            When a user is in the middle of a typing test or has completed a
-            session, they can press the Tab key followed by the Enter key to
-            immediately restart the test. This eliminates the need to move their
+            When you're in the middle of a typing test or has completed a
+            session, you can press the Tab key followed by the Enter key to
+            immediately restart the test. This eliminates the need to move your
             hands away from the keyboard to use a mouse or trackpad, keeping
-            their focus entirely on typing.
+            your focus entirely on typing.
           </p>
         </section>
-        <ul className="grid grid-cols-3 gap-2 w-1/3">
+        <ul className="grid grid-cols-2 gap-2 w-1/3">
           {QuickStartOptions.map((option) => {
             return (
               <div key={option.value} className="w-full">

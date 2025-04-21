@@ -10,6 +10,8 @@ import { toggleHideCapsLock } from "@/features/hideCapsLock/hideCapsLock";
 import { toggleQuickStart } from "@/features/quickStart/quickStartSlice";
 import { toggleSound } from "@/features/sound/sound";
 import { togglehideExtraElements } from "@/features/hideExtraElements/hideExtraElements";
+import { motion } from "framer-motion";
+
 const tabs = [
   { name: "Behavior", content: <Behavior /> },
   { name: "Sound", content: <Sound /> },
@@ -79,9 +81,18 @@ const SettingsPage = () => {
         </Button>
       </section>
       {/* Content */}
-      <div className="w-full flex flex-col gap-10 text-primary font-JetBrainsMono">
+      <motion.div
+        key={activeTab}
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{
+          duration: 0.3,
+          ease: "easeOut",
+        }}
+        className="w-full flex flex-col gap-10 text-primary font-JetBrainsMono"
+      >
         {tabs.find((t) => t.name === activeTab)?.content}
-      </div>
+      </motion.div>
     </div>
   );
 };

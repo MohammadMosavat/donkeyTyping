@@ -8,7 +8,7 @@ const FooterItems = ({
   iconSrc: string;
 }) => {
   return (
-    <Button tabIndex={-1} variant={undefined} className="[&_*]:stroke-primary hover:!bg-thrid" size="md" icon={iconSrc} iconPosition="left">
+    <Button tabIndex={-1} variant={undefined} className="[&_*]:stroke-primary bg-thrid" size="md" icon={iconSrc} iconPosition="left">
       <p className="text-primary">{value}</p>
     </Button>
   );

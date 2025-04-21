@@ -38,9 +38,9 @@ const Header = () => {
             y: 0,
           }}
           transition={{ duration: 0.2 }}
-          className={`z-50 md:w-20 bg-thrid w-full flex fixed md:static top-0 md:mt-4 left-0 ${
+          className={`z-50 bg-thrid w-full flex fixed md:static top-0 left-0 ${
             isOpen ? "h-screen !items-start !flex-col" : "h-fit self-start"
-          }  md:flex-col gap-4 items-center p-2 md:p-4 md:rounded-2xl transition-all duration-300`}
+          } gap-4 items-center p-1 px-2  justify-between md:rounded-2xl transition-all duration-300`}
         >
           <section className="flex md:hidden  items-center max-md:gap-4 justify-between w-full">
             <button className="left-4 top-4 z-20" onClick={toggleMenu}>
@@ -59,70 +59,56 @@ const Header = () => {
               </Link>
             )}
           </section>
+
+          <NavLinks
+            onClick={() => close()}
+            className={`group !w-fit ${isOpen && "!rounded-xl"}`}
+            link="/"
+            value={"T-TYPINO"}
+          />
           <ul
-            className={`md:flex md:flex-col justify-start md:flex-grow gap-4 w-full ${
+            className={`md:flex justify-start gap-4 ${
               isOpen ? "flex flex-col !items-start" : "hidden items-center"
             }`}
           >
             <li className="w-full  md:w-auto">
               <NavLinks
                 onClick={() => close()}
-                tooltip="Home"
-                className={`group !p-2 w-full md:w-auto ${
-                  isOpen ? "!rounded-xl" : "!rounded-full"
-                } p-2 hover:bg-fourth ${
+                className={`group !p-1 !px-2 w-full md:w-auto ${isOpen &&
+                  "!rounded-xl"} hover:bg-fourth ${
                   pathname === "/" ? "!bg-fourth [&_*]:stroke-2" : ""
                 }`}
-                iconSrc="/svgs/planet.svg"
                 link="/"
-                value={
-                  isOpen && !window.matchMedia("(min-width: 768px)").matches
-                    ? "Home"
-                    : undefined
-                }
+                value={"Home"}
               />
             </li>
             <li className="w-full md:w-auto">
               <NavLinks
                 onClick={() => close()}
-                tooltip="Theme"
-                className={`group !p-2 w-full md:w-auto ${
-                  isOpen ? "!rounded-xl" : "!rounded-full"
-                } p-2 hover:bg-fourth ${
+                className={`group !p-1 !px-2 w-full md:w-auto ${isOpen &&
+                  "!rounded-xl"} hover:bg-fourth ${
                   pathname === "/theme" ? "!bg-fourth [&_*]:stroke-2" : ""
                 }`}
-                iconSrc="/svgs/theme.svg"
                 link="/theme"
-                value={
-                  isOpen && !window.matchMedia("(min-width: 768px)").matches
-                    ? "Theme"
-                    : undefined
-                }
+                value={"Theme"}
               />
             </li>
             <li className="w-full md:w-auto">
               <NavLinks
-                tooltip="Setting"
                 onClick={() => close()}
-                className={`group  !p-2 w-full md:w-auto ${
-                  isOpen ? "!rounded-xl" : "!rounded-full"
-                } p-2 hover:bg-fourth ${
+                className={`group !p-1 !px-2 w-full md:w-auto ${isOpen &&
+                  "!rounded-xl"} hover:bg-fourth ${
                   pathname === "/settings" ? "!bg-fourth [&_*]:stroke-2" : ""
                 }`}
-                iconSrc="/svgs/settings.svg"
                 link="/settings"
-                value={
-                  isOpen && !window.matchMedia("(min-width: 768px)").matches
-                    ? "Settings"
-                    : undefined
-                }
+                value={"Settings"}
               />
             </li>
           </ul>
 
           {username ? (
             <Link
-              className={`capitalize max-md:hidden bg-secondary transition-all duration-200 ease-in-out text-fourth rounded-full w-10 h-10 flex items-center justify-center hover:shadow-lg hover:scale-110 font-JetBrainsMono  ${
+              className={`capitalize max-md:hidden bg-secondary transition-all duration-200 ease-in-out text-fourth rounded-xl w-8 h-8 flex items-center justify-center hover:shadow-lg hover:scale-110 font-JetBrainsMono  ${
                 pathname === `/${username}/sort`
                   ? "!bg-fourth text-primary [&_*]:stroke-2"
                   : ""
@@ -134,10 +120,8 @@ const Header = () => {
           ) : (
             <NavLinks
               onClick={() => close()}
-              data-tooltip="Sign up"
-              className={`group tooltip w-full md:w-auto ${
-                isOpen ? "!rounded-xl" : "!rounded-full"
-              } p-2 [&>button>p]:hidden hover:bg-fourth ${
+              className={`group tooltip w-full md:w-auto ${isOpen &&
+                "!rounded-xl"} p-2 [&>button>p]:hidden hover:bg-fourth ${
                 pathname === "/register/signup" ||
                 pathname === "/register/login"
                   ? "!bg-fourth [&_*]:stroke-2"
@@ -145,11 +129,7 @@ const Header = () => {
               }`}
               iconSrc="/svgs/user.svg"
               link="/register/signup"
-              value={
-                isOpen && !window.matchMedia("(min-width: 768px)").matches
-                  ? "Sign up"
-                  : undefined
-              }
+              value={"Sign up"}
             />
           )}
         </motion.header>
