@@ -7,6 +7,7 @@ import axios from "axios";
 import Loading from "../loading";
 import Link from "next/link";
 import { ReactSVG } from "react-svg";
+import useUser from "@/hooks/useUser";
 
 interface RecordResultType {
   isOver: boolean;
@@ -24,8 +25,7 @@ const RecordResult = ({
 }: RecordResultType) => {
   const [data, setData] = useState<WpmRecord>();
   const [loading, setLoading] = useState(true);
-  //chart
-
+  const { user } = useUser();
   useEffect(() => {
     // Fetch user data from the API
     const fetchRecords = async () => {
@@ -100,50 +100,32 @@ const RecordResult = ({
         src={"/images/bg10.jpg"}
         alt="Background"
       /> */}
-      <div className="w-full grid grid-cols-4 mx-auto h-min gap-10 ">
-        <section className="col-span-full flex flex-col items-center justify-between gap-4 sm:gap-6">
-          <section className="flex justify-between items-start gap-4 sm:gap-6">
-            <p className="font-JetBrainsMono text-primary text-center sm:text-left">
-              Words Per Minute: {wpm}wpm
-            </p>
-            <p className="font-JetBrainsMono text-primary text-center sm:text-left">
-              Accuracy: {acc}%
-            </p>
+      <section className="w-full flex flex-col items-center justify-between gap-4 sm:gap-6">
+        <section className="flex justify-between items-start gap-4 sm:gap-6">
+          <p className="font-JetBrainsMono text-primary text-center sm:text-left">
+            Words Per Minute: {wpm}wpm
+          </p>
+          <p className="font-JetBrainsMono text-primary text-center sm:text-left">
+            Accuracy: {acc}%
+          </p>
 
-            {/* Display correct and incorrect characters */}
-            {/* <p className="font-JetBrainsMono text-primary text-center sm:text-left">
+          {/* Display correct and incorrect characters */}
+          {/* <p className="font-JetBrainsMono text-primary text-center sm:text-left">
               Correct Characters: {corChar}
             </p> */}
-            <p className="font-JetBrainsMono text-primary text-center sm:text-left">
-              Incorrect Characters: {inChar}
-            </p>
-          </section>
-          
+          <p className="font-JetBrainsMono text-primary text-center sm:text-left">
+            Incorrect Characters: {inChar}
+          </p>
         </section>
-        {/* <div className="col-span-3 flex flex-col gap-3">
-          <section className="flex items-center gap-2">
-            <ReactSVG
-              src="/svgs/chart.svg"
-              className="[&>div>svg]:size-8 [&>div>svg_*]:stroke-primary"
-            />
-            <h1 className="text-2xl font-JetBrainsMono text-primary">
-              Last 5 Record Chart
-            </h1>
-          </section>
-          {lastFiveRecordsChart}
-        </div> */}
-
-        {/* <button
-          title="Next"
-          onClick={() => window.location.reload()}
-          className="hover:shadow-xl hover:drop-shadow-2xl mx-auto col-span-full !rounded-full"
-        >
-          <ReactSVG
-            src="/svgs/next.svg"
-            className="[&>div>svg]:size-8 [&_*]:stroke-primary"
-          />
-        </button> */}
-      </div>
+        {user && (
+          <Link
+            href={"/register/signup"}
+            className="font-JetBrainsMono w-fit mx-auto p-1.5 bg-thrid rounded-xl "
+          >
+            Save your progress
+          </Link>
+        )}
+      </section>
     </motion.div>
   );
 };

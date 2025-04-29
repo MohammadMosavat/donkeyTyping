@@ -6,6 +6,7 @@ export default interface UserProfileCardProps {
   joinedAt: string;
 }
 
+
 export interface WpmRecord {
   username: string;
   time: number;

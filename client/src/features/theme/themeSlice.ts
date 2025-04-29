@@ -11,7 +11,7 @@ const removeThemePrefix = (theme: string): string => {
 };
 
 const initialState: CounterState = {
-  value: removeThemePrefix(localStorage.getItem("theme") ?? "theme-dark"),
+  value: removeThemePrefix(localStorage.getItem("theme") ?? "theme-indigo-emerald"),
 };
 
 export const counterSlice = createSlice({

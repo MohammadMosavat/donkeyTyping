@@ -14,6 +14,7 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 
 const Home = () => {
+  useAuth()
   const quickStart = useSelector((state: RootState) => state.quickStart.value);
   const [time, setTime] = useState<number>(
     Number(localStorage.getItem("time") ?? 30)

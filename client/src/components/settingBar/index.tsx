@@ -44,7 +44,7 @@ const SettingBar = ({
       <div className="flex gap-2 bg-thrid w-full p-1 rounded-xl">
         <button
           onClick={() => setActiveTab("timer")}
-          className={`flex w-1/2 justify-center items-center gap-2 p-2 rounded-lg transition-all duration-200 ${
+          className={`flex w-1/2 justify-center items-center gap-2 p-1.5 rounded-lg transition-all duration-200 ${
             activeTab === "timer"
               ? "bg-fourth shadow-md"
               : "hover:bg-primary/5"
@@ -58,7 +58,7 @@ const SettingBar = ({
         </button>
         <button
           onClick={() => setActiveTab("words")}
-          className={`flex w-1/2 justify-center items-center gap-2 p-2 rounded-lg transition-all duration-200 ${
+          className={`flex w-1/2 justify-center items-center gap-2 p-1.5 rounded-lg transition-all duration-200 ${
             activeTab === "words"
               ? "bg-fourth shadow-md"
               : "hover:bg-primary/5"
@@ -78,11 +78,11 @@ const SettingBar = ({
           <li
             key={num}
             onClick={() => handleItemClick(num)}
-            className={`font-JetBrainsMono cursor-pointer p-2 rounded-lg transition-all duration-200 ${
+            className={`font-JetBrainsMono cursor-pointer p-1 rounded-lg transition-all duration-200 ${
               (activeTab === "timer" ? activeTimeNumber : activeWordNumber) ===
               num
-                ? "bg-primary/10 text-primary font-medium shadow-lg shadow-primary/20"
-                : "text-thrid hover:bg-thrid hover:text-primary hover:shadow-lg hover:shadow-primary/20"
+                ? "bg-primary/10 text-primary font-medium "
+                : "text-thrid hover:text-primary hover:font-bold"
             }`}
           >
             {num}

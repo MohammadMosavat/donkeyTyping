@@ -26,7 +26,7 @@ const NavLinks: React.FC<NavLinksProps> = ({
         size="md"
         icon={iconSrc}
         iconPosition="left"
-        className={`${className} ${tooltip && 'tooltip'} !justify-start rounded-full`}
+        className={`${className} ${tooltip && 'tooltip'}  !justify-start rounded-full`}
       >
         <p className="inline-block capitalize">{value}</p>
       </Button>

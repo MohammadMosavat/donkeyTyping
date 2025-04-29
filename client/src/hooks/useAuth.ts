@@ -1,16 +1,18 @@
 import { useEffect } from "react";
 import { useRouter } from "next/navigation";
+import useUser from "./useUser";
 
 const useAuth = () => {
   const router = useRouter();
-  const username = localStorage.getItem("username") ?? null;
+  const { user } = useUser();
+  console.log('this is user' , user);
   useEffect(() => {
-    if (!username) {
-      router.push("/register/login"); // Navigate after render
+    if (!user) {
+      router.push("/register/login");
     }
-  }, [username, router]); // Runs when `username` changes
+  }, [user, router]);
 
-  return username; // Or any other authentication-related data
+  return user;
 };
 
 export default useAuth;

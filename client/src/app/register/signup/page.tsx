@@ -14,11 +14,6 @@ const SignUpForm = () => {
   const [password, setPassword] = useState<string>("");
   const router = useRouter();
 
-  useEffect(() => {
-    document.documentElement.className =
-      localStorage.getItem("theme") ?? "theme-indigo-emerald";
-  });
-
   const validateFields = () => {
     let isValid = true;
 
@@ -88,29 +83,7 @@ const SignUpForm = () => {
       const data = await response.json();
 
       if (response.ok) {
-        // // Send welcome email
-        // const emailResponse = await fetch("http://localhost:5000/send-welcome-email", {
-        //   method: "POST",
-        //   headers: {
-        //     "Content-Type": "application/json",
-        //   },
-        //   body: JSON.stringify({
-        //     email,
-        //     username
-        //   }),
-        // });
-
-        // if (!emailResponse.ok) {
-        //   console.error("Failed to send welcome email");
-        // }
-
-        // Show welcome message
         toast.success(`Welcome ${username}! Thanks for joining us.`);
-
-        // Set username in localStorage after successful registration
-        localStorage.setItem("username", username);
-
-        // Hash username and set cookie
         const hashedUsername = await hashUsername(email);
         Cookies.set("hashedUsername", hashedUsername, { expires: 14 });
 
