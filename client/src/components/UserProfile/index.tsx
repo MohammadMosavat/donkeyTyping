@@ -14,7 +14,6 @@ export default function UserProfileCard({ username }: { username: string }) {
 
   useEffect(() => {
     document.title = username;
-    // Fetch user data from the API
     document.documentElement.className =
       localStorage.getItem("theme") ?? "theme-indigo-emerald";
 
@@ -41,12 +40,6 @@ export default function UserProfileCard({ username }: { username: string }) {
 
     fetchUserData();
   }, []);
-
-  const handleLogout = () => {
-    localStorage.removeItem("username");
-    toast.success("Logged out successfully!");
-    router.push("/");
-  };
 
   return (
     data && (
@@ -90,16 +83,6 @@ export default function UserProfileCard({ username }: { username: string }) {
                   })}
                 </p>
               </section>
-              <Button
-                onClick={handleLogout}
-                variant="ghost"
-                size="md"
-                icon="/svgs/logout.svg"
-                iconPosition="left"
-                className="!bg-red-600 !text-white hover:!bg-red-800"
-              >
-                Logout
-              </Button>
             </div>
           </div>
         ) : (
