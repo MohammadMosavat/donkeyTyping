@@ -39,7 +39,7 @@ const SettingsPage = () => {
     dispatch(toggleFocusMode("off"));
     dispatch(toggleHideCapsLock("off"));
     dispatch(togglehideExtraElements("off"));
-    dispatch(toggleQuickStart("off"));
+    dispatch(toggleQuickStart("default"));
   };
   const [activeTab, setActiveTab] = useState(tabs[0].name);
 

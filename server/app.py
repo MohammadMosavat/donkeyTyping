@@ -184,17 +184,33 @@ def user_operations():
         try:
             data = request.json
             user_id = data.get("id")
-            if not user_id:
-                return jsonify({"message": "User ID is required."}), 400
-            try:
-                result = collection_users.delete_one({"_id": ObjectId(user_id)})
-            except Exception as e:
-                return jsonify({"message": f"Invalid _id format: {e}"}), 400
+            username = data.get("username")
+            email = data.get("email")
+
+            if not user_id and not username and not email:
+                return jsonify({"message": "Provide at least one identifier: id, username, or email."}), 400
+
+            query = {}
+            if user_id:
+                try:
+                    query["_id"] = ObjectId(user_id)
+                except Exception as e:
+                    return jsonify({"message": f"Invalid _id format: {e}"}), 400
+            if username:
+                query["username"] = username
+            if email:
+                query["email"] = email
+
+            result = collection_users.delete_one(query)
+
             if result.deleted_count == 0:
                 return jsonify({"message": "User not found."}), 404
+
             return jsonify({"message": "User deleted successfully."}), 200
+
         except Exception as e:
             return jsonify({"message": f"An error occurred: {str(e)}"}), 500
+
 
 if __name__ == '__main__':
     app.run(debug=True, host='0.0.0.0', port=5000)
