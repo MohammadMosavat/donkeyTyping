@@ -25,7 +25,6 @@ const Behavior = () => {
   console.log(localQuickStart);
 
   const QuickStartOptions = [
-    // { value: "off", state: "off" },
     { value: "esc", state: "esc" },
     { value: "enter", state: "default" },
   ];
