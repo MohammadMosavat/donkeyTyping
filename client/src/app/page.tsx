@@ -14,8 +14,9 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store";
 
 const Home = () => {
-  useAuth()
+  useAuth();
   const quickStart = useSelector((state: RootState) => state.quickStart.value);
+  const focusMode = useSelector((state: RootState) => state.focusMode.value);
   const [time, setTime] = useState<number>(
     Number(localStorage.getItem("time") ?? 30)
   );
@@ -26,7 +27,6 @@ const Home = () => {
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [selectedWords, setSelectedWords] = useState<string[]>([]);
   const [isTyping, setIsTyping] = useState(false);
-  // useAuth();
 
   const genRandomWord = () => {
     const newWords: string[] = [];
@@ -117,7 +117,7 @@ const Home = () => {
 
   const refreshShortCut = useMemo(() => {
     return (
-      !isTyping &&
+      (!isTyping || focusMode !== "on") &&
       quickStart !== "off" && (
         <ul>
           <li className="flex items-center gap-2">
@@ -156,7 +156,7 @@ const Home = () => {
         />
       </section>
 
-      <form className="flex flex-col mx-auto gap-6 md:gap-8 w-full  items-center justify-center">
+      <form className="flex flex-col mx-auto gap-6 md:gap-80 w-full  items-center justify-center">
         <div className="flex flex-col gap-6 md:gap-10 items-start justify-between w-full">
           {Typing()}
         </div>
