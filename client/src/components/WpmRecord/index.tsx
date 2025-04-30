@@ -89,12 +89,12 @@ const WpmRecords = ({ records }: { records: WpmRecord[] }) => {
         </Button>
       )
     );
-  }, [records, isFiltering]);
+  }, [records, showDateDropdown, isFiltering]);
 
-  return (
-    <div className="w-full flex flex-col gap-10 h-fit">
-      <AnimatePresence>
-        {selectedDate && (
+  const dateSelected = useMemo(() => {
+    return (
+      selectedDate && (
+        <AnimatePresence>
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
@@ -112,8 +112,14 @@ const WpmRecords = ({ records }: { records: WpmRecord[] }) => {
               Clear filter
             </Button>
           </motion.div>
-        )}
-      </AnimatePresence>
+        </AnimatePresence>
+      )
+    );
+  }, [showDateDropdown, selectedDate]);
+
+  return (
+    <div className="w-full flex flex-col gap-10 h-fit">
+      {dateSelected}
 
       {dateSelector}
 
