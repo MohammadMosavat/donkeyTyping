@@ -14,10 +14,15 @@ const SignUpForm = () => {
   const [password, setPassword] = useState<string>("");
   const router = useRouter();
 
+  useEffect(() => {
+    document.title = "PlanetType | SignUp";
+    document.documentElement.className =
+      localStorage.getItem("theme") ?? "theme-indigo-emerald";
+  });
+
   const validateFields = () => {
     let isValid = true;
 
-    // Validate username
     if (!username.trim()) {
       toast.error("Username is required.");
       isValid = false;
@@ -29,7 +34,6 @@ const SignUpForm = () => {
       isValid = false;
     }
 
-    // Validate email
     if (!email.trim()) {
       toast.error("Email is required.");
       isValid = false;
@@ -40,7 +44,6 @@ const SignUpForm = () => {
       isValid = false;
     }
 
-    // Validate location
     if (!location.trim()) {
       toast.error("Location is required.");
       isValid = false;
@@ -49,7 +52,6 @@ const SignUpForm = () => {
       isValid = false;
     }
 
-    // Validate password
     if (!password.trim()) {
       toast.error("Password is required.");
       isValid = false;
@@ -71,7 +73,6 @@ const SignUpForm = () => {
     try {
       const joinedAt = new Date().toISOString();
 
-      // Register user
       const response = await fetch("http://localhost:5000/user", {
         method: "POST",
         headers: {
@@ -89,7 +90,6 @@ const SignUpForm = () => {
 
         router.push("/");
       } else {
-        // Show specific error message from backend
         toast.error(data.message || "Failed to sign up.");
       }
     } catch (error) {
