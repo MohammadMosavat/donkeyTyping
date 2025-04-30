@@ -27,7 +27,7 @@ const Header = () => {
         onClick={() => close()}
         className={`group [&>a>button]:!p-0 w-full md:w-auto ${isOpen &&
           "!rounded-xl"} opacity-50 hover:opacity-100 bg-transparent ${
-          pathname === `/wefwe/sort`
+          pathname === `/${username}/sort`
             ? "!opacity-100 [&_*]:stroke-2"
             : ""
         }`}
