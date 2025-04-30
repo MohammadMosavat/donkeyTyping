@@ -7,6 +7,7 @@ import { ReactSVG } from "react-svg";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
 import { toggleIsTyping } from "@/features/isTyping/isTyping";
+import useUser from "@/hooks/useUser";
 
 interface TypingGameProps {
   data: string[];
@@ -24,6 +25,7 @@ function TypingGame({
   word,
   regenerateWords,
 }: TypingGameProps) {
+  const { user } = useUser();
   const [timer, setTimer] = useState(time);
   const [isFocused, setIsFocused] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -41,7 +43,6 @@ function TypingGame({
   const [hasStarted, setHasStarted] = useState(false);
   const dispatch = useDispatch();
   const focusMode = useSelector((state: RootState) => state.focusMode.value);
-  const isTyping = useSelector((state: RootState) => state.isTyping.value);
   const hideExtraElements = useSelector(
     (state: RootState) => state.hideExtraElements.value
   );
@@ -66,15 +67,13 @@ function TypingGame({
   }, [time]);
 
   useEffect(() => {
-    // Reset the timer to the initial value when resetTimer is triggered
     if (resetTimer) {
       restartTest();
     }
-  }, [resetTimer, time]); // Dependency array to run whenever resetTimer or time changes
+  }, [resetTimer, time]);
 
   const restartRound = () => {
     setCurrentWordIndex(0);
-    // setCharCount(0);
     setInput("");
   };
 
@@ -85,8 +84,8 @@ function TypingGame({
     setCorrectChars(0);
     setIncorrectChars(0);
     setGameOver(false);
-    setTimer(time); // Reset to the original time value
-    setHasStarted(false); // Set hasStarted to false so the timer doesn't start
+    setTimer(time);
+    setHasStarted(false);
     setCurrentWordIndex(0);
     setCharCount(0);
     dispatch(toggleIsTyping("off"));
@@ -94,12 +93,14 @@ function TypingGame({
   };
 
   const storeWPM = async () => {
+    if (!user) return;
+    const username = user[0]?.username;
     setLoading(true);
     if (wpm == 0) {
       return;
     }
     const submissionData = {
-      username: localStorage.getItem("username"),
+      username: username,
       wpm: wpm,
       correct_char: correctChars,
       incorrect_char: incorrectChars,
@@ -122,7 +123,7 @@ function TypingGame({
 
       setLoading(false);
     } catch (error) {
-      setLoading(false); // Don't forget to stop loading in case of error
+      setLoading(false);
     }
   };
 
@@ -161,7 +162,7 @@ function TypingGame({
         inputRef.current.focus();
       }
       if (!hasStarted) {
-        setHasStarted(true); // Start the timer when the first key is pressed
+        setHasStarted(true);
       }
     };
 
@@ -174,11 +175,9 @@ function TypingGame({
 
     const totalTimeInMinutes = time / 60;
 
-    // Calculate WPM based on entire text input
     const wpmCalc = Math.round(charCount / (5 * totalTimeInMinutes));
     setWpm(wpmCalc);
 
-    // Calculate accuracy based on correct and incorrect characters
     const totalChars = correctChars + incorrectChars;
     const accuracyCalc =
       totalChars === 0 ? 100 : Math.round((correctChars / totalChars) * 100);
@@ -197,12 +196,12 @@ function TypingGame({
 
     if (!startTime) {
       setStartTime(Date.now());
-      setGameOver(false); // Ensure the game restarts
+      setGameOver(false);
     }
 
     if (newValue.length < input.length) {
       setInput(newValue);
-      setCharCount(charCount + 1); // We still increment char count on backspace
+      setCharCount(charCount + 1);
       return;
     }
 
@@ -240,10 +239,9 @@ function TypingGame({
     if (e.key === " ") {
       e.preventDefault();
 
-      // Check if all words are typed
       if (currentWordIndex === wordsToType.length - 1) {
-        regenerateWords(); // Call the function from the parent
-        restartRound(); // Restart the test after regenerating words
+        regenerateWords();
+        restartRound();
       } else {
         setInput("");
         setCharCount(charCount + 1);
@@ -264,7 +262,7 @@ function TypingGame({
       return char === input[index] ? "text-primary" : "text-red-600";
     }
     if (index === input.length) {
-      return "relative"; // Needed for absolute positioning of the border animation
+      return "relative";
     }
     return "";
   };
@@ -326,9 +324,7 @@ function TypingGame({
   }, [timeLeft]);
 
   return (
-    <div
-      className={`flex flex-col w-9/12 items-center mx-auto `}
-    >
+    <div className={`flex flex-col w-9/12 items-center mx-auto `}>
       <main className="relative w-full mx-auto">
         <motion.label
           htmlFor="test"

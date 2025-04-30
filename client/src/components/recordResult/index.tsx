@@ -24,7 +24,7 @@ const RecordResult = ({
   wpm,
 }: RecordResultType) => {
   const { user } = useUser();
-
+  const username = user[0]?.username;
   return (
     <motion.div
       key={isOver}
@@ -45,12 +45,19 @@ const RecordResult = ({
             Incorrect Characters: {inChar}
           </p>
         </section>
-        {user && (
+        {!user ? (
           <Link
             href={"/register/signup"}
             className="font-JetBrainsMono w-fit mx-auto p-1.5 bg-thrid rounded-xl "
           >
             Save your progress
+          </Link>
+        ) : (
+          <Link
+            href={`/${username}/sort?filter=newest`}
+            className="font-JetBrainsMono w-fit mx-auto p-1.5 bg-thrid rounded-xl "
+          >
+            check the records
           </Link>
         )}
       </section>
