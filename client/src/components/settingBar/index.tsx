@@ -40,14 +40,13 @@ const SettingBar = ({
 
   return (
     <div className="flex flex-col w-full items-center gap-4">
-      {/* Tabs */}
-      <div className="flex gap-2 bg-thrid w-full p-1 rounded-xl">
+      <div className="flex gap-2 w-full rounded-xl">
         <button
           onClick={() => setActiveTab("timer")}
-          className={`flex w-1/2 justify-center items-center gap-2 p-1.5 rounded-lg transition-all duration-200 ${
+          className={`flex w-1/2 hover:bg-thrid justify-center items-center gap-2 p-1.5 rounded-lg transition-all duration-200 ${
             activeTab === "timer"
-              ? "bg-fourth shadow-md"
-              : "hover:bg-primary/5"
+              ? "opacity-100"
+              : "opacity-50"
           }`}
         >
           <ReactSVG
@@ -58,10 +57,10 @@ const SettingBar = ({
         </button>
         <button
           onClick={() => setActiveTab("words")}
-          className={`flex w-1/2 justify-center items-center gap-2 p-1.5 rounded-lg transition-all duration-200 ${
+          className={`flex w-1/2 hover:bg-thrid justify-center items-center gap-2 p-1.5 rounded-lg transition-all duration-200 ${
             activeTab === "words"
-              ? "bg-fourth shadow-md"
-              : "hover:bg-primary/5"
+              ? "opacity-100"
+              : "opacity-50"
           }`}
         >
           <ReactSVG
@@ -72,7 +71,6 @@ const SettingBar = ({
         </button>
       </div>
 
-      {/* Numbers List */}
       <ul className="flex items-center w-full justify-between gap-2 rounded-xl">
         {(activeTab === "timer" ? timeNumbers : wordNumbers).map((num) => (
           <li
