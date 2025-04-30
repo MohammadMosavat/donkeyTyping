@@ -76,7 +76,7 @@ const Header = () => {
                 onClick={() => close()}
                 className={`group [&>a>button]:!p-0 w-full md:w-auto ${isOpen &&
                   "!rounded-xl"} opacity-50 hover:opacity-100 bg-transparent ${
-                  pathname === "/" ? "opacity-100 [&_*]:stroke-2" : ""
+                  pathname === "/" ? "!opacity-100 [&_*]:stroke-2" : ""
                 }`}
                 link="/"
                 value={"Home"}
@@ -87,7 +87,7 @@ const Header = () => {
                 onClick={() => close()}
                 className={`group [&>a>button]:!p-0 w-full md:w-auto ${isOpen &&
                   "!rounded-xl"} opacity-50 hover:opacity-100 bg-transparent ${
-                  pathname === "/theme" ? "opacity-100 [&_*]:stroke-2" : ""
+                  pathname === "/theme" ? "!opacity-100 [&_*]:stroke-2" : ""
                 }`}
                 link="/theme"
                 value={"Theme"}
@@ -98,7 +98,7 @@ const Header = () => {
                 onClick={() => close()}
                 className={`group [&>a>button]:!p-0 w-full md:w-auto ${isOpen &&
                   "!rounded-xl"} opacity-50 hover:opacity-100 bg-transparent ${
-                  pathname === "/settings" ? "opacity-100 [&_*]:stroke-2" : ""
+                  pathname === "/settings" ? "!opacity-100 [&_*]:stroke-2" : ""
                 }`}
                 link="/settings"
                 value={"Settings"}
