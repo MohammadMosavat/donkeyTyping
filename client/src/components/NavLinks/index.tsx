@@ -19,7 +19,7 @@ const NavLinks: React.FC<NavLinksProps> = ({
   ...rest
 }) => {
   return (
-    <Link href={link} {...rest}>
+    <Link href={link} {...rest} className={className}>
       <Button
         variant="ghost"
         data-tooltip={tooltip}
