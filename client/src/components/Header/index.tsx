@@ -25,7 +25,7 @@ const Header = () => {
     return user.length > 0 ? (
       <NavLinks
         onClick={() => close()}
-        className={`group [&>a>button]:!p-0 w-full md:w-auto ${isOpen &&
+        className={`group w-full md:w-auto ${isOpen &&
           "!rounded-xl"} opacity-50 hover:opacity-100 bg-transparent ${
           pathname === `/${username}/sort`
             ? "!opacity-100 [&_*]:stroke-2"
@@ -37,7 +37,7 @@ const Header = () => {
     ) : (
       <NavLinks
         onClick={() => close()}
-        className={`group [&>a>button]:!p-0 w-full md:w-auto ${isOpen &&
+        className={`group w-full md:w-auto ${isOpen &&
           "!rounded-xl"} opacity-50 hover:opacity-100 bg-transparent ${
           pathname === `/register/signup` ? "!opacity-100 [&_*]:stroke-2" : ""
         }`}
@@ -75,7 +75,7 @@ const Header = () => {
             <li className="w-full  md:w-auto">
               <NavLinks
                 onClick={() => close()}
-                className={`group [&>button]:!p-0 w-full md:w-auto ${isOpen &&
+                className={`group w-full md:w-auto ${isOpen &&
                   "!rounded-xl"} opacity-50 hover:opacity-100 bg-transparent ${
                   pathname === "/" ? "!opacity-100 [&_*]:stroke-2" : ""
                 }`}
@@ -86,7 +86,7 @@ const Header = () => {
             <li className="w-full md:w-auto">
               <NavLinks
                 onClick={() => close()}
-                className={`group [&>a>button]:!p-0 w-full md:w-auto ${isOpen &&
+                className={`group w-full md:w-auto ${isOpen &&
                   "!rounded-xl"} opacity-50 hover:opacity-100 bg-transparent ${
                   pathname === "/theme" ? "!opacity-100 [&_*]:stroke-2" : ""
                 }`}
@@ -97,7 +97,7 @@ const Header = () => {
             <li className="w-full md:w-auto">
               <NavLinks
                 onClick={() => close()}
-                className={`group [&>a>button]:!p-0 w-full md:w-auto ${isOpen &&
+                className={`group w-full md:w-auto ${isOpen &&
                   "!rounded-xl"} opacity-50 hover:opacity-100 bg-transparent ${
                   pathname === "/settings" ? "!opacity-100 [&_*]:stroke-2" : ""
                 }`}
