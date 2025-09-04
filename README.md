@@ -1,4 +1,4 @@
-# 🐴 donkeyTyping
+# 🫏 donkeyTyping
 
 donkeyTyping is a simple and fun **typing speed test** application.  
 It helps users improve their typing skills, measure their **WPM (Words Per Minute)**, and track **accuracy** over time.
