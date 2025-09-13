@@ -11,7 +11,6 @@ It helps users improve their typing skills, measure their **WPM (Words Per Minut
 - 🎨 Clean and responsive UI
 - 📊 Typing history and performance summary
 - 🔀 Randomized text for each test
-- 🌙 (Optional) Dark/Light theme toggle
 
 ---
 
