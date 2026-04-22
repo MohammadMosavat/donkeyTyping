@@ -6,7 +6,7 @@ import RecordResult from "../recordResult";
 import { ReactSVG } from "react-svg";
 import { useDispatch, useSelector } from "react-redux";
 import { RootState } from "@/store";
-import { toggleIsTyping } from "@/features/isTyping/isTyping";
+import { toggleIsTyping } from "@/features/isTyping";
 import useUser from "@/hooks/useUser";
 
 interface TypingGameProps {
@@ -42,16 +42,21 @@ function TypingGame({
   const inputRef = useRef<HTMLInputElement | null>(null);
   const [hasStarted, setHasStarted] = useState(false);
   const dispatch = useDispatch();
+  const fontSize = useSelector((state: RootState) => state.fontSize.value);
+  const blindEffect = useSelector(
+    (state: RootState) => state.blindEffect.value,
+  );
+
   const focusMode = useSelector((state: RootState) => state.focusMode.value);
   const hideExtraElements = useSelector(
-    (state: RootState) => state.hideExtraElements.value
+    (state: RootState) => state.hideExtraElements.value,
   );
   const sound = useSelector((state: RootState) => state.sound.value);
   const hideCapsLock = useSelector(
-    (state: RootState) => state.hideCapsLock.value
+    (state: RootState) => state.hideCapsLock.value,
   );
   const paceCaretStyle = useSelector(
-    (state: RootState) => state.paceCaretStyle.value
+    (state: RootState) => state.paceCaretStyle.value,
   );
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const wordsToType = data;
@@ -118,7 +123,7 @@ function TypingGame({
           headers: {
             "Content-Type": "application/json",
           },
-        }
+        },
       );
 
       setLoading(false);
@@ -143,7 +148,8 @@ function TypingGame({
 
     if (hasStarted && timeLeft > 0 && !gameOver) {
       timerInterval = setInterval(() => {
-        setTimeLeft((prevTimeLeft) => prevTimeLeft - 1);
+        console.log(isFocused);
+        isFocused && setTimeLeft((prevTimeLeft) => prevTimeLeft - 1);
       }, 1000);
       dispatch(toggleIsTyping("on"));
     } else if (timeLeft === 0) {
@@ -153,7 +159,7 @@ function TypingGame({
     }
 
     return () => clearInterval(timerInterval);
-  }, [timeLeft, gameOver, hasStarted]);
+  }, [timeLeft, gameOver, hasStarted, isFocused]);
 
   useEffect(() => {
     const handleKeyPress = (event: KeyboardEvent) => {
@@ -225,7 +231,7 @@ function TypingGame({
   };
 
   const handleKeyDown = (
-    e: React.KeyboardEvent<HTMLInputElement> | KeyboardEvent
+    e: React.KeyboardEvent<HTMLInputElement> | KeyboardEvent,
   ) => {
     console.log(e);
     if (hideCapsLock == "on" && e.key === "CapsLock") {
@@ -256,6 +262,7 @@ function TypingGame({
 
   const getCharStyle = (char: string, index: number) => {
     if (index < input.length) {
+      if (blindEffect == "on") return "";
       if (focusMode === "on") {
         return "text-primary";
       }
@@ -271,13 +278,14 @@ function TypingGame({
     return wordsToType.map((word, wordIndex) => {
       const isCurrentWord = wordIndex === currentWordIndex;
       const extraChars = isCurrentWord ? input.slice(word.length) : "";
-
+      console.log(fontSize);
       return (
         <motion.span
           key={wordIndex}
+          style={{ fontSize: +fontSize }}
           className={`${getWordStyle(
-            wordIndex
-          )} font-JetBrainsMono font-extralight text-2xl select-none`}
+            wordIndex,
+          )} font-JetBrainsMono font-extralight select-none`}
           animate={{ opacity: 1 }}
           initial={{ opacity: 0 }}
           transition={{ duration: 0.3 }}
@@ -303,6 +311,7 @@ function TypingGame({
           ))}
 
           {isCurrentWord &&
+            blindEffect == "off" &&
             extraChars.length > 0 &&
             hideExtraElements == "off" && (
               <span className="text-red-600">{extraChars}</span>
@@ -313,6 +322,7 @@ function TypingGame({
   }, [input, wordsToType, currentWordIndex]);
 
   const timeCounter = useMemo(() => {
+    console.log(timeLeft);
     return (
       showTimer &&
       focusMode == "off" && (

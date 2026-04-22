@@ -5,17 +5,19 @@ import Behavior from "@/components/Settings/Behavior";
 import Sound from "@/components/Settings/Sound";
 import Button from "@/components/MainButton";
 import { useDispatch } from "react-redux";
-import { toggleFocusMode } from "@/features/focusMode/focusMode";
-import { toggleHideCapsLock } from "@/features/hideCapsLock/hideCapsLock";
-import { toggleQuickStart } from "@/features/quickStart/quickStartSlice";
-import { toggleSound } from "@/features/sound/sound";
-import { togglehideExtraElements } from "@/features/hideExtraElements/hideExtraElements";
+import { toggleFocusMode } from "@/features/focusMode";
+import { toggleHideCapsLock } from "@/features/hideCapsLock";
+import { toggleQuickStart } from "@/features/quickStartSlice";
+import { toggleSound } from "@/features/sound";
+import { togglehideExtraElements } from "@/features/hideExtraElements";
 import { motion } from "framer-motion";
+import Appearance from "@/components/Settings/Appearance";
+import { toggleFontSize } from "@/features/fontSize";
 
 const tabs = [
+  { name: "Appearance", content: <Appearance /> },
   { name: "Behavior", content: <Behavior /> },
   { name: "Sound", content: <Sound /> },
-  // { name: "Appearance", content: <Appearance /> },
   // { name: "Theme", content: <Theme /> },
   // {
   //   name: "Hide Elements",
@@ -35,11 +37,13 @@ const SettingsPage = () => {
     localStorage.setItem("hideCapsLock", "off");
     localStorage.setItem("hideExtraElements", "off");
     localStorage.setItem("quickStart", "off");
+    localStorage.setItem("fontSize", "16");
     dispatch(toggleSound("off"));
     dispatch(toggleFocusMode("off"));
     dispatch(toggleHideCapsLock("off"));
     dispatch(togglehideExtraElements("off"));
     dispatch(toggleQuickStart("default"));
+    dispatch(toggleFontSize("16"));
   };
   const [activeTab, setActiveTab] = useState(tabs[0].name);
 

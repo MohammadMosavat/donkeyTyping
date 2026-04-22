@@ -1,5 +1,5 @@
 import Button from "@/components/MainButton";
-import { toggleSound } from "@/features/sound/sound";
+import { toggleSound } from "@/features/sound";
 import { RootState } from "@/store";
 import { useRef } from "react";
 import { useDispatch, useSelector } from "react-redux";

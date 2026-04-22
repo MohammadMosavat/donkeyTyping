@@ -1,35 +1,39 @@
 import Button from "@/components/MainButton";
 import { useDispatch, useSelector } from "react-redux";
-import { toggleQuickStart } from "@/features/quickStart/quickStartSlice";
+import { toggleQuickStart } from "@/features/quickStartSlice";
 import { RootState } from "@/store";
-import { toggleFocusMode } from "@/features/focusMode/focusMode";
-import { togglehideExtraElements } from "@/features/hideExtraElements/hideExtraElements";
-import hideCapsLock, {
-  toggleHideCapsLock,
-} from "@/features/hideCapsLock/hideCapsLock";
-import { togglePaceCaretStyle } from "@/features/paceCaretStyle/paceCaretStyle";
+import { toggleFocusMode } from "@/features/focusMode";
+import { togglehideExtraElements } from "@/features/hideExtraElements";
+import { toggleHideCapsLock } from "@/features/hideCapsLock";
+import { togglePaceCaretStyle } from "@/features/paceCaretStyle";
+import { toggleBlindEffects } from "@/features/blindEffects";
+
 const Behavior = () => {
   const dispatch = useDispatch();
   const quickStart = useSelector((state: RootState) => state.quickStart.value);
   const focusMode = useSelector((state: RootState) => state.focusMode.value);
   const hideExtraElements = useSelector(
-    (state: RootState) => state.hideExtraElements.value
+    (state: RootState) => state.hideExtraElements.value,
   );
   const hideCapsLock = useSelector(
-    (state: RootState) => state.hideCapsLock.value
+    (state: RootState) => state.hideCapsLock.value,
   );
-  const paceCaretStyle = useSelector((state: RootState) => state.paceCaretStyle.value);
+  const paceCaretStyle = useSelector(
+    (state: RootState) => state.paceCaretStyle.value,
+  );
+
+  const blindEffects = useSelector((state: RootState) => state.blindEffect.value  );
 
   console.log(quickStart);
   const localQuickStart = localStorage.getItem("quickStart");
   console.log(localQuickStart);
 
-  const QuickStartOptions = [
+  const quickStartOptions = [
     { value: "esc", state: "esc" },
     { value: "enter", state: "default" },
   ];
 
-  const FocusModeOptions = [
+  const focusModeOptions = [
     { value: "off", state: "off" },
     { value: "on", state: "on" },
   ];
@@ -50,6 +54,11 @@ const Behavior = () => {
     { value: "rightline", state: "rightline" },
   ];
 
+  const blindEffectsOptions = [
+    { value: "off", state: "off" },
+    { value: "on", state: "on" },
+  ];
+
   return (
     <>
       <li className="flex items-center justify-between w-full gap-10">
@@ -64,7 +73,7 @@ const Behavior = () => {
           </p>
         </section>
         <ul className="grid grid-cols-2 gap-2 w-1/3">
-          {QuickStartOptions.map((option) => {
+          {quickStartOptions.map((option) => {
             return (
               <div key={option.value} className="w-full">
                 <Button
@@ -98,7 +107,7 @@ const Behavior = () => {
           </p>
         </section>
         <ul className="grid grid-cols-2 gap-2 w-1/3">
-          {FocusModeOptions.map((option) => {
+          {focusModeOptions.map((option) => {
             return (
               <div key={option.value} className="w-full">
                 <Button
@@ -140,6 +149,33 @@ const Behavior = () => {
                 }}
                 variant={
                   hideExtraElements === option.state ? "secondary" : "outline"
+                }
+                size="md"
+              >
+                {option.value}
+              </Button>
+            );
+          })}
+        </ul>
+      </li>
+      <li className="flex items-center justify-between w-full gap-10">
+        <section className="flex flex-col w-2/3 gap-2">
+          <p className="text-2xl font-bold">Blind Effects</p>
+          <p className="text-justify">
+            It will not showing the informations of words by the colors.
+          </p>
+        </section>
+        <ul className="grid grid-cols-2 gap-2 w-1/3">
+          {blindEffectsOptions.map((option) => {
+            return (
+              <Button
+                className="!rounded-xl w-full"
+                onClick={() => {
+                  localStorage.setItem("blindEffects", option.state);
+                  dispatch(toggleBlindEffects(option.state));
+                }}
+                variant={
+                  blindEffects === option.state ? "secondary" : "outline"
                 }
                 size="md"
               >

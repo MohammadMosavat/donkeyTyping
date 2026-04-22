@@ -5,7 +5,7 @@ import Footer from "../footer";
 import { motion } from "framer-motion";
 import { RootState } from "@/store";
 import { useSelector, useDispatch } from "react-redux";
-import { toggleTheme } from "@/features/theme/themeSlice";
+import { toggleTheme } from "@/features/themeSlice";
 export default function ThemeSwitcher() {
   const theme = useSelector((state: RootState) => state.theme.value);
   const dispatch = useDispatch();
