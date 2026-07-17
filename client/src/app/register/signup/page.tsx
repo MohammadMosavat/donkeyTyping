@@ -6,6 +6,7 @@ import { hashUsername } from "@/utils/hashUsername";
 import Cookies from "js-cookie";
 import Link from "next/link";
 import Button from "@/components/MainButton";
+import backendApi from "@/api/backend";
 
 const SignUpForm = () => {
   const [username, setUsername] = useState<string>("");
@@ -15,7 +16,7 @@ const SignUpForm = () => {
   const router = useRouter();
 
   useEffect(() => {
-    document.title = "PlanetType | SignUp";
+    document.title = "Sign Up | Donkey Type";
     document.documentElement.className =
       localStorage.getItem("theme") ?? "theme-indigo-emerald";
   });
@@ -73,25 +74,23 @@ const SignUpForm = () => {
     try {
       const joinedAt = new Date().toISOString();
 
-      const response = await fetch("http://localhost:5000/user", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ username, email, location, password, joinedAt }),
+      await backendApi.post("/users", {
+        username,
+        email,
+        location,
+        password,
+        joinedAt,
       });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        toast.success(`Welcome ${username}! Thanks for joining us.`);
-        const hashedUsername = await hashUsername(email);
-        Cookies.set("hashedUsername", hashedUsername, { expires: 14 });
-
-        router.push("/");
-      } else {
-        toast.error(data.message || "Failed to sign up.");
-      }
+      toast.success(`Welcome ${username}! Thanks for joining us.`);
+      const hashedUsername = await hashUsername(email);
+      Cookies.set("hashedUsername", hashedUsername, { expires: 14 });
+      const loginResponse = await backendApi.post("/auth/login", {
+        email,
+        password,
+      });
+      localStorage.setItem("accessToken", loginResponse.data.access_token);
+      localStorage.setItem("username", username);
+      router.push("/");
     } catch (error) {
       console.error("Registration error:", error);
       toast.error("An error occurred. Please try again.");
