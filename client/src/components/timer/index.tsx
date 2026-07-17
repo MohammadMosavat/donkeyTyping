@@ -7,21 +7,18 @@ interface TimerType {
   handleTimeUpdate: (time: number) => void;
 }
 export default function Timer({ startTime, handleTimeUpdate }: TimerType) {
-  const [time, setTime] = useState(startTime); // Initial countdown value (20 seconds)
+  const [time, setTime] = useState(startTime);
 
   useEffect(() => {
     handleTimeUpdate(time);
-    // Exit early if the timer has already reached 0
     if (time <= 0) return;
 
-    // Create an interval to decrement the timer every second
     const interval = setInterval(() => {
-      setTime((prevTime) => prevTime - 1); // Decrement time by 1
+      setTime((prevTime) => prevTime - 1);
     }, 1000);
 
-    // Cleanup the interval when the component unmounts or `time` changes
     return () => clearInterval(interval);
-  }, [time]); // Dependency ensures this runs when `time` changes
+  }, [time]);
 
   return (
     <div className="flex text-white [&>*]:font-JetBrainsMono items-center gap-2">
