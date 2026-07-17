@@ -7,9 +7,12 @@ import Footer from "@/components/footer";
 
 
 export const metadata: Metadata = {
-  title: "PlanetType",
-  description: "A Minimal Space For Typing",
-  icons:"/public/svgs/planet.svg"
+  title: {
+    default: "Donkey Type",
+    template: "%s | Donkey Type",
+  },
+  description: "A minimal space for typing",
+  icons: "/svgs/logo.svg",
 };
 
 export default function RootLayout({
