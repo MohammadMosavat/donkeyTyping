@@ -1,7 +1,6 @@
 "use client";
 import React, { useEffect, useState } from "react";
-import axios from "axios";
-import bcrypt from "bcryptjs";
+import backendApi from "@/api/backend";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import toast from "react-hot-toast";
@@ -21,32 +20,11 @@ const LoginPage = () => {
     setMessage("");
 
     try {
-      const response = await axios.get("http://localhost:5000/user");
-
-      if (!response.data || response.data.length === 0) {
-        toast.error("No users found in the database.");
-        return;
-      }
-
-      const user = response.data.find((d) => d.email === email);
-
-      if (!user) {
-        toast.error("User not found. Please check your email.");
-        return;
-      }
-
-      const isMatch = await bcrypt.compare(password, user.password);
-
-      if (isMatch) {
-        toast.success(`Welcome back ${user.username}`);
-        localStorage.setItem("username", user.username);
-
-        setTimeout(() => {
-          router.push("/");
-        }, 2000);
-      } else {
-        toast.error("Incorrect password. Please try again.");
-      }
+      const response = await backendApi.post("/auth/login", { email, password });
+      localStorage.setItem("accessToken", response.data.access_token);
+      localStorage.setItem("username", response.data.username);
+      toast.success(`Welcome back ${response.data.username}`);
+      router.push("/");
     } catch (err) {
       toast.error(
         "An error occurred while logging in. Please try again later."
