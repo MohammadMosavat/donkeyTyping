@@ -1,5 +1,5 @@
 export default interface UserProfileCardProps {
-  _id: string;
+  id: string;
   username: string;
   email: string;
   location: string;
@@ -8,9 +8,10 @@ export default interface UserProfileCardProps {
 
 
 export interface WpmRecord {
+  id: string;
   username: string;
   time: number;
-  word: number;
+  word: string | number;
   wpm: number;
   correct_char: number;
   incorrect_char: number;
