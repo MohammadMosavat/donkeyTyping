@@ -1,5 +1,6 @@
 import UserProfileCardProps from "@/types";
 import { useState, useEffect } from "react";
+import backendApi from "@/api/backend";
 
 const useUser = () => {
   const [user, setUser] = useState<UserProfileCardProps[]>([]);
@@ -9,9 +10,15 @@ const useUser = () => {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await fetch("http://localhost:5000/user");
-        const data = await response.json();
-        setUser(data);
+        const username = localStorage.getItem("username");
+        if (!username) {
+          setUser([]);
+          return;
+        }
+        const response = await backendApi.get("/users", {
+          params: { username },
+        });
+        setUser(response.data);
       } catch (err) {
         setError(err);
       } finally {
