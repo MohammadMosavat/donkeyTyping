@@ -123,13 +123,13 @@ const Home = () => {
           <li className="flex items-center gap-2">
             {quickStart == "default" ? (
               <>
-                <span className="text-fourth font-JetBrainsMono p-1 px-2 rounded-xl bg-thrid text-sm">
+                <span className="home-shortcut-key text-fourth font-JetBrainsMono p-1 px-2 rounded-xl bg-thrid text-sm">
                   enter
                 </span>
               </>
             ) : (
               quickStart == "esc" && (
-                <span className="text-fourth font-JetBrainsMono p-1 px-2 rounded-xl bg-thrid text-sm">
+                <span className="home-shortcut-key text-fourth font-JetBrainsMono p-1 px-2 rounded-xl bg-thrid text-sm">
                   esc
                 </span>
               )
@@ -142,9 +142,9 @@ const Home = () => {
   }, [quickStart, isTyping]);
 
   return (
-    <main className="flex flex-col overflow-x-hidden items-center gap-40 w-full">
+    <main className="terminal-home flex flex-col overflow-x-hidden items-center gap-40 w-full">
       <section
-        className={`flex md:w-3/12 flex-col items-center gap-6 md:gap-10 justify-center w-full ${
+        className={`terminal-home-controls flex md:w-3/12 flex-col items-center gap-6 md:gap-10 justify-center w-full ${
           !isTyping ? "visible" : "opacity-0 pointer-events-none"
         }`}
       >
@@ -156,7 +156,7 @@ const Home = () => {
         />
       </section>
 
-      <form className="flex flex-col mx-auto gap-6 md:gap-80 w-full  items-center justify-center">
+      <form className="terminal-home-typing flex flex-col mx-auto gap-6 md:gap-80 w-full items-center justify-center">
         <div className="flex flex-col gap-6 md:gap-10 items-start justify-between w-full">
           {Typing()}
         </div>
