@@ -7,27 +7,24 @@ import toast from "react-hot-toast";
 const QuotesPage = () => {
   const [quotes, setQuotes] = useState<any[]>([]);
   const [message, setMessage] = useState<string>("");
-  const [loading, setLoading] = useState<boolean>(true); // Loading state
+  const [loading, setLoading] = useState<boolean>(true);
 
-  // State to store the word check status
   const [wordCheckStatus, setWordCheckStatus] = useState<boolean[]>([]);
 
-  // Function to handle the word check status passed from TypingGame
   const handleWordCheckStatus = (status: boolean[]) => {
-    setWordCheckStatus(status); // Update the state with the word check statuses
-    console.log("Word check status:", status); // You can handle this data as needed
+    setWordCheckStatus(status);
+    console.log("Word check status:", status);
   };
 
   const storeQuotes = useCallback(async () => {
     try {
-      // Make the POST request to your Flask API to store quotes
       const response = await fetch("http://localhost:5000/store-quotes", {
         method: "POST",
       });
 
       if (response.ok) {
         const data = await response.json();
-        setMessage(data.message); // Success message
+        setMessage(data.message);
       } else {
         toast("Failed to store quotes.");
       }
@@ -38,25 +35,24 @@ const QuotesPage = () => {
 
   useEffect(() => {
     const fetchQuotes = async () => {
-      setLoading(true); // Start loading when fetching data
+      setLoading(true);
       storeQuotes();
 
       try {
-        // Make the GET request to your Flask API to get quotes
         const response = await fetch("http://localhost:5000/get-quotes", {
           method: "GET",
         });
 
         if (response.ok) {
           const data = await response.json();
-          setQuotes(data); // Success message
+          setQuotes(data);
         } else {
           toast("Failed to fetch quotes.");
         }
       } catch (error) {
         toast("Error occurred while fetching quotes.");
       } finally {
-        setLoading(false); // Stop loading once the request is completed
+        setLoading(false);
       }
     };
 
@@ -72,7 +68,7 @@ const QuotesPage = () => {
     <div className="pt-40 flex flex-col gap-4 w-10/12 mx-auto">
       <h1 className="text-5xl font-JetBrainsMono text-[#ffffffb4]">Quotes</h1>
 
-      {/* Show loading spinner while fetching */}
+
       {loading ? (
         <Loading />
       ) : (
@@ -104,7 +100,7 @@ const QuotesPage = () => {
                 .toLowerCase()
                 .split(" ") ?? ["hellp"]
             }
-            onMissionComplete={handleMissionComplete} // Pass the callback to TypingGame
+            onMissionComplete={handleMissionComplete}
             showWpm={false}
             showTimer={false}
           />
