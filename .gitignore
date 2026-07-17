@@ -1,0 +1,42 @@
+# Operating system and editor files
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Python
+__pycache__/
+*.py[cod]
+*.egg-info/
+.pytest_cache/
+.ruff_cache/
+.mypy_cache/
+.coverage
+htmlcov/
+
+# Python virtual environments
+.venv/
+venv/
+env/
+
+# Environment files (keep templates in Git)
+.env
+.env.*
+!.env.example
+!**/.env.example
+
+# Logs and local databases
+*.log
+*.sqlite3
+
+# Frontend dependencies and generated output
+node_modules/
+.next/
+out/
+dist/
+coverage/
+*.tsbuildinfo
+
+# Local tool files
+.cache/
