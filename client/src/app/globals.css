@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/*fonts*/
+
 @font-face {
   font-family: "Aspekta";
   src: url("/fonts/Aspekta.woff2") format("woff2");
@@ -17,11 +17,344 @@
   font-style: normal;
 }
 
+@font-face {
+  font-family: "Fira Code";
+  src: url("/fonts/FiraCode-Regular.ttf") format("truetype");
+  font-weight: 400;
+  font-style: normal;
+  font-display: swap;
+}
+
 :root {
   --primary: #ffffff;
   --secondary: #6c6b6b;
   --thrid: #4a4848;
   --fourth: #0a0a0a;
+}
+
+
+.theme-terminal {
+  --primary: #eceae5;
+  --secondary: #a9a69f;
+  --thrid: #eec35e;
+  --fourth: #1a170f;
+  --terminal-on-accent: #1a170f;
+}
+
+.theme-terminal-black-white {
+  --primary: #ffffff;
+  --secondary: #a3a3a3;
+  --thrid: #ffffff;
+  --fourth: #000000;
+  --terminal-on-accent: #000000;
+}
+
+.theme-terminal-black-white body,
+.theme-terminal-black-white body * {
+  font-family: "Fira Code", Monaco, Consolas, monospace !important;
+  font-variant-ligatures: contextual;
+  text-rendering: optimizeLegibility;
+}
+
+.theme-terminal-black-white body {
+  color: var(--primary);
+  background-color: var(--fourth);
+}
+
+.theme-terminal body {
+  font-family: "JetBrainsMono-Regular", Monaco, Consolas, monospace;
+  font-variant-ligatures: contextual;
+  text-rendering: optimizeLegibility;
+}
+
+.theme-terminal .bg-glass,
+.theme-terminal-black-white .bg-glass {
+  background: color-mix(in srgb, var(--thrid) 8%, transparent);
+  border: 1px solid var(--thrid);
+  border-radius: 0;
+  box-shadow: none;
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+.theme-terminal button,
+.theme-terminal input,
+.theme-terminal textarea,
+.theme-terminal select,
+.theme-terminal-black-white button,
+.theme-terminal-black-white input,
+.theme-terminal-black-white textarea,
+.theme-terminal-black-white select {
+  border-radius: 0 !important;
+}
+
+.theme-terminal button:focus-visible,
+.theme-terminal a:focus-visible,
+.theme-terminal input:focus-visible,
+.theme-terminal textarea:focus-visible,
+.theme-terminal select:focus-visible {
+  outline: 1px solid var(--thrid);
+  outline-offset: 2px;
+}
+
+.theme-terminal-black-white button:focus-visible,
+.theme-terminal-black-white a:focus-visible,
+.theme-terminal-black-white input:focus-visible,
+.theme-terminal-black-white textarea:focus-visible,
+.theme-terminal-black-white select:focus-visible {
+  outline: 1px solid var(--thrid);
+  outline-offset: 2px;
+}
+
+.theme-terminal button:hover,
+.theme-terminal a:hover {
+  text-shadow: 0 0 8px var(--thrid);
+}
+
+.theme-terminal-black-white button:hover,
+.theme-terminal-black-white a:hover {
+  text-shadow: 0 0 8px var(--thrid);
+}
+
+.theme-terminal ::selection {
+  color: var(--fourth);
+  background: var(--thrid);
+}
+
+.theme-terminal-black-white ::selection {
+  color: var(--fourth);
+  background: var(--thrid);
+}
+
+
+.theme-terminal .bg-thrid,
+.theme-terminal .\!bg-thrid,
+.theme-terminal .hover\:bg-thrid:hover {
+  color: var(--terminal-on-accent) !important;
+}
+
+.theme-terminal-black-white .bg-thrid,
+.theme-terminal-black-white .\!bg-thrid,
+.theme-terminal-black-white .hover\:bg-thrid:hover,
+.theme-terminal-black-white .bg-primary,
+.theme-terminal-black-white .\!bg-primary,
+.theme-terminal-black-white .hover\:bg-primary:hover {
+  color: var(--terminal-on-accent) !important;
+}
+
+.theme-terminal .bg-thrid .text-primary,
+.theme-terminal .\!bg-thrid .text-primary,
+.theme-terminal .hover\:bg-thrid:hover .text-primary {
+  color: var(--terminal-on-accent) !important;
+}
+
+.theme-terminal-black-white .bg-thrid .text-primary,
+.theme-terminal-black-white .\!bg-thrid .text-primary,
+.theme-terminal-black-white .hover\:bg-thrid:hover .text-primary,
+.theme-terminal-black-white .bg-primary *,
+.theme-terminal-black-white .\!bg-primary *,
+.theme-terminal-black-white .hover\:bg-primary:hover * {
+  color: var(--terminal-on-accent) !important;
+}
+
+.theme-terminal .bg-thrid svg *,
+.theme-terminal .\!bg-thrid svg *,
+.theme-terminal .hover\:bg-thrid:hover svg * {
+  stroke: var(--terminal-on-accent) !important;
+}
+
+.theme-terminal-black-white .bg-thrid svg *,
+.theme-terminal-black-white .\!bg-thrid svg *,
+.theme-terminal-black-white .hover\:bg-thrid:hover svg *,
+.theme-terminal-black-white .bg-primary svg *,
+.theme-terminal-black-white .\!bg-primary svg *,
+.theme-terminal-black-white .hover\:bg-primary:hover svg * {
+  stroke: var(--terminal-on-accent) !important;
+}
+
+
+.theme-terminal-black-white .bg-fourth,
+.theme-terminal-black-white .bg-fourth *,
+.theme-terminal-black-white .\!bg-fourth,
+.theme-terminal-black-white .\!bg-fourth * {
+  color: var(--primary) !important;
+}
+
+.theme-terminal-black-white .bg-fourth svg *,
+.theme-terminal-black-white .\!bg-fourth svg * {
+  stroke: var(--primary) !important;
+}
+
+
+.theme-terminal .terminal-header a,
+.theme-terminal .terminal-header button,
+.theme-terminal .terminal-header button .text-primary {
+  color: var(--primary) !important;
+  background-color: transparent !important;
+}
+
+.theme-terminal-black-white .terminal-header a,
+.theme-terminal-black-white .terminal-header button,
+.theme-terminal-black-white .terminal-header button .text-primary {
+  color: var(--primary) !important;
+  background-color: transparent !important;
+}
+
+.theme-terminal .terminal-header a:hover button,
+.theme-terminal .terminal-header button:hover {
+  color: var(--terminal-on-accent) !important;
+  background-color: var(--thrid) !important;
+  opacity: 1;
+}
+
+.theme-terminal-black-white .terminal-header a:hover button,
+.theme-terminal-black-white .terminal-header button:hover {
+  color: var(--terminal-on-accent) !important;
+  background-color: var(--thrid) !important;
+  opacity: 1;
+}
+
+.theme-terminal .terminal-header a:hover button svg *,
+.theme-terminal .terminal-header button:hover svg * {
+  stroke: var(--terminal-on-accent) !important;
+}
+
+.theme-terminal-black-white .terminal-header a:hover button svg *,
+.theme-terminal-black-white .terminal-header button:hover svg * {
+  stroke: var(--terminal-on-accent) !important;
+}
+
+
+.theme-terminal .terminal-nav-link:hover,
+.theme-terminal .terminal-nav-link:hover *,
+.theme-terminal-black-white .terminal-nav-link:hover,
+.theme-terminal-black-white .terminal-nav-link:hover * {
+  color: var(--terminal-on-accent) !important;
+}
+
+.theme-terminal .terminal-nav-link:hover button,
+.theme-terminal-black-white .terminal-nav-link:hover button {
+  background-color: var(--primary) !important;
+}
+
+.theme-terminal .terminal-nav-link:hover svg *,
+.theme-terminal-black-white .terminal-nav-link:hover svg * {
+  stroke: var(--terminal-on-accent) !important;
+}
+
+
+.theme-terminal .theme-option--selected {
+  background-color: #4c4325 !important;
+  border: 2px solid var(--thrid);
+  box-shadow: 0 0 0 2px var(--fourth), 0 0 18px color-mix(in srgb, var(--thrid) 45%, transparent);
+}
+
+.theme-terminal-black-white .theme-option--selected {
+  background-color: #3d3d3d !important;
+  border: 2px solid var(--thrid);
+  box-shadow: 0 0 0 2px var(--fourth), 0 0 18px color-mix(in srgb, var(--thrid) 35%, transparent);
+}
+
+
+.theme-terminal .terminal-home-controls,
+.theme-terminal-black-white .terminal-home-controls {
+  border: 2px solid var(--thrid);
+  padding: 1rem;
+}
+
+.theme-terminal .terminal-home-typing > div,
+.theme-terminal-black-white .terminal-home-typing > div {
+  border: 2px solid var(--primary);
+  padding: 1.5rem;
+}
+
+.theme-terminal .terminal-home-controls button,
+.theme-terminal-black-white .terminal-home-controls button {
+  color: var(--primary) !important;
+  background: transparent !important;
+  border: 2px solid var(--thrid);
+}
+
+.theme-terminal .terminal-home-controls button:hover,
+.theme-terminal-black-white .terminal-home-controls button:hover {
+  background: color-mix(in srgb, var(--thrid) 16%, transparent) !important;
+}
+
+.theme-terminal .terminal-home-controls button[data-active="true"],
+.theme-terminal-black-white .terminal-home-controls button[data-active="true"] {
+  color: var(--terminal-on-accent) !important;
+  background: var(--thrid) !important;
+}
+
+.theme-terminal .terminal-home-controls button[data-active="true"] svg *,
+.theme-terminal-black-white .terminal-home-controls button[data-active="true"] svg * {
+  stroke: var(--terminal-on-accent) !important;
+}
+
+
+.theme-terminal .settings-tabs button,
+.theme-terminal-black-white .settings-tabs button {
+  color: var(--primary) !important;
+}
+
+.theme-terminal .settings-tabs button[data-active="true"],
+.theme-terminal .settings-tabs button:hover,
+.theme-terminal-black-white .settings-tabs button[data-active="true"],
+.theme-terminal-black-white .settings-tabs button:hover {
+  color: var(--terminal-on-accent) !important;
+  background-color: var(--primary) !important;
+}
+
+.theme-terminal .settings-tabs button[data-active="true"] *,
+.theme-terminal .settings-tabs button:hover *,
+.theme-terminal-black-white .settings-tabs button[data-active="true"] *,
+.theme-terminal-black-white .settings-tabs button:hover * {
+  color: var(--terminal-on-accent) !important;
+}
+
+
+.theme-terminal .home-shortcut-key,
+.theme-terminal-black-white .home-shortcut-key,
+.theme-terminal .sound-options [data-selected="true"],
+.theme-terminal-black-white .sound-options [data-selected="true"] {
+  color: var(--terminal-on-accent) !important;
+}
+
+.theme-terminal .sound-options [data-selected="true"] *,
+.theme-terminal-black-white .sound-options [data-selected="true"] * {
+  color: var(--terminal-on-accent) !important;
+}
+
+
+.theme-terminal .timer-option[data-active="true"],
+.theme-terminal .timer-option[data-active="true"] *,
+.theme-terminal-black-white .timer-option[data-active="true"],
+.theme-terminal-black-white .timer-option[data-active="true"] *,
+.theme-terminal .footer-theme-control,
+.theme-terminal .footer-theme-control *,
+.theme-terminal-black-white .footer-theme-control,
+.theme-terminal-black-white .footer-theme-control * {
+  color: var(--terminal-on-accent) !important;
+}
+
+.theme-terminal .timer-option[data-active="true"] svg *,
+.theme-terminal-black-white .timer-option[data-active="true"] svg *,
+.theme-terminal .footer-theme-control svg *,
+.theme-terminal-black-white .footer-theme-control svg * {
+  stroke: var(--terminal-on-accent) !important;
+}
+
+
+.theme-terminal .settings-content .bg-thrid,
+.theme-terminal .settings-content .bg-thrid *,
+.theme-terminal-black-white .settings-content .bg-thrid,
+.theme-terminal-black-white .settings-content .bg-thrid * {
+  color: var(--terminal-on-accent) !important;
+}
+
+.theme-terminal .settings-content .bg-thrid svg *,
+.theme-terminal-black-white .settings-content .bg-thrid svg * {
+  stroke: var(--terminal-on-accent) !important;
 }
 
 body {
@@ -30,7 +363,7 @@ body {
 }
 
 .bg-glass {
-  /* From https://css.glass */
+
   background: #ffffff21;
   border-radius: 16px;
   box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
@@ -38,7 +371,7 @@ body {
   -webkit-backdrop-filter: blur(5px);
 }
 
-/*Loading*/
+
 
 .lds-ellipsis,
 .lds-ellipsis div {
@@ -105,7 +438,7 @@ body {
   }
 }
 
-/* Theme - Indigo Emerald */
+
 .theme-indigo-emerald {
   --primary: #f9fafb;
   --secondary: #a1a7f7;
@@ -113,7 +446,7 @@ body {
   --fourth: #3531a3;
 }
 
-/* Theme - Coral Lavender */
+
 .theme-coral-lavender {
   --primary: #f8ede3;
   --secondary: #f1bba4;
@@ -121,7 +454,7 @@ body {
   --fourth: #cc5a43;
 }
 
-/* Theme - Ocean Breeze */
+
 .theme-ocean-breeze {
   --primary: #caf0f8;
   --secondary: #80c8da;
@@ -129,7 +462,7 @@ body {
   --fourth: #005a80;
 }
 
-/* Theme - Sunset Glow */
+
 .theme-sunset-glow {
   --primary: #ffcad4;
   --secondary: #ff9fa1;
@@ -137,7 +470,7 @@ body {
   --fourth: #c67214;
 }
 
-/* Theme - Dark Mode */
+
 .theme-dark {
   --primary: #ffffff;
   --secondary: #6c6b6b;
@@ -145,7 +478,7 @@ body {
   --fourth: #0a0a0a;
 }
 
-/* Theme - Matrix */
+
 .theme-matrix {
   --primary: #00ff00;
   --secondary: #80ff80;
@@ -153,7 +486,7 @@ body {
   --fourth: #001f00;
 }
 
-/* Theme - Cyberpunk Neon */
+
 .theme-cyberpunk-neon {
   --primary: #ff99bb;
   --secondary: #ff6699;
@@ -161,7 +494,7 @@ body {
   --fourth: #cc0044;
 }
 
-/* Theme - Solarized */
+
 .theme-solarized {
   --primary: #fdf6e3;
   --secondary: #d5e4ff;
@@ -169,7 +502,7 @@ body {
   --fourth: #1e6bb8;
 }
 
-/* Theme - Mellow Mint */
+
 .theme-mellow-mint {
   --primary: #e0f7fa;
   --secondary: #b2dfdb;
@@ -177,7 +510,7 @@ body {
   --fourth: #002e28;
 }
 
-/* Theme - Midnight Sky */
+
 .theme-midnight-sky {
   --primary: #0c1b2b;
   --secondary: #f9b84b;
@@ -185,7 +518,7 @@ body {
   --fourth: #009da3;
 }
 
-/* Theme - Rosewood */
+
 .theme-rosewood {
   --primary: #f9c8d1;
   --secondary: #f2a0a1;
@@ -193,7 +526,7 @@ body {
   --fourth: #5e3333;
 }
 
-/* Theme - Tropical Breeze */
+
 .theme-tropical-breeze {
   --primary: #f0e68c;
   --secondary: #ffdb58;
@@ -201,7 +534,7 @@ body {
   --fourth: #e23d32;
 }
 
-/* Theme - Urban Jungle */
+
 .theme-urban-jungle {
   --primary: #9dbe8b;
   --secondary: #7fae70;
@@ -209,7 +542,7 @@ body {
   --fourth: #2e6d55;
 }
 
-/* Theme - Lime Crush */
+
 .theme-lime-crush {
   --primary: #a9e34b;
   --secondary: #ffcc5c;
@@ -217,7 +550,7 @@ body {
   --fourth: #e03600;
 }
 
-/* Theme - Cherry Blossom */
+
 .theme-cherry-blossom {
   --primary: #f9e2e2;
   --secondary: #f3c1c6;
@@ -225,7 +558,7 @@ body {
   --fourth: #cc6e6e;
 }
 
-/* Theme - Neon Purple */
+
 .theme-neon-purple {
   --primary: #c8a0ff;
   --secondary: #9a6eff;
@@ -233,7 +566,7 @@ body {
   --fourth: #a300d3;
 }
 
-/* Theme - Golden Hour */
+
 .theme-golden-hour {
   --primary: #ffcc00;
   --secondary: #ffb600;
@@ -241,7 +574,7 @@ body {
   --fourth: #e86000;
 }
 
-/* Theme - Obsidian Night */
+
 .theme-obsidian-night {
   --primary: #353535;
   --secondary: #252525;
@@ -249,7 +582,7 @@ body {
   --fourth: #b39200;
 }
 
-/* Theme - Midnight Noir */
+
 .theme-midnight-noir {
   --primary: #333333;
   --secondary: #484848;
@@ -257,7 +590,7 @@ body {
   --fourth: #d13f3f;
 }
 
-/* Theme - Eclipse */
+
 .theme-eclipse {
   --primary: #4e4e4e;
   --secondary: #3a3a3a;
@@ -265,7 +598,7 @@ body {
   --fourth: #cc3700;
 }
 
-/* Theme - Shadow Realm */
+
 .theme-shadow-realm {
   --primary: #1e1e1e;
   --secondary: #3a3a3a;
@@ -273,7 +606,7 @@ body {
   --fourth: #387bb5;
 }
 
-/* Theme - Dark Nebula */
+
 .theme-dark-nebula {
   --primary: #301d5f;
   --secondary: #6b3fb0;
@@ -281,7 +614,7 @@ body {
   --fourth: #6600a3;
 }
 
-/* Theme - Red Black */
+
 .theme-red-black {
   --primary: #ff0000;
   --secondary: #8c0000;
@@ -306,7 +639,7 @@ body {
   content: attr(data-tooltip);
   width: max-content;
   position: absolute;
-  bottom: 125%; /* Adjust as needed */
+  bottom: 125%;
   left: 50%;
   transform: translateX(-50%);
   background-color: var(--thrid);

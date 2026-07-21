@@ -1,5 +1,4 @@
 const commonWords: string[][] = [
-  // High-frequency words
   [
     "the",
     "be",
@@ -23,7 +22,6 @@ const commonWords: string[][] = [
     "at",
   ],
 
-  // Common verbs
   [
     "is",
     "was",
@@ -47,7 +45,6 @@ const commonWords: string[][] = [
     "work",
   ],
 
-  // More verbs
   [
     "seem",
     "feel",
@@ -71,7 +68,6 @@ const commonWords: string[][] = [
     "include",
   ],
 
-  // Common nouns
   [
     "man",
     "woman",
@@ -95,7 +91,6 @@ const commonWords: string[][] = [
     "fact",
   ],
 
-  // More nouns
   [
     "idea",
     "system",
@@ -119,7 +114,6 @@ const commonWords: string[][] = [
     "question",
   ],
 
-  // Common adjectives
   [
     "good",
     "new",
@@ -143,7 +137,6 @@ const commonWords: string[][] = [
     "important",
   ],
 
-  // More adjectives
   [
     "strong",
     "clear",
@@ -167,7 +160,6 @@ const commonWords: string[][] = [
     "bright",
   ],
 
-  // Common adverbs
   [
     "very",
     "really",
@@ -191,7 +183,6 @@ const commonWords: string[][] = [
     "there",
   ],
 
-  // More adverbs
   [
     "still",
     "already",
@@ -215,7 +206,6 @@ const commonWords: string[][] = [
     "gradually",
   ],
 
-  // Common prepositions
   [
     "about",
     "above",
@@ -239,7 +229,6 @@ const commonWords: string[][] = [
     "within",
   ],
 
-  // Common conjunctions
   [
     "and",
     "but",
@@ -263,7 +252,6 @@ const commonWords: string[][] = [
     "as",
   ],
 
-  // Common pronouns
   [
     "I",
     "you",
@@ -287,7 +275,6 @@ const commonWords: string[][] = [
     "yours",
   ],
 
-  // Common interjections
   [
     "oh",
     "wow",

@@ -6,6 +6,7 @@ import UserProfileCardProps from "@/types";
 import { ReactSVG } from "react-svg";
 import { useRouter } from "next/navigation";
 import Button from "../MainButton";
+import backendApi from "@/api/backend";
 
 export default function UserProfileCard({ username }: { username: string }) {
   const [loading, setLoading] = useState(true);
@@ -13,24 +14,17 @@ export default function UserProfileCard({ username }: { username: string }) {
   const router = useRouter();
 
   useEffect(() => {
-    document.title = username;
+    document.title = `${username} | Donkey Type`;
     document.documentElement.className =
       localStorage.getItem("theme") ?? "theme-indigo-emerald";
 
     const fetchUserData = async () => {
       setLoading(true);
       try {
-        const response = await fetch(
-          `http://localhost:5000/user?username=${username}`
-        );
-        const data = await response.json();
-        console.log(data);
-        if (response.ok) {
-          console.log("data", data[0]);
-          setData(data[0]);
-        } else {
-          toast.error(data.message || "Failed to fetch user data.");
-        }
+        const response = await backendApi.get("/users", {
+          params: { username },
+        });
+        setData(response.data[0]);
       } catch (error) {
         toast.error("An error occurred while fetching user data.");
       } finally {

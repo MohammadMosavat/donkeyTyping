@@ -12,7 +12,6 @@ import {
   ChartData,
 } from "chart.js";
 
-// Register required components
 ChartJS.register(
   CategoryScale,
   LinearScale,
@@ -23,50 +22,46 @@ ChartJS.register(
   Legend
 );
 
-// Define the TypeScript interface for props
 interface LineChartProps {
-  labels: string[]; // Single set of labels for the x-axis
-  datasets: { label: string; data: number[]; backgroundColor: string }[]; // Array of multiple datasets
+  labels: string[];
+  datasets: { label: string; data: number[]; backgroundColor: string }[];
   title: string;
 }
 
-// Define the LineChart component
 const LineChart = ({ labels, datasets, title }: LineChartProps): JSX.Element => {
-  // Create chart data using the props
   const data: ChartData<"line"> = {
     labels: labels,
     datasets: datasets.map((dataset) => ({
       label: dataset.label,
       data: dataset.data,
       backgroundColor: dataset.backgroundColor,
-      borderColor: dataset.backgroundColor, // Add border color to line chart
-      fill: false, // Do not fill the area under the line
-      tension: 0.4, // Smooth the lines (optional)
+      borderColor: dataset.backgroundColor,
+      fill: false,
+      tension: 0.4,
     })),
   };
 
   const rootStyles = getComputedStyle(document.documentElement);
-  // Chart options
   const options: ChartOptions<"line"> = {
     responsive: true,
     plugins: {
       legend: {
         position: "top",
         labels: {
-          color:  rootStyles.getPropertyValue("--primary").trim() || "#ffffff", // Set legend text color to white
+          color:  rootStyles.getPropertyValue("--primary").trim() || "#ffffff",
           font: {
-            family: "JetBrainsMono-Regular", // Set font to JetBrainsMono-Regular
-            size: 14, // You can adjust the font size as needed
+            family: "JetBrainsMono-Regular",
+            size: 14,
           },
         },
       },
       title: {
         display: true,
         text: title,
-        color:  rootStyles.getPropertyValue("--primary").trim() || "#ffffff", // Set title text color to white
+        color:  rootStyles.getPropertyValue("--primary").trim() || "#ffffff",
         font: {
-          family: "JetBrainsMono-Regular", // Set font to JetBrainsMono-Regular
-          size: 16, // You can adjust the font size as needed
+          family: "JetBrainsMono-Regular",
+          size: 16,
         },
       },
     },
@@ -74,20 +69,20 @@ const LineChart = ({ labels, datasets, title }: LineChartProps): JSX.Element => 
       x: {
         beginAtZero: true,
         ticks: {
-          color:  rootStyles.getPropertyValue("--primary").trim() || "#ffffff", // Set x-axis ticks (labels) color to white
+          color:  rootStyles.getPropertyValue("--primary").trim() || "#ffffff",
           font: {
-            family: "JetBrainsMono-Regular", // Set font to JetBrainsMono-Regular
-            size: 12, // You can adjust the font size as needed
+            family: "JetBrainsMono-Regular",
+            size: 12,
           },
         },
       },
       y: {
         beginAtZero: true,
         ticks: {
-          color:  rootStyles.getPropertyValue("--primary").trim() || "#ffffff", // Set y-axis ticks (labels) color to white
+          color:  rootStyles.getPropertyValue("--primary").trim() || "#ffffff",
           font: {
-            family: "JetBrainsMono-Regular", // Set font to JetBrainsMono-Regular
-            size: 12, // You can adjust the font size as needed
+            family: "JetBrainsMono-Regular",
+            size: 12,
           },
         },
       },

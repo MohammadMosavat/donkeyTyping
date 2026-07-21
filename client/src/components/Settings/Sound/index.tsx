@@ -55,10 +55,11 @@ const Sound = () => {
           Each time you presses a key, a short sound effect plays.
         </p>
       </section>
-      <ul className="grid grid-cols-6 gap-2 ">
+      <ul className="sound-options grid grid-cols-6 gap-2 ">
         {soundOptions.map((option) => (
           <Button
             key={option.state}
+            data-selected={sound === option.state}
             className="!rounded-xl w-full"
             onClick={() => handleSoundChange(option.state)}
             variant={sound === option.state ? "secondary" : "outline"}

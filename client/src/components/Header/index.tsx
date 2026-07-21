@@ -25,7 +25,7 @@ const Header = () => {
     return user.length > 0 ? (
       <NavLinks
         onClick={() => close()}
-        className={`group w-full md:w-auto ${isOpen &&
+        className={`group terminal-nav-link w-full md:w-auto ${isOpen &&
           "!rounded-xl"} opacity-50 hover:opacity-100 bg-transparent ${
           pathname === `/${username}/sort` ? "!opacity-100 [&_*]:stroke-2" : ""
         }`}
@@ -35,7 +35,7 @@ const Header = () => {
     ) : (
       <NavLinks
         onClick={() => close()}
-        className={`group w-full md:w-auto ${isOpen &&
+        className={`group terminal-nav-link w-full md:w-auto ${isOpen &&
           "!rounded-xl"} opacity-50 hover:opacity-100 bg-transparent ${
           pathname === `/register/signup` ? "!opacity-100 [&_*]:stroke-2" : ""
         }`}
@@ -60,7 +60,7 @@ const Header = () => {
           y: 0,
         }}
         transition={{ duration: 0.2 }}
-        className={`z-50 w-full flex fixed md:static top-0 left-0 ${
+        className={`terminal-header z-50 w-full flex fixed md:static top-0 left-0 ${
           isOpen ? "h-screen !items-start !flex-col" : "h-fit self-start"
         } gap-4 items-center  justify-between md:rounded-2xl transition-all duration-300`}
       >
@@ -72,7 +72,7 @@ const Header = () => {
           <li className="w-full  md:w-auto">
             <NavLinks
               onClick={() => close()}
-              className={`group w-full md:w-auto ${isOpen &&
+              className={`group terminal-nav-link w-full md:w-auto ${isOpen &&
                 "!rounded-xl"} opacity-50 hover:opacity-100 bg-transparent ${
                 pathname === "/" ? "!opacity-100 [&_*]:stroke-2" : ""
               }`}
@@ -83,7 +83,7 @@ const Header = () => {
           <li className="w-full md:w-auto">
             <NavLinks
               onClick={() => close()}
-              className={`group w-full md:w-auto ${isOpen &&
+              className={`group terminal-nav-link w-full md:w-auto ${isOpen &&
                 "!rounded-xl"} opacity-50 hover:opacity-100 bg-transparent ${
                 pathname === "/theme" ? "!opacity-100 [&_*]:stroke-2" : ""
               }`}
@@ -94,7 +94,7 @@ const Header = () => {
           <li className="w-full md:w-auto">
             <NavLinks
               onClick={() => close()}
-              className={`group w-full md:w-auto ${isOpen &&
+              className={`group terminal-nav-link w-full md:w-auto ${isOpen &&
                 "!rounded-xl"} opacity-50 hover:opacity-100 bg-transparent ${
                 pathname === "/settings" ? "!opacity-100 [&_*]:stroke-2" : ""
               }`}

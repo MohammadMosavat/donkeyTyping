@@ -18,15 +18,6 @@ const tabs = [
   { name: "Appearance", content: <Appearance /> },
   { name: "Behavior", content: <Behavior /> },
   { name: "Sound", content: <Sound /> },
-  // { name: "Theme", content: <Theme /> },
-  // {
-  //   name: "Hide Elements",
-  //   content: <hideExtraElements />,
-  // },
-  // {
-  //   name: "Danger Zone",
-  //   content: <DangerZone />,
-  // },
 ];
 
 const SettingsPage = () => {
@@ -54,22 +45,21 @@ const SettingsPage = () => {
 
   return (
     <div className="flex flex-col w-full items-center gap-10 ">
-      {/* Tabs */}
+
       <section className="flex w-full justify-between items-center">
-        <div className="flex gap-2 bg-thrid w-4/12 p-1 rounded-xl">
+        <div className="settings-tabs flex gap-2 border border-primary/30 w-4/12 p-1 rounded-xl">
           {tabs.map((tab) => (
             <button
               key={tab.name}
               onClick={() => setActiveTab(tab.name)}
+              data-active={activeTab === tab.name}
               className={`flex w-1/2 justify-center items-center gap-2 p-2 rounded-lg transition-all duration-200 ${
                 activeTab === tab.name
-                  ? "bg-fourth shadow-md"
-                  : "hover:bg-primary/5"
+                  ? "bg-primary text-fourth shadow-md"
+                  : "text-primary hover:bg-primary/10"
               }`}
             >
-              <span className="font-JetBrainsMono text-primary">
-                {tab.name}
-              </span>
+              <span className="font-JetBrainsMono">{tab.name}</span>
             </button>
           ))}
         </div>
@@ -84,7 +74,7 @@ const SettingsPage = () => {
           Reset Settings
         </Button>
       </section>
-      {/* Content */}
+
       <motion.div
         key={activeTab}
         initial={{ opacity: 0, y: 20 }}
@@ -93,7 +83,7 @@ const SettingsPage = () => {
           duration: 0.3,
           ease: "easeOut",
         }}
-        className="w-full flex flex-col gap-10 text-primary font-JetBrainsMono"
+        className="settings-content w-full flex flex-col gap-10 text-primary font-JetBrainsMono"
       >
         {tabs.find((t) => t.name === activeTab)?.content}
       </motion.div>

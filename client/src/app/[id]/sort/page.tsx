@@ -4,7 +4,7 @@ import Loading from "@/components/loading";
 import WpmRecords from "@/components/WpmRecord";
 import useAuth from "@/hooks/useAuth";
 import { WpmRecord } from "@/types";
-import axios from "axios";
+import backendApi from "@/api/backend";
 import { useParams, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
 import { ReactSVG } from "react-svg";
@@ -20,21 +20,12 @@ const FilterRecordPage = () => {
   useEffect(() => {
     const fetchRecords = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:5000/store_wpm?username=${params.id}&sort=${
-            filter == "lowest" ? "highest" : filter
-          }`
-        );
-        console.log(response.data);
-        if (filter == "oldest" || filter == "highest") {
-          console.log("reverse");
-          setRecords(response.data.reverse());
-        } else {
-          console.log("not reverse");
-          setRecords(response.data);
-        }
+        const response = await backendApi.get("/records", {
+          params: { username: params.id, sort: filter ?? "newest" },
+        });
+        setRecords(response.data);
 
-        setError(null); // Clear any previous errors
+        setError(null);
       } catch (err) {
         console.log("Failed to fetch records.");
       } finally {
@@ -77,14 +68,7 @@ const FilterRecordPage = () => {
         </ul>
       </div>
       <WpmRecords records={records} />
-      {/* <motion.footer
-        animate={{ opacity: 1 }}
-        initial={{ opacity: 0 }}
-        transition={{ duration: 0.3 }}
-        className="mt-4 md:mt-6"
-      >
-        <Footer />
-      </motion.footer> */}
+
     </main>
   ) : (
     <Loading />

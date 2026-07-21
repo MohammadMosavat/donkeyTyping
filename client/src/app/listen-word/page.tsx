@@ -30,7 +30,7 @@ const PostRandomWord = () => {
 
       if (response.ok) {
         const data = await response.json();
-        setMessage(data.message); // Show the success message
+        setMessage(data.message);
       } else {
         const errorData = await response.json();
         setMessage(errorData.message || "Failed to post the word.");
@@ -67,17 +67,16 @@ const PostRandomWord = () => {
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
-      // Check if Ctrl + S is pressed
       if (e.ctrlKey && e.key === "s") {
-        e.preventDefault(); // Prevent the default save behavior
-        sayWord(word); // Run sayWord
+        e.preventDefault();
+        sayWord(word);
       }
       if (e.ctrlKey && e.key === "i") {
-        e.preventDefault(); // Prevent the default save behavior
+        e.preventDefault();
         setShow(!show);
       }
       if (e.ctrlKey && e.key === "q") {
-        e.preventDefault(); // Prevent the default save behavior
+        e.preventDefault();
         postRandomWord();
       }
     };
@@ -87,7 +86,7 @@ const PostRandomWord = () => {
     return () => {
       window.removeEventListener("keydown", handleKeyDown);
     };
-  }, [word, show]); // Re-run the effect when 'word' changes
+  }, [word, show]);
 
   return (
     <div className="flex pt-40 w-10/12 gap-10 mx-auto flex-col items-center p-4">

@@ -3,7 +3,7 @@ import FilterLinks from "@/components/FiltersLink";
 import Loading from "@/components/loading";
 import WpmRecords from "@/components/WpmRecord";
 import { WpmRecord } from "@/types";
-import axios from "axios";
+import backendApi from "@/api/backend";
 import Link from "next/link";
 import { useParams, useSearchParams } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -20,9 +20,9 @@ const MainPageProfile = () => {
   useEffect(() => {
     const fetchRecords = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:5000/store_wpm?username=${params.id}`
-        );
+        const response = await backendApi.get("/records", {
+          params: { username: params.id, sort: currentFilter },
+        });
         setRecords(response.data);
         setError(null);
       } catch (err) {

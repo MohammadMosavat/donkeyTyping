@@ -11,7 +11,7 @@ export default function ThemeSwitcher() {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    document.title = "PlanetType | Themes";
+    document.title = "Themes | Donkey Type";
     document.documentElement.className =
       localStorage.getItem("theme") ?? "theme-indigo-emerald";
   });
@@ -32,8 +32,13 @@ export default function ThemeSwitcher() {
               onClick={() => {
                 changeTheme(t.class);
               }}
-              className={`${"theme-" + theme == t.class &&
-                "!bg-thrid"} hover:bg-thrid !bg-opacity-50 cursor-pointer hover:font-bold transition-all duration-200 ease-in-out text-primary w-full flex items-center gap-2 sm:gap-0 justify-between p-2 rounded-xl`}
+              className={`${
+                "theme-" + theme === t.class
+                  ? t.class.startsWith("theme-terminal")
+                    ? "theme-option--selected"
+                    : "!bg-thrid"
+                  : ""
+              } theme-option hover:bg-secondary/20 !bg-opacity-50 cursor-pointer hover:font-bold transition-all duration-200 ease-in-out text-primary w-full flex items-center gap-2 sm:gap-0 justify-between p-2 rounded-xl`}
             >
               <p className="font-JetBrainsMono text-primary text-sm md:text-base">
                 {t.name}

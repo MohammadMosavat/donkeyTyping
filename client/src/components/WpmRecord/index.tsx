@@ -18,7 +18,7 @@ const WpmRecords = ({ records }: { records: WpmRecord[] }) => {
 
   const availableDates = useMemo(() => {
     const dates = new Set(
-      records.reverse().map((record) =>
+      [...records].reverse().map((record) =>
         new Date(record.date).toLocaleDateString("en-US", {
           year: "numeric",
           month: "long",

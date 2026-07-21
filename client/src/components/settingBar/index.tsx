@@ -43,31 +43,33 @@ const SettingBar = ({
       <div className="flex gap-2 w-full rounded-xl">
         <button
           onClick={() => setActiveTab("timer")}
-          className={`flex w-1/2 hover:bg-thrid justify-center items-center gap-2 p-1.5 rounded-lg transition-all duration-200 ${
+          data-active={activeTab === "timer"}
+          className={`timer-option flex w-1/2 justify-center items-center gap-2 p-1.5 rounded-lg transition-all duration-200 ${
             activeTab === "timer"
-              ? "opacity-100"
-              : "opacity-50"
+              ? "bg-thrid text-fourth opacity-100"
+              : "text-primary opacity-50 hover:bg-primary/10 hover:opacity-100"
           }`}
         >
           <ReactSVG
             src="/svgs/timer.svg"
-            className="[&>div>svg]:size-5 [&_*]:stroke-primary"
+            className="[&>div>svg]:size-5 [&_*]:stroke-current"
           />
-          <span className="font-JetBrainsMono text-primary">Timer</span>
+          <span className="font-JetBrainsMono">Timer</span>
         </button>
         <button
           onClick={() => setActiveTab("words")}
-          className={`flex w-1/2 hover:bg-thrid justify-center items-center gap-2 p-1.5 rounded-lg transition-all duration-200 ${
+          data-active={activeTab === "words"}
+          className={`timer-option flex w-1/2 justify-center items-center gap-2 p-1.5 rounded-lg transition-all duration-200 ${
             activeTab === "words"
-              ? "opacity-100"
-              : "opacity-50"
+              ? "bg-thrid text-fourth opacity-100"
+              : "text-primary opacity-50 hover:bg-primary/10 hover:opacity-100"
           }`}
         >
           <ReactSVG
             src="/svgs/text.svg"
-            className="[&>div>svg]:size-5 [&_*]:stroke-primary"
+            className="[&>div>svg]:size-5 [&_*]:stroke-current"
           />
-          <span className="font-JetBrainsMono text-primary">Words</span>
+          <span className="font-JetBrainsMono">Words</span>
         </button>
       </div>
 

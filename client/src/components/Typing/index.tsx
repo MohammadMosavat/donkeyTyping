@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef, useMemo, memo } from "react";
 import { motion } from "framer-motion";
-import axios from "axios";
+import backendApi from "@/api/backend";
 import toast from "react-hot-toast";
 import RecordResult from "../recordResult";
 import { ReactSVG } from "react-svg";
@@ -116,15 +116,7 @@ function TypingGame({
     };
 
     try {
-      const response = await axios.post(
-        "http://localhost:5000/store_wpm",
-        submissionData,
-        {
-          headers: {
-            "Content-Type": "application/json",
-          },
-        },
-      );
+      await backendApi.post("/records", submissionData);
 
       setLoading(false);
     } catch (error) {
